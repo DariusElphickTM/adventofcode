@@ -6,14 +6,13 @@ def main():
     safeReports = list(map(checkSafety, reports))
     print("Safe reports:", safeReports.count(True))
 
-def checkSafety(report):
+def checkSafety(report, permittedErrors = 1):
     reportValues = list(map(int, re.findall(r'\d+', report)))
     isSafe = True
     
     isReportAscending = True
     for i in range(len(reportValues) - 1):
         currentDiff = reportValues[i + 1] - reportValues[i]
-        print(currentDiff)
         
         if(abs(currentDiff) < 1 or abs(currentDiff) > 3):
             isSafe = False
@@ -27,7 +26,6 @@ def checkSafety(report):
             isSafe = isReportAscending == isReportCurrentlyAscending
             if not isSafe:
                 break
-    print("Final decision", isSafe)
     return isSafe
 
 def readFile(filename):
