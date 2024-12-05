@@ -3,10 +3,14 @@ import functools
 
 def main():
     input_text = read_file("input.txt")
+    part_one(input_text)
+
+def part_one(input_text):
     valid_commands = re.findall(r'mul\(\d+\,\d+\)', input_text)
     calculations = list(map(execute_command, valid_commands))
     total = functools.reduce(lambda a, b: a + b, calculations)
     print(total)
+    return total
 
 def execute_command(command):
     tuples = list(map(int, re.findall(r'\d+', command)))
