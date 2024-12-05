@@ -66,16 +66,18 @@ class TestSolution(unittest.TestCase):
         self.assertTrue(solution.check_safety("5 1 2 3 4 5\n", True))
         self.assertTrue(solution.check_safety("1 4 3 2 1\n", True))
         self.assertTrue(solution.check_safety("1 6 7 8 9\n", True))
-        self.assertTrue(solution.check_safety("1 2 3 4 3\n", True))
-        self.assertTrue(solution.check_safety("9 8 7 6 7\n", True))
         self.assertTrue(solution.check_safety("7 10 8 10 11\n", True))
         self.assertTrue(solution.check_safety("29 28 27 25 26 25 22 20\n", True))
     
+    def test_why_you_no_work_one(self):
+        self.assertTrue(solution.check_safety("1 2 3 4 3\n", True))
+        self.assertTrue(solution.check_safety("9 8 7 6 7\n", True))
+    
     def test_part_two_unsafe_edge_cases(self):
-        self.assertTrue(solution.check_safety("48 55 47 49 51 54 56\n", True))
-        self.assertTrue(solution.check_safety("1 1 1 3 4 5\n", True))
-        self.assertTrue(solution.check_safety("1 2 3 4 5 5 5\n", True))
-        self.assertTrue(solution.check_safety("5 1 2 3 4 55\n", True))
+        self.assertFalse(solution.check_safety("48 55 47 49 51 54 56\n", True))
+        self.assertFalse(solution.check_safety("1 1 1 3 4 5\n", True))
+        self.assertFalse(solution.check_safety("1 2 3 4 5 5 5\n", True))
+        self.assertFalse(solution.check_safety("5 1 2 3 4 55\n", True))
         
     def test_part_1_safe_count(self):
         reports = solution.read_file("1.txt")

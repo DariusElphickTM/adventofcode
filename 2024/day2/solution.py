@@ -12,9 +12,16 @@ def process_reports(reports):
     """Processes a list of reports and returns whether they're safe."""
     return list(map(check_safety, reports))
 
-def check_safety(report, use_dampner = False):
+def check_safety(report, use_dampner = True):
     """Processes a single report and returns whether it's safe."""
     report_values = list(map(int, re.findall(r'\d+', report)))
+    is_safe = check_the_levels(report_values)
+    if not is_safe and use_dampner:
+        return check_safety_with_dampner(report_values)
+    else:
+        return is_safe
+    
+def check_the_levels(report_values):
     is_safe = True
     is_report_ascending = True
     for i in range(len(report_values) - 1):
@@ -29,10 +36,17 @@ def check_safety(report, use_dampner = False):
             is_safe = is_report_ascending == is_report_currently_ascending
             if not is_safe:
                 break
-    if not is_safe and use_dampner:
-        return is_safe
-    else:
-        return is_safe
+    return is_safe
+
+def check_safety_with_dampner(report_values):
+    """Processes a single report and returns whether it's safe, using the dampner."""
+    for i in range(len(report_values)):
+        report_values_copy = report_values.copy()
+        report_values_copy.pop(i)
+        is_safe = check_the_levels(report_values_copy)
+        if is_safe:
+            return is_safe
+    return False
 
 def read_file(file_name):
     """Reads a text file and returns all of it's contents."""
