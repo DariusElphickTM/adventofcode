@@ -3,12 +3,19 @@ import functools
 
 def main():
     input_text = read_file("input.txt")
-    part_one(input_text)
+    part_two(input_text)
 
 def part_one(input_text):
     valid_commands = re.findall(r'mul\(\d+\,\d+\)', input_text)
     calculations = list(map(execute_command, valid_commands))
     total = functools.reduce(lambda a, b: a + b, calculations)
+    return total
+
+def part_two(input_text):
+    start_commands = re.findall(r'^.*?(?=don\'t\(\))', input_text)[0]
+    do_commands = list(map(str, re.findall(r'(?<=do\(\)).*?(?=don\'t\(\))', input_text)))
+    do_commands_totals = list(map(part_one, do_commands))
+    total = functools.reduce(lambda a, b: a + b, do_commands_totals) + part_one(start_commands)
     print(total)
     return total
 
