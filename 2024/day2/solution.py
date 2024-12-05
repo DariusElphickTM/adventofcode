@@ -3,10 +3,13 @@ import re
 
 def main():
     reports = readFile("1.txt")
-    safeReports = list(map(checkSafety, reports))
+    safeReports = process_reports(reports)
     print("Safe reports:", safeReports.count(True))
+    
+def process_reports(reports):
+    return list(map(checkSafety, reports))
 
-def checkSafety(report, permittedErrors = 1):
+def checkSafety(report, useDampner = False):
     reportValues = list(map(int, re.findall(r'\d+', report)))
     isSafe = True
     
