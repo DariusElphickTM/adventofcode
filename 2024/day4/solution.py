@@ -26,6 +26,11 @@ def find_xmas(grid) -> int:
                 if grid[row_index + 1][column_index] == 'M':
                     if grid[row_index + 2][column_index] == 'A' and grid[row_index + 3][column_index] == 'S':
                         matches += 1
+            #Vertical up
+            if current_column == 'X' and row_index > 2:
+                if grid[row_index - 1][column_index] == 'M':
+                    if grid[row_index - 2][column_index] == 'A' and grid[row_index - 3][column_index] == 'S':
+                        matches += 1
     return matches
 
 if __name__ == "__main__":

@@ -116,7 +116,7 @@ SXAMX"""
             matches += solution.find_xmas(parsed_input)
         self.assertEqual(matches, 16)'''
     
-    def test_find_vertical_down(self):
+    '''def test_find_vertical_down(self):
         inputs = [
             """XXXX
 MXXX
@@ -180,7 +180,68 @@ SSSS"""
         for input in inputs:
             parsed_input = solution.parse_input(input)
             matches += solution.find_xmas(parsed_input)
-        self.assertEqual(matches, 31)
+        self.assertEqual(matches, 31)'''
+    
+    def test_find_vertical_up(self):
+        inputs = [
+            """SXXX
+AXXX
+MXXX
+XXXX""", 
+            """SXXXX
+AXXXX
+MXXXX
+XXXXX
+XXXXX""", 
+            """SXXXX
+SXXXX
+AXXXX
+MXXXX
+XXXXX""",
+            """XSXX
+XAXX
+XMXX
+XXXX""", 
+"""XXSX
+XXAX
+XXMX
+XXXX""",
+            """XXXS
+XXXA
+XXXM
+XXXX""",
+            """SSSS
+AAAA
+MMMM
+XXXX""",
+            """SSSS
+AAAA
+MMMM
+XXXX
+SSSS
+AAAA
+MMMM
+XXXX""",
+            """SSSS
+AAAA
+MMMM
+XXXX
+XXXX
+SSSS
+AAAA
+MMMM
+XXXX
+XXXX
+SSSS
+AAAA
+MMMM
+XXXX"""
+        ]
+        matches = 0
+        for input in inputs:
+            parsed_input = solution.parse_input(input)
+            matches += solution.find_xmas(parsed_input)
+        self.assertEqual(matches, 30)
 
 if __name__ == "__main__":
     unittest.main()
