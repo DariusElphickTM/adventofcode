@@ -2,7 +2,7 @@ import unittest
 import solution
 
 class TestSolution(unittest.TestCase):
-    '''def test_parse_input_correctly(self):
+    def test_parse_input_correctly(self):
         input = """MMAMMMSAXAXXAXMASMMASAMXMAMMAMXXXXXSMSXMMMXMXXSXASAMXMAMMXSAMXXXXMSSMXMASMMMSMSSSSSXMXSASMSMMMMMXAMXAXMMSMMAXSSSXSXMXAMXMXSXSMSSXSAMXXXMXMXM
 ASASAAMXMXMMMXAXAXSSMXSASASMSSXMMSMMSAMXMMSSMASAMXMXMMMSMMMASMXSAMAMMXMAMAAXAAXAAAAMMSAMXAAXAASMSSSMSSSMAAMXMAAXMMASMSSMMXMAXAAAASAMXSXMASAM
 MSASMSSMMAAASMXSMMXAAMSAMASAAAMAAAASXMAXSAAAMSMMXAMAMAMAXAXAXAASMMAMMXMASXMSMSMMMMMAXMASMXMSXXMAAXAAAAASXMMAAMSMMSAMXAAXXAMXMMMSMSASAAASASXS
@@ -62,9 +62,9 @@ XMAAS"""
         for input in inputs:
             parsed_input = solution.parse_input(input)
             matches += solution.find_xmas(parsed_input)
-        self.assertEqual(matches, 16)'''
+        self.assertEqual(matches, 16)
     
-    '''def test_find_horizontal_backward(self):
+    def test_find_horizontal_backward(self):
         inputs = [
             """SAMX
 XXXX
@@ -114,9 +114,9 @@ SXAMX"""
         for input in inputs:
             parsed_input = solution.parse_input(input)
             matches += solution.find_xmas(parsed_input)
-        self.assertEqual(matches, 16)'''
+        self.assertEqual(matches, 16)
     
-    '''def test_find_vertical_down(self):
+    def test_find_vertical_down(self):
         inputs = [
             """XXXX
 MXXX
@@ -180,7 +180,7 @@ SSSS"""
         for input in inputs:
             parsed_input = solution.parse_input(input)
             matches += solution.find_xmas(parsed_input)
-        self.assertEqual(matches, 31)'''
+        self.assertEqual(matches, 31)
     
     def test_find_vertical_up(self):
         inputs = [
