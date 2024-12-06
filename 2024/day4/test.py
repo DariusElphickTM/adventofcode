@@ -312,5 +312,19 @@ XXXXXXXXX
             matches += solution.find_xmas(parsed_input)
         self.assertEqual(matches, 8)
 
+    def test_find_x_masses(self):
+        parsed_input = solution.parse_input(""".M.S......
+..A..MSMS.
+.M.S.MAA..
+..A.ASMSM.
+.M.S.M....
+..........
+S.S.S.S.S.
+.A.A.A.A..
+M.M.M.M.M.
+..........""")
+        matches = solution.find_x_masses(parsed_input)
+        self.assertEqual(matches, 9)
+
 if __name__ == "__main__":
     unittest.main()
