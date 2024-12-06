@@ -1,5 +1,8 @@
 def main():
-    print("Hello World")
+    print("Let's do wordsearch!")
+    parsed_input = parse_input(read_file("input.txt"))
+    matches = find_xmas(parsed_input)
+    print("Matches", matches)
 
 def parse_input(input: str):
     rows = input.splitlines()
@@ -58,6 +61,13 @@ def find_xmas(grid) -> int:
                     if grid[row_index - 2][column_index] == 'A' and grid[row_index - 3][column_index] == 'S':
                         matches += 1
     return matches
+
+def read_file(file_name):
+    """Reads a text file and returns all of it's contents."""
+    with open(file_name, encoding="utf-8") as file:
+        file_contents = file.read()
+        file.close()
+    return file_contents
 
 if __name__ == "__main__":
     main()
