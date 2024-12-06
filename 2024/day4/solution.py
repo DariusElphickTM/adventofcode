@@ -16,11 +16,37 @@ def find_xmas(grid) -> int:
                 if grid[row_index][column_index + 1] == 'M':
                     if grid[row_index][column_index + 2] == 'A' and grid[row_index][column_index + 3] == 'S':
                         matches += 1
+                
+                #Diagonal Down
+                if row_index < len(grid) - 3:
+                    if grid[row_index + 1][column_index + 1] == 'M':
+                        if grid[row_index + 2][column_index + 2] == 'A' and grid[row_index + 3][column_index + 3] == 'S':
+                            matches += 1
+                
+                #Diagonal Up
+                if row_index > 2:
+                    if grid[row_index - 1][column_index + 1] == 'M':
+                        if grid[row_index - 2][column_index + 2] == 'A' and grid[row_index - 3][column_index + 3] == 'S':
+                            matches += 1
+                
             #Horizontal backward
             if current_column == 'X' and column_index > 2:
                 if grid[row_index][column_index - 1] == 'M':
                     if grid[row_index][column_index - 2] == 'A' and grid[row_index][column_index - 3] == 'S':
                         matches += 1
+                
+                #Diagonal Down
+                if row_index < len(grid) - 3:
+                    if grid[row_index + 1][column_index - 1] == 'M':
+                        if grid[row_index + 2][column_index - 2] == 'A' and grid[row_index + 3][column_index - 3] == 'S':
+                            matches += 1
+                
+                #Diagonal Up
+                if row_index > 2:
+                    if grid[row_index - 1][column_index - 1] == 'M':
+                        if grid[row_index - 2][column_index - 2] == 'A' and grid[row_index - 3][column_index - 3] == 'S':
+                            matches += 1
+            
             #Vertical down
             if current_column == 'X' and row_index < len(grid) - 3:
                 if grid[row_index + 1][column_index] == 'M':

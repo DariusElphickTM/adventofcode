@@ -62,7 +62,7 @@ XMAAS"""
         for input in inputs:
             parsed_input = solution.parse_input(input)
             matches += solution.find_xmas(parsed_input)
-        self.assertEqual(matches, 16)
+        self.assertEqual(matches, 18)
     
     def test_find_horizontal_backward(self):
         inputs = [
@@ -114,7 +114,7 @@ SXAMX"""
         for input in inputs:
             parsed_input = solution.parse_input(input)
             matches += solution.find_xmas(parsed_input)
-        self.assertEqual(matches, 16)
+        self.assertEqual(matches, 18)
     
     def test_find_vertical_down(self):
         inputs = [
@@ -180,7 +180,7 @@ SSSS"""
         for input in inputs:
             parsed_input = solution.parse_input(input)
             matches += solution.find_xmas(parsed_input)
-        self.assertEqual(matches, 31)
+        self.assertEqual(matches, 43)
     
     def test_find_vertical_up(self):
         inputs = [
@@ -241,7 +241,76 @@ XXXX"""
         for input in inputs:
             parsed_input = solution.parse_input(input)
             matches += solution.find_xmas(parsed_input)
-        self.assertEqual(matches, 30)
+        self.assertEqual(matches, 42)
+    
+    def test_find_diagonals(self):
+        inputs = [
+            """XXXX
+XMXX
+XXAX
+XXXS""",
+"""XXXX
+XXMX
+XAXX
+SXXX""",
+"""XXXS
+XXAX
+XMXX
+XXXX""",
+"""SXXX
+XAXX
+XXMX
+XXXX""",
+"""XXXXXX
+XXXXXX
+XXMXXX
+XXXAXX
+XXXXSX
+XXXXXX""",
+"""XXXXXX
+XXXXXX
+XXXMXX
+XXAXXX
+XSXXXX
+XXXXXX""",
+"""
+XXXXXX
+XXXXSX
+XXXAXX
+XXMXXX
+XXXXXX
+XXXXXX""",
+"""XXXXXX
+XSXXXX
+XXAXXX
+XXXMXX
+XXXXXX
+XXXXXX"""
+        ]
+        matches = 0
+        for input in inputs:
+            parsed_input = solution.parse_input(input)
+            matches += solution.find_xmas(parsed_input)
+        self.assertEqual(matches, 8)
+    
+    def test_find_grid(self):
+        inputs = [
+"""XXXXXXXXX
+XSXXSXXSX
+XXAXAXAXX 
+XXXMMMXXX
+XSAMXMASX
+XXXMMMXXX
+XXAXAXAXX
+XSXXSXXSX
+XXXXXXXXX
+"""
+        ]
+        matches = 0
+        for input in inputs:
+            parsed_input = solution.parse_input(input)
+            matches += solution.find_xmas(parsed_input)
+        self.assertEqual(matches, 8)
 
 if __name__ == "__main__":
     unittest.main()
