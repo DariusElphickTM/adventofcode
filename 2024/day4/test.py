@@ -12,7 +12,7 @@ MMAMAXMASMSXXMASXMMMMMMMMMMMMXAXSMXMAMXXMMSSMMAMMAXXSASXSXMAMMMMXSMSMXXAMAASAMMX
         for row in output:
             self.assertEqual(len(row), 140)
             
-    def test_find_one_horizontal_forward(self):
+    def test_find_horizontal_forward(self):
         inputs = [
             """XMAS
 XXXX
@@ -53,7 +53,62 @@ XXXXXXXX""",
             """XMASXXMASXXMAS
 XXXXXXXXXXXXXXXXXX
 XXXXXXXXXXXXXXXXXX
-XXXXXXXXXXXXXXXXXX"""
+XXXXXXXXXXXXXXXXXX""",
+            """XMXAS
+XMAXS
+XMAAS"""
+        ]
+        matches = 0
+        for input in inputs:
+            parsed_input = solution.parse_input(input)
+            matches += solution.find_xmas(parsed_input)
+        self.assertEqual(matches, 16)
+    
+    def test_find_horizontal_backward(self):
+        inputs = [
+            """SAMX
+XXXX
+XXXX
+XXXX""", 
+            """XSAMX
+XXXXX
+XXXXX
+XXXXX""", 
+            """SAMXS
+XXXXX
+XXXXX
+XXXXX""", 
+            """XSAMXS
+XXXXXX
+XXXXXX
+XXXXXX""",
+            """XXXX
+SAMX
+XXXX
+XXXX""", 
+"""XXXX
+XXXX
+SAMX
+XXXX""",
+            """XXXX
+XXXX
+XXXX
+SAMX""",
+            """SAMX
+SAMX
+SAMX
+SAMX""",
+            """SAMXSAMX
+XXXXXXXX
+XXXXXXXX
+XXXXXXXX""",
+            """SAMXXSAMXXSAMX
+XXXXXXXXXXXXXXXXXX
+XXXXXXXXXXXXXXXXXX
+XXXXXXXXXXXXXXXXXX""",
+            """SAAMX
+SAXMX
+SXAMX"""
         ]
         matches = 0
         for input in inputs:
