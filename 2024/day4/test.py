@@ -8,10 +8,58 @@ ASASAAMXMXMMMXAXAXSSMXSASASMSSXMMSMMSAMXMMSSMASAMXMXMMMSMMMASMXSAMAMMXMAMAAXAAXA
 MSASMSSMMAAASMXSMMXAAMSAMASAAAMAAAASXMAXSAAAMSMMXAMAMAMAXAXAXAASMMAMMXMASXMSMSMMMMMAXMASMXMSXXMAAXAAAAASXMMAAMSMMSAMXAAXXAMXMMMSMSASAAASASXS
 MMAMAXMASMSXXMASXMMMMMMMMMMMMXAXSMXMAMXXMMSSMMAMMAXXSASXSXMAMMMMXSMSMXXAMAASAMMXMASXXXXSXMMXMSMMMSMMMSMMSASMMXAAXAASMSMMSXSAXAAMXSAMMSMMASAA"""
         output = solution.parse_input(input)
-        print(output)
         self.assertEqual(len(output), 4)
         for row in output:
             self.assertEqual(len(row), 140)
+            
+    def test_find_one_horizontal_forward(self):
+        inputs = [
+            """XMAS
+XXXX
+XXXX
+XXXX""", 
+            """XXMAS
+XXXXX
+XXXXX
+XXXXX""", 
+            """XMASS
+XXXXX
+XXXXX
+XXXXX""", 
+            """XXMASS
+XXXXXX
+XXXXXX
+XXXXXX""",
+            """XXXX
+XMAS
+XXXX
+XXXX""", 
+"""XXXX
+XXXX
+XMAS
+XXXX""",
+            """XXXX
+XXXX
+XXXX
+XMAS""",
+            """XMAS
+XMAS
+XMAS
+XMAS""",
+            """XMASXMAS
+XXXXXXXX
+XXXXXXXX
+XXXXXXXX""",
+            """XMASXXMASXXMAS
+XXXXXXXXXXXXXXXXXX
+XXXXXXXXXXXXXXXXXX
+XXXXXXXXXXXXXXXXXX"""
+        ]
+        matches = 0
+        for input in inputs:
+            parsed_input = solution.parse_input(input)
+            matches += solution.find_xmas(parsed_input)
+        self.assertEqual(matches, 16)
 
 if __name__ == "__main__":
     unittest.main()
