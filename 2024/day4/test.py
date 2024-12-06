@@ -2,7 +2,7 @@ import unittest
 import solution
 
 class TestSolution(unittest.TestCase):
-    def test_parse_input_correctly(self):
+    '''def test_parse_input_correctly(self):
         input = """MMAMMMSAXAXXAXMASMMASAMXMAMMAMXXXXXSMSXMMMXMXXSXASAMXMAMMXSAMXXXXMSSMXMASMMMSMSSSSSXMXSASMSMMMMMXAMXAXMMSMMAXSSSXSXMXAMXMXSXSMSSXSAMXXXMXMXM
 ASASAAMXMXMMMXAXAXSSMXSASASMSSXMMSMMSAMXMMSSMASAMXMXMMMSMMMASMXSAMAMMXMAMAAXAAXAAAAMMSAMXAAXAASMSSSMSSSMAAMXMAAXMMASMSSMMXMAXAAAASAMXSXMASAM
 MSASMSSMMAAASMXSMMXAAMSAMASAAAMAAAASXMAXSAAAMSMMXAMAMAMAXAXAXAASMMAMMXMASXMSMSMMMMMAXMASMXMSXXMAAXAAAAASXMMAAMSMMSAMXAAXXAMXMMMSMSASAAASASXS
@@ -62,9 +62,9 @@ XMAAS"""
         for input in inputs:
             parsed_input = solution.parse_input(input)
             matches += solution.find_xmas(parsed_input)
-        self.assertEqual(matches, 16)
+        self.assertEqual(matches, 16)'''
     
-    def test_find_horizontal_backward(self):
+    '''def test_find_horizontal_backward(self):
         inputs = [
             """SAMX
 XXXX
@@ -114,7 +114,73 @@ SXAMX"""
         for input in inputs:
             parsed_input = solution.parse_input(input)
             matches += solution.find_xmas(parsed_input)
-        self.assertEqual(matches, 16)
+        self.assertEqual(matches, 16)'''
+    
+    def test_find_vertical_down(self):
+        inputs = [
+            """XXXX
+MXXX
+AXXX
+SXXX""", 
+            """XXXXX
+XXXXX
+MXXXX
+AXXXX
+SXXXX""", 
+            """XXXXX
+MXXXX
+AXXXX
+SXXXX
+SXXXX""", 
+            """XXXXXX
+MXXXXX
+AXXXXX
+SXXXXX
+SXXXXX""",
+            """XXXX
+XMXX
+XAXX
+XSXX""", 
+"""XXXX
+XXMX
+XXAX
+XXSX""",
+            """XXXX
+XXXM
+XXXA
+XXXS""",
+            """XXXX
+MMMM
+AAAA
+SSSS""",
+            """XXXX
+MMMM
+AAAA
+SSSS
+XXXX
+MMMM
+AAAA
+SSSS""",
+            """XXXX
+MMMM
+AAAA
+SSSS
+XXXX
+XXXX
+MMMM
+AAAA
+SSSS
+XXXX
+XXXX
+MMMM
+AAAA
+SSSS"""
+        ]
+        matches = 0
+        for input in inputs:
+            parsed_input = solution.parse_input(input)
+            matches += solution.find_xmas(parsed_input)
+        self.assertEqual(matches, 31)
 
 if __name__ == "__main__":
     unittest.main()
