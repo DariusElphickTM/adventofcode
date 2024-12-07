@@ -4,7 +4,18 @@ class PrintInspector():
 
     def __init__(self, rules_string):
         self.rules = self.parse_rules(rules_string)
-        
+    
+    def is_update_safe(self, update):
+        is_safe = True
+        for i, page in enumerate(update):
+            if page in self.rules:
+                relevant_rule = self.rules[page]
+                for page in relevant_rule:
+                    if page in update and update.index(page) < i:
+                        is_safe = False
+                        break
+        return is_safe
+    
     def parse_rules(self, rules_string):
         parsed_rules = {}
         rule_list = list(map(lambda rule: list(map(int, rule.split('|'))), re.findall(r'\d+\|\d+', rules_string)))
