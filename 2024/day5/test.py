@@ -1,10 +1,8 @@
 import unittest
-import solution
+import print_inspector
 
 class TestSolution(unittest.TestCase):
-    
-    def test_parse_ordering_rules_correctly(self):
-        sample = """47|53
+    test_data = """47|53
 97|13
 97|61
 97|47
@@ -24,8 +22,28 @@ class TestSolution(unittest.TestCase):
 75|61
 47|29
 75|13
-53|13"""
-        result = solution.parse_rules(sample)
+53|13
+
+75,47,61,53,29
+97,61,53,29,13
+75,29,13
+75,97,47,61,53
+61,13,29
+97,13,75,29,47"""
+    test_rules = test_data.split("\n\n", maxsplit=1)[0]
+    test_updates = test_data.split("\n\n")[1]
+    
+    def setUp(self):
+        self.default_test_inspector = print_inspector.PrintInspector(self.test_rules)
+    
+    '''def test_returns_correct_answer_for_example(self):
+        self.assertEqual(solution.get_sum_of_middle_pages_for_correct_updates(self.test_data), 143) 
+    
+    def test_is_safe_returns_true_for_safe_updates(self):
+        
+    
+    '''
+    def test_parse_ordering_rules_correctly(self):
         self.assertDictEqual({
             47: [53, 13, 61, 29],
             97: [13, 61, 47, 29, 53, 75],
@@ -33,23 +51,16 @@ class TestSolution(unittest.TestCase):
             61: [13, 53, 29],
             29: [13],
             53: [29, 13],
-        }, result)
+        }, self.default_test_inspector.rules)
     
     def test_parse_updates_correctly(self):
-        sample = """75,47,61,53,29
-97,61,53,29,13
-75,29,13
-75,97,47,61,53
-61,13,29
-97,13,75,29,47"""
-        result = solution.parse_updates(sample)
+        result = self.default_test_inspector.parse_updates(self.test_updates)
         self.assertEqual(len(result), 6)
         self.assertEqual(len(result[0]), 5)
         self.assertEqual(result[0][0], 75)
         self.assertEqual(result[0][2], 61)
         self.assertEqual(result[0][4], 29)
         self.assertEqual(len(result[2]), 3)
-        
 
 if __name__ == "__main__":
     unittest.main()

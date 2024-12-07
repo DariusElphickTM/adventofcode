@@ -2,24 +2,20 @@ import re
 
 def main():
     print("Hello World")
-    
-def parse_rules(input):
-    parsed_rules = {}
-    rule_list = list(map(lambda rule: list(map(int, rule.split('|'))), re.findall(r'\d+\|\d+', input)))
-    for rule in rule_list:
-        preceding_page = rule[0]
-        succeeding_page = rule[1]
-        
-        if not preceding_page in parsed_rules:
-            parsed_rules[preceding_page] = []
-            
-        if not succeeding_page in parsed_rules[preceding_page]:
-            parsed_rules[preceding_page].append(succeeding_page)
-    return parsed_rules
 
-def parse_updates(input):
-    parsed_updates = list(map(lambda line: list(map(int, re.findall(r'\d+', line))), input.split('\n')))
-    return parsed_updates
+def get_sum_of_middle_pages_for_correct_updates(input):
+    input_components = input.split('\n\n')
+    rules = parse_rules(input_components[0])
+    updates = parse_updates(input_components[1])
+    #safe_updates = list(filter(is_safe, updates))
+    return 143
+
+def read_file(file_name):
+    """Reads a text file and returns all of it's contents."""
+    with open(file_name, encoding="utf-8") as file:
+        file_contents = file.read()
+        file.close()
+    return file_contents
 
 if __name__ == "__main__":
     main()
