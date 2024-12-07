@@ -1,9 +1,21 @@
 import re
+import functools
 
 class PrintInspector():
 
     def __init__(self, rules_string):
         self.rules = self.parse_rules(rules_string)
+    
+    def get_part_1_answer(self, updates_string):
+        safe_updates = self.find_safe_updates(updates_string)
+        total = 0
+        for safe_update in safe_updates:
+            total += safe_update[len(safe_update) // 2]
+        return total
+    
+    def find_safe_updates(self, updates_string):
+        parsed_updates = self.parse_updates(updates_string)
+        return list(filter(self.is_update_safe, parsed_updates))
     
     def is_update_safe(self, update):
         is_safe = True

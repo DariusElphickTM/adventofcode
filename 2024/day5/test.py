@@ -36,6 +36,17 @@ class TestSolution(unittest.TestCase):
     def setUp(self):
         self.default_test_inspector = print_inspector.PrintInspector(self.test_rules)
     
+    def test_get_part_1_answer(self):
+        self.assertEqual(self.default_test_inspector.get_part_1_answer(self.test_updates), 143)
+    
+    def test_find_safe_updates_returns_correct_entries(self):
+        test_result = self.default_test_inspector.find_safe_updates(self.test_updates)
+        self.assertListEqual(test_result, [
+            [75,47,61,53,29],
+            [97,61,53,29,13],
+            [75,29,13]
+        ])
+    
     def test_is_safe_returns_true_for_safe_updates(self):
         parsed_test_updates = self.default_test_inspector.parse_updates(self.test_updates)
         self.assertTrue(self.default_test_inspector.is_update_safe(parsed_test_updates[0]))
