@@ -13,7 +13,25 @@ class PrintInspector():
         return total
     
     def get_part_2_answer(self, updates_string):
-        return 123
+        unsafe_updates = self.filter_updates(updates_string, False)
+        corrected_updates = list(map(self.correct_unsafe_update, unsafe_updates))
+        total = 0
+        for corrected_update in corrected_updates:
+            total += corrected_update[len(corrected_update) // 2]
+        return total
+    
+    def correct_unsafe_update(self, update):
+        corrected_update = []
+        for i, page in enumerate(update):
+            insertion_index = i
+            if page in self.rules:
+                relevant_rule = self.rules[page]
+                for rule in relevant_rule:
+                    if rule in corrected_update and corrected_update.index(rule) < i:
+                        new_insertion_index = corrected_update.index(rule)
+                        insertion_index = new_insertion_index if new_insertion_index < insertion_index else insertion_index
+            corrected_update.insert(insertion_index, page)
+        return corrected_update
     
     def filter_updates(self, updates_string, is_safe: True):
         parsed_updates = self.parse_updates(updates_string)
@@ -24,8 +42,8 @@ class PrintInspector():
         for i, page in enumerate(update):
             if page in self.rules:
                 relevant_rule = self.rules[page]
-                for page in relevant_rule:
-                    if page in update and update.index(page) < i:
+                for rule in relevant_rule:
+                    if rule in update and update.index(rule) < i:
                         is_safe = False
                         break
         return is_safe

@@ -58,6 +58,24 @@ class TestSolution(unittest.TestCase):
             [97,13,75,29,47]
         ])
     
+    def test_correct_unsafe_update_returns_correct_answer(self):
+        parsed_test_updates = self.default_test_inspector.parse_updates(self.test_updates)
+        self.assertEqual(
+            self.default_test_inspector.correct_unsafe_update(parsed_test_updates[3]),
+            #75,97,47,61,53
+            [97,75,47,61,53]
+        )
+        self.assertEqual(
+            self.default_test_inspector.correct_unsafe_update(parsed_test_updates[4]),
+            #61,13,29
+            [61,29,13]
+        )
+        self.assertEqual(
+            self.default_test_inspector.correct_unsafe_update(parsed_test_updates[5]),
+            #97,13,75,29,47
+            [97,75,47,29,13]
+        )
+    
     def test_is_safe_returns_true_for_safe_updates(self):
         parsed_test_updates = self.default_test_inspector.parse_updates(self.test_updates)
         self.assertTrue(self.default_test_inspector.is_update_safe(parsed_test_updates[0]))
