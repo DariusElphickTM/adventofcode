@@ -6,15 +6,18 @@ class PrintInspector():
         self.rules = self.parse_rules(rules_string)
     
     def get_part_1_answer(self, updates_string):
-        safe_updates = self.find_safe_updates(updates_string)
+        safe_updates = self.filter_updates(updates_string, True)
         total = 0
         for safe_update in safe_updates:
             total += safe_update[len(safe_update) // 2]
         return total
     
-    def find_safe_updates(self, updates_string):
+    def get_part_2_answer(self, updates_string):
+        return 123
+    
+    def filter_updates(self, updates_string, is_safe: True):
         parsed_updates = self.parse_updates(updates_string)
-        return list(filter(self.is_update_safe, parsed_updates))
+        return list(filter(lambda update: self.is_update_safe(update) == is_safe, parsed_updates))
     
     def is_update_safe(self, update):
         is_safe = True
