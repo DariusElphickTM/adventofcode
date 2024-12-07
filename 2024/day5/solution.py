@@ -7,7 +7,9 @@ def main():
     input_updates = input.split("\n\n")[1]
     
     inspector = print_inspector.PrintInspector(input_rules)
-    print("Result", inspector.get_part_1_answer(input_updates))
+    print("Result part 1", inspector.get_part_1_answer(input_updates))
+    
+    print("Result part 2", inspector.get_part_2_answer(input_updates))
 
 def read_file(file_name):
     """Reads a text file and returns all of it's contents."""
