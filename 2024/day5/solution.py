@@ -1,14 +1,13 @@
 import re
+import print_inspector
 
 def main():
-    print("Hello World")
-
-def get_sum_of_middle_pages_for_correct_updates(input):
-    input_components = input.split('\n\n')
-    rules = parse_rules(input_components[0])
-    updates = parse_updates(input_components[1])
-    #safe_updates = list(filter(is_safe, updates))
-    return 143
+    input = read_file("input.txt")
+    input_rules = input.split("\n\n", maxsplit=1)[0]
+    input_updates = input.split("\n\n")[1]
+    
+    inspector = print_inspector.PrintInspector(input_rules)
+    print("Result", inspector.get_part_1_answer(input_updates))
 
 def read_file(file_name):
     """Reads a text file and returns all of it's contents."""
