@@ -26,7 +26,6 @@ class GuardGallivant():
                 print("Finished")
                 self.print_state()
                 break
-            self.print_state()
     
     def guard_out_of_bounds(self, guard):
         return guard['y'] < 0 or guard['y'] >= len(self.room_map) or guard['x'] < 0 or guard['x'] >= len(self.room_map[guard['y']])
