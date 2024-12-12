@@ -33,9 +33,21 @@ class TestGuardGallivant(unittest.TestCase):
         
         guard = self.default_test_gallivanter.guard
         self.assertDictEqual(
-            {'x': 4, 'y': 6, 'facing': 'up'},
+            {'x': 4, 'y': 6, 'facing': '^'},
             guard
         )
+    
+    def test_to_string_method(self):
+        self.assertEqual("""....#.....
+.........#
+..........
+..#.......
+.......#..
+..........
+.#..^.....
+........#.
+#.........
+......#...""", str(self.default_test_gallivanter))
 
 if __name__ == "__main__":
     unittest.main()
