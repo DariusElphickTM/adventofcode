@@ -21,8 +21,12 @@ class GuardGallivant():
         print("Initial state")
         self.print_state()
         self.step_count = 0
-        self.loop_opportunties = 0
+        self.loop_opportunties = []
         while True:
+            if seek_loop_opportunities:
+                loop_opportunity = self.seek_loop_opportunity()
+                if loop_opportunity != 0:
+                    self.loop_opportunties.append(loop_opportunity)
             next_step = self.take_step(self.guard)
             if next_step['step_count'] > 0:
                 self.room_map[self.guard['y']][self.guard['x']] = 'X'
@@ -32,21 +36,32 @@ class GuardGallivant():
                 print("Finished")
                 self.print_state()
                 break
-            elif seek_loop_opportunities:
-                self.loop_opportunties += self.seek_loop_opportunity()
+        print(self.loop_opportunties)
     
     def seek_loop_opportunity(self):
         seeker_guard = self.turn_guard(self.guard)
         turn_count = 0
         loop_opportunity = 0
-        while turn_count < 4:
-            next_step = self.take_step(seeker_guard)
-            self.guard = next_step['next_guard_state']
-            self.step_count += next_step['step_count']
-            if self.guard_out_of_bounds(self.guard):
-                print("No loop found before going out of bounds")
-                self.print_state()
+        while turn_count < 20:
+            step = self.take_step(seeker_guard)
+            seekers_next_step = step['next_guard_state']
+            if self.guard_out_of_bounds(seekers_next_step):
+                #print("No loop found before going out of bounds", seekers_next_step, self.guard)
+                #self.print_state()
                 break
+            elif seekers_next_step['x'] == self.guard['x'] and seekers_next_step['y'] == self.guard['y'] and turn_count > 0:
+                #print("The seeker is back where they started!")
+                #print("Seeker", seekers_next_step)
+                #print("Guard", self.guard)
+                loop_opportunity = self.guard
+                break
+            
+            if step['turned']:
+                #print("The guard has turned", seekers_next_step)
+                turn_count += 1
+            
+            seeker_guard = seekers_next_step
+        #print("No loop found if we get here and haven't declared back where we started")
         return loop_opportunity
     
     def guard_out_of_bounds(self, guard):
@@ -55,9 +70,11 @@ class GuardGallivant():
     def take_step(self, current_guard_position):
         next_guard_position = self.get_guards_next_position(current_guard_position)
         step_count = 0
+        turned = False
         if not self.guard_out_of_bounds(next_guard_position):
             if self.room_map[next_guard_position['y']][next_guard_position['x']] == '#':
                 next_guard_position = self.turn_guard(current_guard_position)
+                turned = True
             else:
                 if not self.room_map[next_guard_position['y']][next_guard_position['x']] == 'X':
                     step_count = 1
@@ -65,7 +82,8 @@ class GuardGallivant():
             step_count = 1
         return {
             'next_guard_state': next_guard_position,
-            'step_count': step_count
+            'step_count': step_count,
+            'turned': turned
         }
     
     def get_guards_next_position(self, current_guard_position):
