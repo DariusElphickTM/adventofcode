@@ -8,34 +8,46 @@ class GuardGallivant():
     
     def parse_map(self, map_string):
         rows = map_string.split('\n')
-        self.room_map = list(map(list, rows))
+        self.original_map = list(map(list, rows))
+        self.room_map = self.original_map
         
         for i, row in enumerate(self.room_map):
             for j, column in enumerate(row):
                 if(column == '^'):
-                    self.guard = {'x': j, 'y': i, 'facing': '^'}
+                    self.original_guard = {'x': j, 'y': i, 'facing': '^'}
+                    self.guard = copy.deepcopy(self.original_guard)
                     self.room_map[i][j] = '.'
                     break
     
-    def play(self, seek_loop_opportunities = False):
-        print("Initial state")
-        self.print_state()
+    def play(self, loop_limit = 1000):
         self.step_count = 0
-        self.loop_opportunties = []
-        while True:
-            if seek_loop_opportunities:
-                loop_opportunity = self.seek_loop_opportunity()
-                if loop_opportunity != 0:
-                    self.loop_opportunties.append(loop_opportunity)
+        turn_count = 0
+        while turn_count < loop_limit:
             next_step = self.take_step(self.guard)
             self.room_map[self.guard['y']][self.guard['x']] = 'X'
             self.step_count += next_step['step_count']
             self.guard = next_step['next_guard_state']
             if self.guard_out_of_bounds(self.guard):
-                print("Finished")
-                self.print_state()
                 break
-        print(self.loop_opportunties)
+            if next_step['turned'] == True:
+                turn_count += 1
+        
+        if turn_count >= loop_limit:
+            print("The guard got stuck")
+            self.loop_opportunties += 1
+        
+    
+    def fuck_it_time_to_brute_force(self):
+        for i, row in enumerate(self.original_map):
+            for j, column in enumerate(row):
+                if self.original_map[j][i] == "#":
+                    print("Don't need to try ", j, i)
+                    continue
+                self.room_map = copy.deepcopy(self.original_map)
+                self.guard = copy.deepcopy(self.original_guard)
+                self.room_map[j][i] = "#"
+                self.play()
+        print("Loop opportunities", self.loop_opportunties)
     
     def seek_loop_opportunity(self):
         seeker_guard = self.turn_guard(self.guard)
