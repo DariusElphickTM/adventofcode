@@ -81,6 +81,10 @@ class TestGuardGallivant(unittest.TestCase):
         self.assertFalse(self.default_test_gallivanter.guard_out_of_bounds({'x': 4, 'y': 6, 'facing': '^'}))
         self.assertFalse(self.default_test_gallivanter.guard_out_of_bounds({'x': 0, 'y': 9, 'facing': 'v'}))
         self.assertFalse(self.default_test_gallivanter.guard_out_of_bounds({'x': 9, 'y': 0, 'facing': '<'}))
+    
+    def test_should_get_loop_opportunities(self):
+        '''self.default_test_gallivanter.play(True)
+        self.assertEqual(6, self.default_test_gallivanter.loop_opportunties)'''
 
 if __name__ == "__main__":
     unittest.main()
