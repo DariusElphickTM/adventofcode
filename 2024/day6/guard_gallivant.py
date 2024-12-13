@@ -28,9 +28,8 @@ class GuardGallivant():
                 if loop_opportunity != 0:
                     self.loop_opportunties.append(loop_opportunity)
             next_step = self.take_step(self.guard)
-            if next_step['step_count'] > 0:
-                self.room_map[self.guard['y']][self.guard['x']] = 'X'
-                self.step_count += next_step['step_count']
+            self.room_map[self.guard['y']][self.guard['x']] = 'X'
+            self.step_count += next_step['step_count']
             self.guard = next_step['next_guard_state']
             if self.guard_out_of_bounds(self.guard):
                 print("Finished")
