@@ -44,6 +44,14 @@ class TestHugeAntenna(unittest.TestCase):
             self.default_test_antenna.get_antinode_count()
         )
     
+    def test_returns_correct_count_of_antinodes_with_harmonics_count(self):
+        self.default_test_antenna.with_harmonics = True
+        self.assertEqual(
+            34,
+            self.default_test_antenna.get_antinode_count()
+        )
+        self.default_test_antenna.with_harmonics = False
+    
     def test_returns_all_antinodes_for_frequency(self):
         self.assertListEqual([
                 {'x': 4, 'y': 2},

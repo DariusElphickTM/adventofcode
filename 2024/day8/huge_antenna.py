@@ -2,6 +2,7 @@ class HugeAntenna():
     def __init__(self, antenna_map_string):
         self.antenna_map = self.parse_antenna_map_string(antenna_map_string)
         self.antenna_frequency_list = self.get_all_antenna_frequencies(antenna_map_string)
+        self.with_harmonics = False
     
     def get_antinode_count(self):
         antinodes = []
@@ -44,22 +45,30 @@ class HugeAntenna():
             antinode['y'] < bounds['y'], self.get_antinodes(antennaA, antennaB)))
     
     def get_antinodes(self, antennaA, antennaB):
-        antinodes = []
         vector = {
             'x': antennaA['x'] - antennaB['x'], 
             'y': antennaA['y'] - antennaB['y']
         }
-        antinodes = [
-            {
-                'x': antennaA['x'] + vector['x'], 
-                'y': antennaA['y'] + vector['y']
-            },
-            {
-                'x': antennaB['x'] - vector['x'], 
-                'y': antennaB['y'] - vector['y']
-            }
-        ]
-        return antinodes
+        inverted_vector = {
+            'x': vector['x'] * -1, 
+            'y': vector['y'] * -1
+        }
+        if self.with_harmonics:
+            return self.get_antinodes_with_harmonics(antennaA, antennaB, vector)
+        else: 
+            return [
+                self.get_next_position(antennaA, vector),
+                self.get_next_position(antennaB, inverted_vector)
+            ]
+    
+    def get_next_position(self, current_position, vector):
+        return {
+            'x': current_position['x'] + vector['x'], 
+            'y': current_position['y'] + vector['y']
+        }
+    
+    def get_antinodes_with_harmonics(self, antennaA, antennaB, vector):
+        return []
     
     def parse_antenna_map_string(self, antenna_map_string):
         return list(map(list, antenna_map_string.split('\n')))
