@@ -38,6 +38,12 @@ class TestHugeAntenna(unittest.TestCase):
         ], self.default_test_antenna.antenna_map)
         self.assertEqual(2, len(self.default_test_antenna.antenna_frequency_list))
     
+    def test_returns_correct_count_of_antinodes(self):
+        self.assertEqual(
+            14,
+            self.default_test_antenna.get_antinode_count()
+        )
+    
     def test_returns_all_antinodes_for_frequency(self):
         self.assertListEqual([
                 {'x': 4, 'y': 2},

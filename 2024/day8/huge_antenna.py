@@ -3,6 +3,13 @@ class HugeAntenna():
         self.antenna_map = self.parse_antenna_map_string(antenna_map_string)
         self.antenna_frequency_list = self.get_all_antenna_frequencies(antenna_map_string)
     
+    def get_antinode_count(self):
+        antinodes = []
+        for frequency in self.antenna_frequency_list:
+            antinodes = antinodes + self.get_antinodes_for_frequency(frequency)
+        deduped_antinodes = [dict(t) for t in {tuple(d.items()) for d in antinodes}]
+        return len(deduped_antinodes)
+    
     def get_antinodes_for_frequency(self, frequency):
         return self.get_antinodes_for_antennae(
             self.get_antennae_matching_frequency(frequency),
