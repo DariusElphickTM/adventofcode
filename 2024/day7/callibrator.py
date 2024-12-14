@@ -4,16 +4,16 @@ class BridgeCallibrator():
     def __init__(self, callibrations_string):
         self.callibrations = self.parse_callibration_string(callibrations_string)
     
-    def get_total_callibration(self):
+    def get_total_callibration(self, include_third_operator = False):
         result = 0
         for callibration in self.callibrations:
-            if self.is_callibration_true(callibration['callibration_result'], callibration['callibration_steps']):
+            if self.is_callibration_true(callibration['callibration_result'], callibration['callibration_steps'], include_third_operator):
                 result += callibration['callibration_result']
         print("Result", result)
         return result
     
-    def is_callibration_true(self, callibration_result, callibration_steps, print_tree = False):
-        root = TreeNode('root', callibration_steps[0], 1, callibration_steps)
+    def is_callibration_true(self, callibration_result, callibration_steps, include_third_operator = False, print_tree = False):
+        root = TreeNode('root', callibration_steps[0], 1, callibration_steps, include_third_operator)
         if print_tree:
             self.print_tree(root)
         return self.find_first_instance_of_value_in_tree(root, callibration_result)
@@ -76,7 +76,7 @@ class BridgeCallibrator():
         return max(branch_heights) + 1
 
 class TreeNode():
-    def __init__(self, operation, current_value, current_index, callibration):
+    def __init__(self, operation, current_value, current_index, callibration, include_third_operator):
         self.operation = operation
         self.value = current_value
         self.branches = []
@@ -84,9 +84,11 @@ class TreeNode():
             next_operation = callibration[current_index]
             next_index = current_index + 1
             self.branches = [
-                TreeNode('+', current_value + next_operation, next_index, callibration),
-                TreeNode('*', current_value * next_operation, next_index, callibration)
+                TreeNode('+', current_value + next_operation, next_index, callibration, include_third_operator),
+                TreeNode('*', current_value * next_operation, next_index, callibration, include_third_operator)
             ]
+            if include_third_operator:
+                self.branches.append(TreeNode('||', int(f'{current_value}{next_operation}'), next_index, callibration, include_third_operator))
     
     def __str__(self):
         return f'{self.operation} {self.value}'.center(6)

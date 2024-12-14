@@ -34,6 +34,9 @@ class TestBridgeCallibrator(unittest.TestCase):
     def test_should_find_correct_callibration_result_for_test_data(self):
         self.assertEqual(3749, self.default_callibrator.get_total_callibration())
     
+    def test_should_find_correct_callibration_result_for_test_data_in_part_2(self):
+        self.assertEqual(11387, self.default_callibrator.get_total_callibration(True))
+    
     def test_should_give_expected_result_with_more_test_data(self):
         test_callibrator = callibrator.BridgeCallibrator("""190: 10 19
 3267: 81 40 27
