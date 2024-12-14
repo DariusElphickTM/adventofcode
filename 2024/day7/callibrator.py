@@ -6,9 +6,9 @@ class BridgeCallibrator():
     
     def get_total_callibration(self):
         result = 0
-        for callibration_result, callibration_steps in self.callibrations.items():
-            if self.is_callibration_true(callibration_result, callibration_steps):
-                result += callibration_result
+        for callibration in self.callibrations:
+            if self.is_callibration_true(callibration['callibration_result'], callibration['callibration_steps']):
+                result += callibration['callibration_result']
         print("Result", result)
         return result
     
@@ -27,13 +27,13 @@ class BridgeCallibrator():
     
     def parse_callibration_string(self, callibrations_string):
         callibration_strings = callibrations_string.split('\n')
-        callibrations_dictionary = {}
+        callibrations_list = []
         for callibration in callibration_strings:
             index = int(re.search(r'^\d+(?=\:)', callibration).group())
             values = callibration.split(' ')
             values.pop(0)
-            callibrations_dictionary[index] = list(map(int, values))
-        return callibrations_dictionary
+            callibrations_list.append({'callibration_result': index, 'callibration_steps': list(map(int, values))})
+        return callibrations_list
     
     def print_tree(self, root):
         height = self.get_height(root)
