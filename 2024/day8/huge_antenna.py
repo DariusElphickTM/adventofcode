@@ -61,14 +61,41 @@ class HugeAntenna():
                 self.get_next_position(antennaB, inverted_vector)
             ]
     
+    def get_antinodes_with_harmonics(self, antennaA, antennaB, vector):
+        inverted_vector = {
+            'x': vector['x'] * -1, 
+            'y': vector['y'] * -1
+        }
+        antinodes = []
+        current_position = antennaA
+        while True:
+            next_position = self.get_next_position(current_position, vector)
+            if not self.is_out_of_bounds(next_position):
+                antinodes.append(next_position)
+                current_position = next_position
+            else:
+                break
+        
+        current_position = antennaB
+        while True:
+            next_position = self.get_next_position(current_position, inverted_vector)
+            if not self.is_out_of_bounds(next_position):
+                antinodes.append(next_position)
+                current_position = next_position
+            else:
+                break
+            
+        return antinodes
+    
     def get_next_position(self, current_position, vector):
         return {
             'x': current_position['x'] + vector['x'], 
             'y': current_position['y'] + vector['y']
         }
     
-    def get_antinodes_with_harmonics(self, antennaA, antennaB, vector):
-        return []
+    def is_out_of_bounds(self, antinode):
+        bounds = self.get_map_bounds()
+        return antinode['x'] < 0 or antinode['x'] >= bounds['x'] or antinode['y'] < 0 and antinode['y'] >= bounds['y']
     
     def parse_antenna_map_string(self, antenna_map_string):
         return list(map(list, antenna_map_string.split('\n')))
