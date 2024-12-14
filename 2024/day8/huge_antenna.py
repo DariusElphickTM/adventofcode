@@ -3,6 +3,12 @@ class HugeAntenna():
         self.antenna_map = self.parse_antenna_map_string(antenna_map_string)
         self.antenna_frequency_list = self.get_all_antenna_frequencies(antenna_map_string)
     
+    def get_antinodes_within_bounds(self, antennaA, antennaB, bounds):
+        return list(filter(lambda antinode: antinode['x'] >= 0 and 
+            antinode['x'] < bounds['x'] and 
+            antinode['y'] >= 0 and 
+            antinode['y'] < bounds['y'], self.get_antinodes(antennaA, antennaB)))
+    
     def get_antinodes(self, antennaA, antennaB):
         antinodes = []
         vector = {
