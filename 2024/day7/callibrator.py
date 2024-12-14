@@ -5,12 +5,25 @@ class BridgeCallibrator():
         self.callibrations = self.parse_callibration_string(callibrations_string)
     
     def get_total_callibration(self):
-        return 3749
+        result = 0
+        for callibration_result, callibration_steps in self.callibrations.items():
+            if self.is_callibration_true(callibration_result, callibration_steps):
+                result += callibration_result
+        print("Result", result)
+        return result
     
-    def is_callibration_true(self, callibration_result, callibration_steps):
+    def is_callibration_true(self, callibration_result, callibration_steps, print_tree = False):
         root = TreeNode('root', callibration_steps[0], 1, callibration_steps)
-        self.print_tree(root)
-        return True
+        if print_tree:
+            self.print_tree(root)
+        return self.find_first_instance_of_value_in_tree(root, callibration_result)
+
+    def find_first_instance_of_value_in_tree(self, root, callibration_result):
+        if len(root.branches) < 1:
+            return root.value == callibration_result
+        else:
+            results = list(map(lambda branch: self.find_first_instance_of_value_in_tree(branch, callibration_result), root.branches))
+            return True in results
     
     def parse_callibration_string(self, callibrations_string):
         callibration_strings = callibrations_string.split('\n')

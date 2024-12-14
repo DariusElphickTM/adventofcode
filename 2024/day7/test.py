@@ -50,12 +50,12 @@ class TestBridgeCallibrator(unittest.TestCase):
         self.assertTrue(self.default_callibrator.is_callibration_true(292, self.test_dictionary[292]))
     
     def test_should_return_false_for_callibrations_with_valid_solutions(self):
-        '''self.assertFalse(self.default_callibrator.is_callibration_true(83, self.test_dictionary[83]))
+        self.assertFalse(self.default_callibrator.is_callibration_true(83, self.test_dictionary[83]))
         self.assertFalse(self.default_callibrator.is_callibration_true(156, self.test_dictionary[156]))
         self.assertFalse(self.default_callibrator.is_callibration_true(7290, self.test_dictionary[7290]))
         self.assertFalse(self.default_callibrator.is_callibration_true(161011, self.test_dictionary[161011]))
         self.assertFalse(self.default_callibrator.is_callibration_true(192, self.test_dictionary[192]))
-        self.assertFalse(self.default_callibrator.is_callibration_true(21037, self.test_dictionary[21037]))'''
+        self.assertFalse(self.default_callibrator.is_callibration_true(21037, self.test_dictionary[21037]))
 
 if __name__ == '__main__':
     unittest.main()
