@@ -35,6 +35,20 @@ class TestHugeAntenna(unittest.TestCase):
             ['.','.','.','.','.','.','.','.','.','.','.','.']
         ], self.default_test_antenna.antenna_map)
         self.assertEqual(2, len(self.default_test_antenna.antenna_frequency_list))
+    
+    def test_returns_antinode_positions_for_antennae(self):
+        self.assertListEqual(
+            [{'x': 3, 'y': 1}, {'x': 6, 'y': 7}],
+            self.default_test_antenna.get_antinodes({'x': 4, 'y': 3}, {'x': 5, 'y': 5})
+        )
+        self.assertListEqual(
+            [{'x': 0, 'y': 2}, {'x': 12, 'y': 5}],
+            self.default_test_antenna.get_antinodes({'x': 4, 'y': 3}, {'x': 8, 'y': 4})
+        )
+        self.assertListEqual(
+            [{'x': 11, 'y': 3}, {'x': 2, 'y': 6}],
+            self.default_test_antenna.get_antinodes({'x': 8, 'y': 4}, {'x': 5, 'y': 5})
+        )
 
 if __name__ == "__main__":
     unittest.main()
