@@ -3,6 +3,33 @@ class HugeAntenna():
         self.antenna_map = self.parse_antenna_map_string(antenna_map_string)
         self.antenna_frequency_list = self.get_all_antenna_frequencies(antenna_map_string)
     
+    def get_antinodes_for_frequency(self, frequency):
+        return self.get_antinodes_for_antennae(
+            self.get_antennae_matching_frequency(frequency),
+            self.get_map_bounds()
+        )
+    
+    def get_map_bounds(self):
+        return {'x':len(self.antenna_map[0]), 'y': len(self.antenna_map)}
+    
+    def get_antennae_matching_frequency(self, frequency):
+        antennae = []
+        for i, row in enumerate(self.antenna_map):
+            for j, column in enumerate(row):
+                if self.antenna_map[i][j] == frequency:
+                    antennae.append({
+                        'x': j,
+                        'y': i
+                    })
+        return antennae
+    
+    def get_antinodes_for_antennae(self, antennae, bounds):
+        antinodes = []
+        for i in range(len(antennae) - 1):
+            for j in range(i + 1, len(antennae)):
+                antinodes = antinodes + self.get_antinodes_within_bounds(antennae[i], antennae[j], bounds)
+        return antinodes
+    
     def get_antinodes_within_bounds(self, antennaA, antennaB, bounds):
         return list(filter(lambda antinode: antinode['x'] >= 0 and 
             antinode['x'] < bounds['x'] and 
@@ -25,8 +52,6 @@ class HugeAntenna():
                 'y': antennaB['y'] - vector['y']
             }
         ]
-        print(antennaA, antennaB, vector)
-        print(antinodes)
         return antinodes
     
     def parse_antenna_map_string(self, antenna_map_string):
