@@ -51,6 +51,12 @@ class TestDefragger(unittest.TestCase):
             ],
             test_defragger.get_defragged_disk_map()
         )
+    
+    def test_should_get_file_system_checksum(self):
+        self.assertEqual(
+            1928,
+            self.default_test_defragger.get_file_system_checksum()
+        )
 
 if __name__ == "__main__":
     unittest.main()

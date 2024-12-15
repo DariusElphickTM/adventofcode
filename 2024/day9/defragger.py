@@ -4,6 +4,15 @@ class Defragger():
     def __init__(self, input_string: str):
         self.disk_map = self.parse_input_string(input_string)
     
+    def get_file_system_checksum(self) -> int:
+        defragged_disk_map = self.get_defragged_disk_map()
+        result = 0
+        for i, file_block in enumerate(defragged_disk_map):
+            if file_block == '.':
+                break
+            result += i * int(file_block)
+        return result
+    
     def get_defragged_disk_map(self) -> list[str]:
         defragged_disk = copy.deepcopy(self.disk_map)
         next_free_space_pointer = defragged_disk.index('.')
