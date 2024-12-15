@@ -1,12 +1,12 @@
 import unittest
-import defragger
+from defragger import Defragger
 
 class TestDefragger(unittest.TestCase):
     
     test_string = """2333133121414131402"""
     
     def setUp(self):
-        self.default_test_defragger = defragger.Defragger(self.test_string)
+        self.default_test_defragger = Defragger(self.test_string)
     
     def test_should_parse_input_string(self):
         self.assertListEqual(
@@ -22,7 +22,7 @@ class TestDefragger(unittest.TestCase):
         )
     
     def test_should_parse_input_string_with_second_example(self):
-        test_defragger = defragger.Defragger("12345")
+        test_defragger = Defragger("12345")
         self.assertListEqual(
             [
                 '0','.','.','1','1','1','.','.','.','.','2','2','2','2','2'
@@ -44,7 +44,7 @@ class TestDefragger(unittest.TestCase):
         )
     
     def test_should_defrag_disk_with_second_example(self):
-        test_defragger = defragger.Defragger("12345")
+        test_defragger = Defragger("12345")
         self.assertListEqual(
             [
                 '0','2','2','1','1','1','2','2','2','.','.','.','.','.','.'
@@ -56,6 +56,13 @@ class TestDefragger(unittest.TestCase):
         self.assertEqual(
             1928,
             self.default_test_defragger.get_file_system_checksum()
+        )
+    
+    def test_should_get_file_system_checksum_in_whole_file_mode(self):
+        test_defragger = Defragger(self.test_string, True)
+        self.assertEqual(
+            2858,
+            test_defragger.get_file_system_checksum()
         )
 
 if __name__ == "__main__":

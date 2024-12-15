@@ -1,8 +1,9 @@
 import copy
 
 class Defragger():
-    def __init__(self, input_string: str):
+    def __init__(self, input_string: str, whole_file_mode = False):
         self.disk_map = self.parse_input_string(input_string)
+        self.whole_file_mode = whole_file_mode
     
     def get_file_system_checksum(self) -> int:
         defragged_disk_map = self.get_defragged_disk_map()
