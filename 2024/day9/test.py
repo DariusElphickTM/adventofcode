@@ -20,6 +20,19 @@ class TestDefragger(unittest.TestCase):
             ], 
             self.default_test_defragger.disk_map
         )
+    
+    def test_should_defrag_disk(self):
+        self.assertListEqual(
+            [
+                '0','0','9','9','8','1','1',
+                '1','8','8','8','2','7','7',
+                '7','3','3','3','6','4','4',
+                '6','5','5','5','5','6','6',
+                '.','.','.','.','.','.','.',
+                '.','.','.','.','.','.','.'
+            ],
+            self.default_test_defragger.get_defragged_disk_map()
+        )
 
 if __name__ == "__main__":
     unittest.main()
