@@ -21,6 +21,15 @@ class TestDefragger(unittest.TestCase):
             self.default_test_defragger.disk_map
         )
     
+    def test_should_parse_input_string_with_second_example(self):
+        test_defragger = defragger.Defragger("12345")
+        self.assertListEqual(
+            [
+                '0','.','.','1','1','1','.','.','.','.','2','2','2','2','2'
+            ], 
+            test_defragger.disk_map
+        )
+    
     def test_should_defrag_disk(self):
         self.assertListEqual(
             [
@@ -32,6 +41,15 @@ class TestDefragger(unittest.TestCase):
                 '.','.','.','.','.','.','.'
             ],
             self.default_test_defragger.get_defragged_disk_map()
+        )
+    
+    def test_should_defrag_disk_with_second_example(self):
+        test_defragger = defragger.Defragger("12345")
+        self.assertListEqual(
+            [
+                '0','2','2','1','1','1','2','2','2','.','.','.','.','.','.'
+            ],
+            test_defragger.get_defragged_disk_map()
         )
 
 if __name__ == "__main__":
