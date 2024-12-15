@@ -4,7 +4,8 @@ def main():
     print("Here we go!")
     input_string = read_file("input.txt")
     my_huge_antenna = huge_antenna.HugeAntenna(input_string)
-    print("Result", my_huge_antenna.get_antinode_count())
+    my_huge_antenna.with_harmonics = True
+    print("Part 2 Result", my_huge_antenna.get_antinode_count())
 
 def read_file(file_name):
     """Reads a text file and returns all of it's contents."""
