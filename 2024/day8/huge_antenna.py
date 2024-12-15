@@ -67,7 +67,7 @@ class HugeAntenna():
             'y': vector['y'] * -1
         }
         antinodes = []
-        current_position = antennaA
+        current_position = antennaB
         while True:
             next_position = self.get_next_position(current_position, vector)
             if not self.is_out_of_bounds(next_position):
@@ -76,7 +76,7 @@ class HugeAntenna():
             else:
                 break
         
-        current_position = antennaB
+        current_position = antennaA
         while True:
             next_position = self.get_next_position(current_position, inverted_vector)
             if not self.is_out_of_bounds(next_position):
