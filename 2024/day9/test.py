@@ -40,7 +40,7 @@ class TestDefragger(unittest.TestCase):
                 '.','.','.','.','.','.','.',
                 '.','.','.','.','.','.','.'
             ],
-            self.default_test_defragger.get_defragged_disk_map()
+            self.default_test_defragger.get_defragged_disk_map_simple_mode()
         )
     
     def test_should_defrag_disk_with_second_example(self):
@@ -49,7 +49,7 @@ class TestDefragger(unittest.TestCase):
             [
                 '0','2','2','1','1','1','2','2','2','.','.','.','.','.','.'
             ],
-            test_defragger.get_defragged_disk_map()
+            test_defragger.get_defragged_disk_map_simple_mode()
         )
     
     def test_should_get_file_system_checksum(self):
@@ -63,6 +63,20 @@ class TestDefragger(unittest.TestCase):
         self.assertEqual(
             2858,
             test_defragger.get_file_system_checksum()
+        )
+    
+    def test_should_defrag_disk_in_whole_file_mode(self):
+        test_defragger = Defragger(self.test_string, True)
+        self.assertListEqual(
+            [
+                '0','0','9','9','2','1','1',
+                '1','7','7','7','.','4','4',
+                '.','3','3','3','.','.','.',
+                '.','5','5','5','5','.','6',
+                '6','6','6','.','.','.','.',
+                '.','8','8','8','8','.','.'
+            ],
+            test_defragger.get_defragged_disk_map_whole_file_mode()
         )
 
 if __name__ == "__main__":
