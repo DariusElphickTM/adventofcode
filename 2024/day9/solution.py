@@ -3,8 +3,8 @@ from defragger import Defragger
 def main():
     print("Here we go!")
     input_string = read_file("input.txt")
-    defragger = Defragger(input_string)
-    print("Part 1 Result", defragger.get_file_system_checksum())
+    defragger = Defragger(input_string, True)
+    print("Part 2 Result", defragger.get_file_system_checksum())
 
 def read_file(file_name):
     """Reads a text file and returns all of it's contents."""

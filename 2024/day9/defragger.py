@@ -18,7 +18,6 @@ class Defragger():
         for block in block_map:
             for i in range(block['size']):
                 defragged_disk_map.append(block['id'])
-        print(defragged_disk_map)
         result = 0
         for i, file_block in enumerate(defragged_disk_map):
             if file_block == '.':
