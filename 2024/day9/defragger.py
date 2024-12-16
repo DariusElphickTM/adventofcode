@@ -13,11 +13,16 @@ class Defragger():
             return self.get_file_system_checksum_simple_mode()
     
     def get_file_system_checksum_whole_file_mode(self) -> int:
-        defragged_disk_map = self.get_defragged_disk_map_whole_file_mode()
+        block_map = self.get_defragged_disk_map_whole_file_mode()
+        defragged_disk_map = []
+        for block in block_map:
+            for i in range(block['size']):
+                defragged_disk_map.append(block['id'])
+        print(defragged_disk_map)
         result = 0
         for i, file_block in enumerate(defragged_disk_map):
             if file_block == '.':
-                break
+                continue
             result += i * int(file_block)
         return result
     
@@ -43,8 +48,6 @@ class Defragger():
                     defragged_disk[current_block_pointer] = {'id':'.', 'size': current_block['size']}
                     defragged_disk.insert(available_free_space + 1, {'id':'.', 'size': free_space['size'] - current_block['size']})
                     current_block_pointer += 1
-            
-            self.print_the_block_map(defragged_disk)
             current_block_pointer -= 1
         return defragged_disk
     

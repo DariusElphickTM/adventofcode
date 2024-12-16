@@ -165,18 +165,16 @@ class TestDefragger(unittest.TestCase):
             self.default_test_defragger.get_file_system_checksum()
         )
     
-    """def test_should_get_file_system_checksum_in_whole_file_mode(self):
+    def test_should_get_file_system_checksum_in_whole_file_mode(self):
         test_defragger = Defragger(self.test_string, True)
         self.assertEqual(
             2858,
             test_defragger.get_file_system_checksum()
-        )"""
+        )
     
     def test_should_defrag_disk_in_whole_file_mode(self):
         test_defragger = Defragger(self.test_string, True)
         self.assertListEqual(
-            #00...111...2...333.44.5555.6666.777.888899
-            #00992111777.44.333....5555.6666.....8888..
             [
                 {
                     'id': '0',
