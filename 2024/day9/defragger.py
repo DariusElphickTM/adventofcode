@@ -22,16 +22,38 @@ class Defragger():
         return result
     
     def get_defragged_disk_map_whole_file_mode(self) -> list[str]:
-        defragged_disk = copy.deepcopy(self.disk_map)
-        next_free_space_pointer = defragged_disk.index('.')
-        next_file_block_pointer = len(defragged_disk) - 1
-        while next_free_space_pointer < next_file_block_pointer:
-            defragged_disk[next_free_space_pointer] = defragged_disk[next_file_block_pointer]
-            defragged_disk[next_file_block_pointer] = '.'
-            next_free_space_pointer = defragged_disk.index('.')
-            while defragged_disk[next_file_block_pointer] == '.':
-                next_file_block_pointer = next_file_block_pointer - 1
+        defragged_disk = copy.deepcopy(self.disk_block_map)
+        current_block_pointer = len(defragged_disk) - 1
+        while current_block_pointer > 0:
+            current_block = defragged_disk[current_block_pointer]
+            if current_block['id'] == '.':
+                current_block_pointer -= 1
+                continue
+            seek_size = current_block['size']
+            available_free_space = next((i for i, seeking_block in enumerate(defragged_disk) if seeking_block['id'] == '.' and seeking_block['size'] >= seek_size), -1)
+            if available_free_space > -1 and available_free_space < current_block_pointer:
+                if current_block['size'] == defragged_disk[available_free_space]['size']:
+                    #Simple swap
+                    defragged_disk[current_block_pointer] = defragged_disk[available_free_space]
+                    defragged_disk[available_free_space] = current_block
+                else:
+                    #Complex swap
+                    free_space = defragged_disk[available_free_space]
+                    defragged_disk[available_free_space] = current_block
+                    defragged_disk[current_block_pointer] = {'id':'.', 'size': current_block['size']}
+                    defragged_disk.insert(available_free_space + 1, {'id':'.', 'size': free_space['size'] - current_block['size']})
+                    current_block_pointer += 1
+            
+            self.print_the_block_map(defragged_disk)
+            current_block_pointer -= 1
         return defragged_disk
+    
+    def print_the_block_map(self, block_map):
+        print()
+        for block in block_map:
+            for i in range(block['size']):
+                print(block['id'], end = '')
+        print()
     
     def get_file_system_checksum_simple_mode(self) -> int:
         defragged_disk_map = self.get_defragged_disk_map_simple_mode()

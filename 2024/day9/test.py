@@ -170,21 +170,97 @@ class TestDefragger(unittest.TestCase):
         self.assertEqual(
             2858,
             test_defragger.get_file_system_checksum()
-        )
+        )"""
     
     def test_should_defrag_disk_in_whole_file_mode(self):
         test_defragger = Defragger(self.test_string, True)
         self.assertListEqual(
+            #00...111...2...333.44.5555.6666.777.888899
+            #00992111777.44.333....5555.6666.....8888..
             [
-                '0','0','9','9','2','1','1',
-                '1','7','7','7','.','4','4',
-                '.','3','3','3','.','.','.',
-                '.','5','5','5','5','.','6',
-                '6','6','6','.','.','.','.',
-                '.','8','8','8','8','.','.'
+                {
+                    'id': '0',
+                    'size': 2
+                },
+                {
+                    'id': '9',
+                    'size': 2
+                },
+                {
+                    'id': '2',
+                    'size': 1
+                },
+                {
+                    'id': '1',
+                    'size': 3
+                },
+                {
+                    'id': '7',
+                    'size': 3
+                },
+                {
+                    'id': '.',
+                    'size': 1
+                },
+                {
+                    'id': '4',
+                    'size': 2
+                },
+                {
+                    'id': '.',
+                    'size': 1
+                },
+                {
+                    'id': '3',
+                    'size': 3
+                },
+                {
+                    'id': '.',
+                    'size': 1
+                },
+                {
+                    'id': '.',
+                    'size': 2
+                },
+                {
+                    'id': '.',
+                    'size': 1
+                },
+                {
+                    'id': '5',
+                    'size': 4
+                },
+                {
+                    'id': '.',
+                    'size': 1
+                },
+                {
+                    'id': '6',
+                    'size': 4
+                },
+                {
+                    'id': '.',
+                    'size': 1
+                },
+                {
+                    'id': '.',
+                    'size': 3
+                },
+                {
+                    'id': '.',
+                    'size': 1
+                },
+                {
+                    'id': '8',
+                    'size': 4
+                },
+                {
+                    'id': '.',
+                    'size': 2
+                }
             ],
             test_defragger.get_defragged_disk_map_whole_file_mode()
-        )"""
+        )
 
 if __name__ == "__main__":
     unittest.main()
