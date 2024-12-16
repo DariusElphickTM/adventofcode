@@ -3,6 +3,7 @@ import copy
 class Defragger():
     def __init__(self, input_string: str, whole_file_mode = False):
         self.disk_map = self.parse_input_string(input_string)
+        self.disk_block_map = self.parse_input_string_into_block_map(input_string)
         self.whole_file_mode = whole_file_mode
     
     def get_file_system_checksum(self) -> int:
@@ -64,5 +65,23 @@ class Defragger():
                 block_id += 1
             for i in range(int(block_length)):
                 result.append(block_char)
+            is_file = not is_file
+        return result
+    
+    def parse_input_string_into_block_map(self, input_string):
+        result = []
+        is_file = True
+        block_id = 0
+        for block_length in input_string:
+            size = int(block_length)
+            if size > 0:
+                block_char = '.'
+                if is_file:
+                    block_char = f'{block_id}'
+                    block_id += 1
+                result.append({
+                    'id': block_char,
+                    'size': size
+                })
             is_file = not is_file
         return result

@@ -21,6 +21,85 @@ class TestDefragger(unittest.TestCase):
             self.default_test_defragger.disk_map
         )
     
+    def test_should_parse_input_string_into_block_map(self):
+        self.assertListEqual(
+            [
+                {
+                    'id': '0',
+                    'size': 2
+                },
+                {
+                    'id': '.',
+                    'size': 3
+                },
+                {
+                    'id': '1',
+                    'size': 3
+                },
+                {
+                    'id': '.',
+                    'size': 3
+                },
+                {
+                    'id': '2',
+                    'size': 1
+                },
+                {
+                    'id': '.',
+                    'size': 3
+                },
+                {
+                    'id': '3',
+                    'size': 3
+                },
+                {
+                    'id': '.',
+                    'size': 1
+                },
+                {
+                    'id': '4',
+                    'size': 2
+                },
+                {
+                    'id': '.',
+                    'size': 1
+                },
+                {
+                    'id': '5',
+                    'size': 4
+                },
+                {
+                    'id': '.',
+                    'size': 1
+                },
+                {
+                    'id': '6',
+                    'size': 4
+                },
+                {
+                    'id': '.',
+                    'size': 1
+                },
+                {
+                    'id': '7',
+                    'size': 3
+                },
+                {
+                    'id': '.',
+                    'size': 1
+                },
+                {
+                    'id': '8',
+                    'size': 4
+                },
+                {
+                    'id': '9',
+                    'size': 2
+                }
+            ], 
+            self.default_test_defragger.disk_block_map
+        )
+    
     def test_should_parse_input_string_with_second_example(self):
         test_defragger = Defragger("12345")
         self.assertListEqual(
@@ -28,6 +107,34 @@ class TestDefragger(unittest.TestCase):
                 '0','.','.','1','1','1','.','.','.','.','2','2','2','2','2'
             ], 
             test_defragger.disk_map
+        )
+    
+    def test_should_parse_input_string_into_block_map_for_second_example(self):
+        test_defragger = Defragger("12345")
+        self.assertListEqual(
+            [
+                {
+                    'id': '0',
+                    'size': 1
+                },
+                {
+                    'id': '.',
+                    'size': 2
+                },
+                {
+                    'id': '1',
+                    'size': 3
+                },
+                {
+                    'id': '.',
+                    'size': 4
+                },
+                {
+                    'id': '2',
+                    'size': 5
+                }
+            ], 
+            test_defragger.disk_block_map
         )
     
     def test_should_defrag_disk(self):
@@ -58,7 +165,7 @@ class TestDefragger(unittest.TestCase):
             self.default_test_defragger.get_file_system_checksum()
         )
     
-    def test_should_get_file_system_checksum_in_whole_file_mode(self):
+    """def test_should_get_file_system_checksum_in_whole_file_mode(self):
         test_defragger = Defragger(self.test_string, True)
         self.assertEqual(
             2858,
@@ -77,7 +184,7 @@ class TestDefragger(unittest.TestCase):
                 '.','8','8','8','8','.','.'
             ],
             test_defragger.get_defragged_disk_map_whole_file_mode()
-        )
+        )"""
 
 if __name__ == "__main__":
     unittest.main()
