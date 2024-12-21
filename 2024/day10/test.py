@@ -123,6 +123,7 @@ class TestTrailFinder(unittest.TestCase):
                 0, 0, 1, 0
             ]
         ]
+        self.assertListEqual(self.default_trail_finder.trail_positions, expected_trail_postions)
         self.assertListEqual(self.default_trail_finder.trail_map, expected_trail_map)
 
 if __name__ == "__main__":
