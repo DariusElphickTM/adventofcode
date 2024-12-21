@@ -83,7 +83,7 @@ class TestTrailFinder(unittest.TestCase):
             ],
             [
                 None, None, None, None, 
-                None, None, None, -1, 
+                None, None, -1, None, 
                 None, 1, 0, -1, 
                 None, None, 1, None
             ],
@@ -96,14 +96,8 @@ class TestTrailFinder(unittest.TestCase):
             [
                 None, None, None, None, 
                 None, None, None, None, 
-                -1, None, None, None, 
-                0, -1, None, None
-            ],
-            [
-                None, None, None, None, 
-                None, None, None, None, 
-                None, -1, None, None, 
-                1, 0, -1, None
+                None, None, None, -1, 
+                None, None, 1, 0
             ],
             [
                 None, None, None, None, 
@@ -114,8 +108,14 @@ class TestTrailFinder(unittest.TestCase):
             [
                 None, None, None, None, 
                 None, None, None, None, 
-                None, None, None, -1, 
-                None, None, 1, 0
+                None, -1, None, None, 
+                1, 0, -1, None
+            ],
+            [
+                None, None, None, None, 
+                None, None, None, None, 
+                -1, None, None, None, 
+                0, -1, None, None
             ]
         ]
         self.assertEqual(True, True)
