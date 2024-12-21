@@ -10,112 +10,120 @@ class TestTrailFinder(unittest.TestCase):
 32019012
 01329801
 10456732"""
+
+    simple_example = """0123
+1234
+8765
+9876"""
     
     def setUp(self):
-        self.default_trail_finder = TrailFinder(self.example_input)
+        self.default_trail_finder = TrailFinder(self.simple_example)
+    
+    def test_should_return_correct_result_for_example(self):
+        test_trail_finder = TrailFinder(self.example_input)
+        self.assertEqual(test_trail_finder.get_trailhead_score(), 36)
     
     def test_should_parse_input_string_and_produce_adjacency_matrix_for_simple_data_set(self):
-        simple_example = """0123
-                            1234
-                            8765
-                            9876"""
-        expected_trail = ['0', '1', '2', '3', '1', '2', '3', '4', '8', '7', '6', '5', '9', '8', '7', '6']
+        expected_trail_postions = ['0', '1', '2', '3', '1', '2', '3', '4', '8', '7', '6', '5', '9', '8', '7', '6']
         expected_trail_map = [
             [
-                0, 1, None, None, 
-                1, None, None, None, 
-                None, None, None, None, 
-                None, None, None, None
+                0, 1, 0, 0, 
+                1, 0, 0, 0, 
+                0, 0, 0, 0, 
+                0, 0, 0, 0
             ],
             [
-                -1, 0, 1, None, 
-                None, 1, None, None, 
-                None, None, None, None, 
-                None, None, None, None
+                -1, 0, 1, 0, 
+                0, 1, 0, 0, 
+                0, 0, 0, 0, 
+                0, 0, 0, 0
             ],
             [
-                None, -1, 0, 1, 
-                None, None, 1, None, 
-                None, None, None, None, 
-                None, None, None, None
+                0, -1, 0, 1, 
+                0, 0, 1, 0, 
+                0, 0, 0, 0, 
+                0, 0, 0, 0
             ],
             [
-                None, None, -1, 0, 
-                None, None, None, 1, 
-                None, None, None, None, 
-                None, None, None, None
+                0, 0, -1, 0, 
+                0, 0, 0, 1, 
+                0, 0, 0, 0, 
+                0, 0, 0, 0
             ],
             [
-                -1, None, None, None, 
-                0, 1, None, None, 
-                7, None, None, None, 
-                None, None, None, None
+                -1, 0, 0, 0, 
+                0, 1, 0, 0, 
+                7, 0, 0, 0, 
+                0, 0, 0, 0
             ],
             [
-                None, -1, None, None, 
-                -1, 0, 1, None, 
-                None, 5, None, None,
-                None, None, None, None
+                0, -1, 0, 0, 
+                -1, 0, 1, 0, 
+                0, 5, 0, 0,
+                0, 0, 0, 0
             ],
             [
-                None, None, -1, None, 
-                None, -1, 0, 1, 
-                None, None, 3, None, 
-                None, None, None, None
+                0, 0, -1, 0, 
+                0, -1, 0, 1, 
+                0, 0, 3, 0, 
+                0, 0, 0, 0
             ],
             [
-                None, None, None, -1, 
-                None, None, -1, 0, 
-                None, None, None, 1, 
-                None, None, None, None
+                0, 0, 0, -1, 
+                0, 0, -1, 0, 
+                0, 0, 0, 1, 
+                0, 0, 0, 0
             ],
             [
-                None, None, None, None, 
-                -7, None, None, None, 
-                0, -1, None, None, 
-                1, None, None, None
+                0, 0, 0, 0, 
+                -7, 0, 0, 0, 
+                0, -1, 0, 0, 
+                1, 0, 0, 0
             ],
             [
-                None, None, None, None, 
-                None, -5, None, None,
-                1, 0, -1, None, 
-                None, 1, None, None
+                0, 0, 0, 0, 
+                0, -5, 0, 0,
+                1, 0, -1, 0, 
+                0, 1, 0, 0
             ],
             [
-                None, None, None, None, 
-                None, None, -1, None, 
-                None, 1, 0, -1, 
-                None, None, 1, None
+                0, 0, 0, 0, 
+                0, 0, -1, 0, 
+                0, 1, 0, -1, 
+                0, 0, 1, 0
             ],
             [
-                None, None, None, None,
-                None, None, None, -1, 
-                None, None, 1, 0, 
-                None, None, None, 1
+                0, 0, 0, 0,
+                0, 0, 0, -1, 
+                0, 0, 1, 0, 
+                0, 0, 0, 1
             ],
             [
-                None, None, None, None, 
-                None, None, None, None, 
-                None, None, None, -1, 
-                None, None, 1, 0
+                0, 0, 0, 0, 
+                0, 0, 0, 0, 
+                -1, 0, 0, 0, 
+                0, -1, 0, 0
             ],
             [
-                None, None, None, None, 
-                None, None, None, None, 
-                None, None, -1, None, 
-                None, 1, 0, -1
+                0, 0, 0, 0, 
+                0, 0, 0, 0, 
+                0, -1, 0, 0, 
+                1, 0, -1, 0
             ],
             [
-                None, None, None, None, 
-                None, None, None, None, 
-                None, -1, None, None, 
-                1, 0, -1, None
+                0, 0, 0, 0, 
+                0, 0, 0, 0, 
+                0, 0, -1, 0, 
+                0, 1, 0, -1
             ],
             [
-                None, None, None, None, 
-                None, None, None, None, 
-                -1, None, None, None, 
-                0, -1, None, None
+                0, 0, 0, 0, 
+                0, 0, 0, 0, 
+                0, 0, 0, -1, 
+                0, 0, 1, 0
             ]
         ]
-        self.assertEqual(True, True)
+        self.assertListEqual(self.default_trail_finder.trail_map, expected_trail_map)
+
+if __name__ == "__main__":
+    unittest.main()
