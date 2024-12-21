@@ -17,10 +17,12 @@ class TestTrailFinder(unittest.TestCase):
 9876"""
     
     def setUp(self):
-        self.default_trail_finder = TrailFinder(self.simple_example)
+        self.default_trail_finder = TrailFinder(16)
+        self.default_trail_finder.parse_input(self.simple_example)
     
     def test_should_return_correct_result_for_example(self):
-        test_trail_finder = TrailFinder(self.example_input)
+        test_trail_finder = TrailFinder()
+        test_trail_finder.parse_input(self.example_input)
         self.assertEqual(test_trail_finder.get_trailhead_score(), 36)
     
     def test_should_parse_input_string_and_produce_adjacency_matrix_for_simple_data_set(self):
@@ -125,6 +127,18 @@ class TestTrailFinder(unittest.TestCase):
         ]
         self.assertListEqual(self.default_trail_finder.trail_positions, expected_trail_postions)
         self.assertListEqual(self.default_trail_finder.trail_map, expected_trail_map)
+    
+    def test_should_add_and_recover_edges(self):
+        test_trail_finder = TrailFinder(3)
+        test_trail_finder.add_edge(0, 1, 1)
+        test_trail_finder.add_edge(1, 2, 1)
+        
+        self.assertEqual(test_trail_finder.get_edge(0, 1), 1)
+        self.assertEqual(test_trail_finder.get_edge(1, 2), 1)
+        self.assertEqual(test_trail_finder.get_edge(2, 1), 1)
+        self.assertEqual(test_trail_finder.get_edge(1, 0), 1)
+        self.assertEqual(test_trail_finder.get_edge(0, 2), 0)
+        self.assertEqual(test_trail_finder.get_edge(2, 0), 0)
 
 if __name__ == "__main__":
     unittest.main()
