@@ -1,3 +1,5 @@
+import re
+
 class TrailFinder():
     def __init__(self, size = 16):
         self.initialise_trail_map(size)
@@ -14,8 +16,39 @@ class TrailFinder():
         return self.trail_map[x][y]
     
     def parse_input(self, input_text):
-        self.trail_positions = ['0', '1', '2', '3', '1', '2', '3', '4', '8', '7', '6', '5', '9', '8', '7', '6']
-        self.trail_map = [
+        self.initialise_trail_map(len(re.sub('\n', '', input_text)))
+        
+        input_grid = list(map(list, input_text.split('\n')))
+        column_height = len(input_grid)
+        row_length = len(input_grid[0])
+        
+        current_index = 0
+        for i, row in enumerate(input_grid):
+            for j, position in enumerate(row):
+                self.trail_positions.append(position)
+                if i > 0:
+                    #need to add adjacency above
+                    above_adjacency = int(position) - int(input_grid[i - 1][j])
+                    self.add_edge(current_index, current_index - row_length, above_adjacency)
+                
+                if i < column_height - 1:
+                    #need to add adjacency below
+                    below_adjacency = int(position) - int(input_grid[i + 1][j])
+                    self.add_edge(current_index, current_index + row_length, below_adjacency)
+                
+                if j > 0:
+                    #need to add adjacency to the left
+                    left_adjacency = int(position) - int(input_grid[i][j - 1])
+                    self.add_edge(current_index, current_index - 1, left_adjacency)
+                
+                if j < row_length - 1:
+                    #need to add adjecency to the right
+                    right_adjacency = int(position) - int(input_grid[i][j + 1])
+                    self.add_edge(current_index, current_index + 1, right_adjacency)
+
+                current_index += 1
+        self.print_trail_map()
+        """self.trail_map = [
             [
                 0, 1, 0, 0, 
                 1, 0, 0, 0, 
@@ -112,7 +145,17 @@ class TrailFinder():
                 0, 0, 0, -1, 
                 0, 0, 1, 0
             ]
-        ]
+        ]"""
+    
+    def print_trail_map(self):
+        for row in self.trail_map:
+            current_map = list(map(lambda item: f'{item}, ', row))
+            i = 4
+            while i < len(current_map):
+                current_map.insert(i, '\n')
+                i += 5
+            print("".join(current_map))
+            print()
     
     def get_trailhead_score(self):
         return 36
