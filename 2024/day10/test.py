@@ -132,11 +132,12 @@ class TestTrailFinder(unittest.TestCase):
         test_trail_finder = TrailFinder(3)
         test_trail_finder.add_edge(0, 1, 1)
         test_trail_finder.add_edge(1, 2, 1)
+        test_trail_finder.add_edge(2, 1, 2)
         
         self.assertEqual(test_trail_finder.get_edge(0, 1), 1)
         self.assertEqual(test_trail_finder.get_edge(1, 2), 1)
-        self.assertEqual(test_trail_finder.get_edge(2, 1), 1)
-        self.assertEqual(test_trail_finder.get_edge(1, 0), 1)
+        self.assertEqual(test_trail_finder.get_edge(2, 1), 2)
+        self.assertEqual(test_trail_finder.get_edge(1, 0), 0)
         self.assertEqual(test_trail_finder.get_edge(0, 2), 0)
         self.assertEqual(test_trail_finder.get_edge(2, 0), 0)
 
