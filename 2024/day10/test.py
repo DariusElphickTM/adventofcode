@@ -143,6 +143,14 @@ class TestTrailFinder(unittest.TestCase):
         self.assertEqual(test_trail_finder.get_edge(1, 0), 0)
         self.assertEqual(test_trail_finder.get_edge(0, 2), 0)
         self.assertEqual(test_trail_finder.get_edge(2, 0), 0)
+    
+    def test_should_get_trailhead_indexes_for_simple_example(self):
+        self.assertListEqual([0], self.default_trail_finder.get_trailhead_indexes())
+    
+    def test_should_get_trailhead_indexes_for_example(self):
+        test_trail_finder = TrailFinder()
+        test_trail_finder.parse_input(self.example_input)
+        self.assertListEqual([2, 4, 20, 38, 42, 45, 48, 54, 57], test_trail_finder.get_trailhead_indexes())
 
 if __name__ == "__main__":
     unittest.main()

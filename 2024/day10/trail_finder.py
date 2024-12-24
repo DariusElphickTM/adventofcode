@@ -82,3 +82,17 @@ class TrailFinder():
     
     def get_trailhead_score(self, start_vertex):
         return self.perform_depth_first_search(start_vertex)
+    
+    def get_trailhead_indexes(self):
+        trail_head_indexes = []
+        for i, postion in enumerate(self.trail_positions):
+            if postion == '0':
+                trail_head_indexes.append(i)
+        return trail_head_indexes
+    
+    def get_score_for_all_trailheads(self):
+        trail_head_indexes = self.get_trailhead_indexes()
+        total_score = 0
+        for trail_head_index in trail_head_indexes:
+            total_score += self.get_trailhead_score(trail_head_index)
+        return total_score
