@@ -14,19 +14,24 @@ class TrailFinder():
     def get_edge(self, x, y):
         return self.trail_map[x][y]
     
-    def dfs_recurse(self, adjacency_matrix, visited, current_vertex):
-        visited[current_vertex] = True
+    def dfs_recurse(self, adjacency_matrix, current_vertex):
+        
+        current_trail_score = 0
         
         print(self.trail_positions[current_vertex], end=" ")
         #self.print_adjacency_matrix(adjacency_matrix[current_vertex])
         
+        if self.trail_positions[current_vertex] == '9':
+            print("Reached a 9!")
+            current_trail_score += 1
+        
         for i, weight in enumerate(adjacency_matrix[current_vertex]):
             if weight == 1:
-                self.dfs_recurse(adjacency_matrix, visited, i)
+                current_trail_score += self.dfs_recurse(adjacency_matrix, i)
+        return current_trail_score
     
     def perform_depth_first_search(self, starting_vertex):
-        visited = [False] * len(self.trail_map)
-        self.dfs_recurse(self.trail_map, visited, starting_vertex)
+        return self.dfs_recurse(self.trail_map, starting_vertex)
     
     def parse_input(self, input_text):
         self.initialise_trail_map(len(re.sub('\n', '', input_text)))
@@ -75,6 +80,5 @@ class TrailFinder():
         for row in trail_map:
             self.print_adjacency_matrix(row)
     
-    def get_trailhead_score(self):
-        self.perform_depth_first_search(0)
-        return 36
+    def get_trailhead_score(self, start_vertex):
+        return self.perform_depth_first_search(start_vertex)
