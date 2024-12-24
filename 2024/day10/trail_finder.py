@@ -17,10 +17,11 @@ class TrailFinder():
     def dfs_recurse(self, adjacency_matrix, visited, current_vertex):
         visited[current_vertex] = True
         
-        print(current_vertex, end=" ")
+        print(self.trail_positions[current_vertex], end=" ")
+        #self.print_adjacency_matrix(adjacency_matrix[current_vertex])
         
-        for i in adjacency_matrix[current_vertex]:
-            if i == 1 and not visited[i]:
+        for i, weight in enumerate(adjacency_matrix[current_vertex]):
+            if weight == 1:
                 self.dfs_recurse(adjacency_matrix, visited, i)
     
     def perform_depth_first_search(self, starting_vertex):
@@ -59,17 +60,20 @@ class TrailFinder():
                     self.add_edge(current_index, current_index + 1, right_adjacency)
 
                 current_index += 1
-        #self.print_trail_map()
+        #self.print_trail_map(self.trail_map)
     
-    def print_trail_map(self):
-        for row in self.trail_map:
-            current_map = list(map(lambda item: f'{item}, ', row))
-            i = 4
-            while i < len(current_map):
-                current_map.insert(i, '\n')
-                i += 5
-            print("".join(current_map))
-            print()
+    def print_adjacency_matrix(self, adjacency_matrix):
+        current_map = list(map(lambda item: f'{item}, ', adjacency_matrix))
+        i = 4
+        while i < len(current_map):
+            current_map.insert(i, '\n')
+            i += 5
+        print("".join(current_map))
+        print()
+    
+    def print_trail_map(self, trail_map):
+        for row in trail_map:
+            self.print_adjacency_matrix(row)
     
     def get_trailhead_score(self):
         self.perform_depth_first_search(0)
