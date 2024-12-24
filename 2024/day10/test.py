@@ -12,9 +12,9 @@ class TestTrailFinder(unittest.TestCase):
 10456732"""
 
     simple_example = """0123
-                        1234
-                        8765
-                        9876"""
+1234
+8765
+9876"""
     
     def setUp(self):
         self.default_trail_finder = TrailFinder(16)
