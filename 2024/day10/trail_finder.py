@@ -10,7 +10,6 @@ class TrailFinder():
     
     def add_edge(self, x, y, weight):
         self.trail_map[x][y] = weight
-        self.trail_map[y][x] = weight
     
     def get_edge(self, x, y):
         return self.trail_map[x][y]
@@ -28,22 +27,22 @@ class TrailFinder():
                 self.trail_positions.append(position)
                 if i > 0:
                     #need to add adjacency above
-                    above_adjacency = int(position) - int(input_grid[i - 1][j])
+                    above_adjacency = int(input_grid[i - 1][j]) - int(position)
                     self.add_edge(current_index, current_index - row_length, above_adjacency)
                 
                 if i < column_height - 1:
                     #need to add adjacency below
-                    below_adjacency = int(position) - int(input_grid[i + 1][j])
+                    below_adjacency = int(input_grid[i + 1][j]) - int(position)
                     self.add_edge(current_index, current_index + row_length, below_adjacency)
                 
                 if j > 0:
                     #need to add adjacency to the left
-                    left_adjacency = int(position) - int(input_grid[i][j - 1])
+                    left_adjacency = int(input_grid[i][j - 1]) - int(position) 
                     self.add_edge(current_index, current_index - 1, left_adjacency)
                 
                 if j < row_length - 1:
                     #need to add adjecency to the right
-                    right_adjacency = int(position) - int(input_grid[i][j + 1])
+                    right_adjacency = int(input_grid[i][j + 1]) - int(position)
                     self.add_edge(current_index, current_index + 1, right_adjacency)
 
                 current_index += 1
