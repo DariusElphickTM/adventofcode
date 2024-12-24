@@ -12,9 +12,9 @@ class TestTrailFinder(unittest.TestCase):
 10456732"""
 
     simple_example = """0123
-1234
-8765
-9876"""
+                        1234
+                        8765
+                        9876"""
     
     def setUp(self):
         self.default_trail_finder = TrailFinder(16)
@@ -24,6 +24,9 @@ class TestTrailFinder(unittest.TestCase):
         test_trail_finder = TrailFinder()
         test_trail_finder.parse_input(self.example_input)
         self.assertEqual(test_trail_finder.get_trailhead_score(), 36)
+    
+    def test_should_return_correct_result_for_simple_example(self):
+        self.assertEqual(self.default_trail_finder.get_trailhead_score(), 8)
     
     def test_should_parse_input_string_and_produce_adjacency_matrix_for_simple_data_set(self):
         expected_trail_postions = ['0', '1', '2', '3', '1', '2', '3', '4', '8', '7', '6', '5', '9', '8', '7', '6']
