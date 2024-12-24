@@ -25,6 +25,11 @@ class TestTrailFinder(unittest.TestCase):
         test_trail_finder.parse_input(self.example_input)
         self.assertEqual(test_trail_finder.get_score_for_all_trailheads(), 36)
     
+    def test_should_return_correct_rating_for_example(self):
+        test_trail_finder = TrailFinder()
+        test_trail_finder.parse_input(self.example_input)
+        self.assertEqual(test_trail_finder.get_rating_for_all_trailheads(), 81)
+    
     def test_should_return_correct_result_for_simple_example_with_one_trail(self):
         self.assertEqual(self.default_trail_finder.get_trailhead_score(0), 1)
     
