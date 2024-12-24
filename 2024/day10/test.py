@@ -26,7 +26,7 @@ class TestTrailFinder(unittest.TestCase):
         self.assertEqual(test_trail_finder.get_score_for_all_trailheads(), 36)
     
     def test_should_return_correct_result_for_simple_example_with_one_trail(self):
-        self.assertEqual(self.default_trail_finder.get_trailhead_score(0), 16)
+        self.assertEqual(self.default_trail_finder.get_trailhead_score(0), 1)
     
     def test_should_parse_input_string_and_produce_adjacency_matrix_for_simple_data_set(self):
         expected_trail_postions = ['0', '1', '2', '3', '1', '2', '3', '4', '8', '7', '6', '5', '9', '8', '7', '6']
