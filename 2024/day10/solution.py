@@ -4,7 +4,8 @@ def main():
     print("Here we go!")
     finder = TrailFinder()
     finder.parse_input(read_file("input.txt"))
-    print("Result", finder.get_score_for_all_trailheads())
+    print("Part 1 Result", finder.get_score_for_all_trailheads())
+    print("Part 2 Result", finder.get_rating_for_all_trailheads())
 
 def read_file(file_name):
     """Reads a text file and returns all of it's contents."""
