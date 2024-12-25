@@ -64,8 +64,8 @@ class TestGuardGallivant(unittest.TestCase):
         )
     
     def test_should_play_the_game(self):
-        '''self.default_test_gallivanter.play()
-        self.assertEqual(41, self.default_test_gallivanter.step_count)'''
+        self.default_test_gallivanter.play()
+        self.assertEqual(41, self.default_test_gallivanter.step_count)
     
     def test_should_turn_guard(self):
         self.assertEqual({'x': 4, 'y': 6, 'facing': '>'}, self.default_test_gallivanter.turn_guard({'x': 4, 'y': 6, 'facing': '^'}))
