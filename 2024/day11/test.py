@@ -13,6 +13,10 @@ class TestStoneObserver(unittest.TestCase):
     
     def test_should_return_current_stones(self):
         self.assertListEqual(["125", "17"], self.default_stone_observer.get_current_stones())
+    
+    def test_should_return_correct_current_stones_for_example_output(self):
+        self.default_stone_observer.blink(5)
+        self.assertEqual(self.default_stone_observer.get_stone_count(), 5342)
 
 if __name__ == "__main__":
     unittest.main()
