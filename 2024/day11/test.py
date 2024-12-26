@@ -16,6 +16,7 @@ class TestStoneObserver(unittest.TestCase):
     
     def test_should_return_correct_current_stones_for_example_output(self):
         self.default_stone_observer.blink(5)
+        self.default_stone_observer.print_tree(self.default_stone_observer.stones_tree)
         self.assertEqual(self.default_stone_observer.get_stone_count(), 5342)
 
 if __name__ == "__main__":
