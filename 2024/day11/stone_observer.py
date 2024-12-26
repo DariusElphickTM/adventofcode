@@ -4,6 +4,14 @@ class TreeNode():
         self.branches = []
         for value in branches:
             self.branches.append(TreeNode(value))
+    
+    def get_leaves(self, leaves):
+        if len(self.branches) == 0:
+            leaves.append(self.value)
+            return
+        
+        for branch in self.branches:
+            branch.get_leaves(leaves)
 
 class StoneObserver():
     def __init__(self, input_string):
@@ -13,13 +21,23 @@ class StoneObserver():
         print(blink_count)
     
     def get_stone_count(self):
-        return len(self.stones_tree.branches)
+        return len(self.get_current_stones())
     
     def get_current_stones(self):
-        return self.stones_tree.branches
+        leaves = []
+        self.stones_tree.get_leaves(leaves)
+        return leaves
     
     def parse_input(self, input_string):
         return TreeNode('root', input_string.split(" "))
+    
+    def get_leaves(self, root, leaves):
+        if len(root.branches) == 0:
+            leaves.append(root.value)
+            return
+        
+        for branch in root.branches:
+            self.get_leaves(branch, leaves)
     
     def tree_to_matrix(self, root, row, col, height, ans):
         if not root:
