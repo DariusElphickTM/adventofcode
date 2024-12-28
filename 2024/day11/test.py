@@ -1,5 +1,5 @@
 import unittest
-from stone_observer import StoneObserver  
+from stone_observer import StoneObserver, MultiThreadedStoneObserver  
 
 class TestStoneObserver(unittest.TestCase):
     
@@ -34,7 +34,19 @@ class TestStoneObserver(unittest.TestCase):
         test_stone_observer = StoneObserver(self.example_input)
         test_stone_observer.blink(25)
         self.assertEqual(55312, test_stone_observer.get_stone_count())
-        
+
+class TestMultiThreadedStoneObserver(unittest.TestCase):
+    example_input = """125 17"""
+    
+    def test_parses_input_into_a_set_of_stone_observers(self):
+        test_super_stone_observer = MultiThreadedStoneObserver(self.example_input)
+        self.assertEqual(len(test_super_stone_observer.stones_tree_observers), 2)
+        self.assertListEqual(["125"], test_super_stone_observer.stones_tree_observers[0].get_current_stones())
+        self.assertListEqual(["17"], test_super_stone_observer.stones_tree_observers[1].get_current_stones())
+    
+    def test_running_in_parallel_returns_same_result(self):
+        test_super_stone_observer = MultiThreadedStoneObserver(self.example_input)
+        self.assertEqual(55312, test_super_stone_observer.run_obsevers_in_parallel(25))
 
 if __name__ == "__main__":
     unittest.main()

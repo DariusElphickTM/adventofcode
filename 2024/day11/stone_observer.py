@@ -1,3 +1,5 @@
+import threading
+
 class TreeNode():
     def __init__(self, value, branches = []):
         self.value = value
@@ -27,13 +29,43 @@ class TreeNode():
             else:
                 self.value = str(int(self.value) * 2024)
 
-class StoneObserver():
+class MultiThreadedStoneObserver():
     def __init__(self, input_string):
+        self.stones_tree_observers = self.parse_input(input_string)
+    
+    def run_obsevers_in_parallel(self, blink_count = 1):
+        threads = []
+        for stone_tree_observer in self.stones_tree_observers:
+            t = threading.Thread(target=stone_tree_observer.blink, args=(blink_count,))
+            threads.append(t)
+            t.start()
+        for thread in threads:
+            thread.join()
+        
+        print("All threads finished")
+        
+        total = 0
+        for i, stone_tree_observer in enumerate(self.stones_tree_observers):
+            print("stone tree observer result", i, stone_tree_observer.get_stone_count())
+            total += stone_tree_observer.get_stone_count()
+        
+        print("Result", total)
+        return total
+    
+    def parse_input(self, input_string):
+        stone_observers = []
+        for i, input in enumerate(input_string.split(" ")):
+            stone_observers.append(StoneObserver(input, i))
+        return stone_observers
+
+class StoneObserver():
+    def __init__(self, input_string, id = ''):
+        self.id = id
         self.stones_tree = self.parse_input(input_string)
     
     def blink(self, blink_count = 1):
         for i in range(blink_count):
-            print("Blink", i)
+            print(f'{self.id} Blink', i)
             self.stones_tree.blink()
             self.stones_tree = TreeNode('Root', self.get_current_stones())
     
