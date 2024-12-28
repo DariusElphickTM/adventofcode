@@ -12,6 +12,19 @@ class TreeNode():
         
         for branch in self.branches:
             branch.get_leaves(leaves)
+    
+    def blink(self):
+        if len(self.branches) > 0:
+            for branch in self.branches:
+                branch.blink()
+        else:
+            if self.value == '0':
+                self.branches.append(TreeNode('1'))
+            elif len(self.value) % 2 == 0:
+                new_values = 2
+                
+            else:
+                self.value = str(int(self.value) * 2024)
 
 class StoneObserver():
     def __init__(self, input_string):
