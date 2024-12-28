@@ -78,8 +78,18 @@ class TestDictionaryStoneObserver(unittest.TestCase):
             "19": 8
         }))
     
+    def test_returns_correct_stone_count_at_each_step_in_example(self):
+        test_stone_observer = DictionaryStoneObserver(self.example_input)
+        self.assertEqual(test_stone_observer.observe_stones(), 3)
+        self.assertEqual(test_stone_observer.observe_stones(2), 4)
+        self.assertEqual(test_stone_observer.observe_stones(3), 5)
+        self.assertEqual(test_stone_observer.observe_stones(4), 9)
+        self.assertEqual(test_stone_observer.observe_stones(5), 13)
+        self.assertEqual(test_stone_observer.observe_stones(6), 22)
+    
     def test_returns_correct_stone_count_after_25_blinks(self):
-        self.assertEqual(55312, self.default_dict_stone_observer.observe_stones(25))
+        test_stone_observer = DictionaryStoneObserver(self.example_input)
+        self.assertEqual(55312, test_stone_observer.observe_stones(25))
         
 
 if __name__ == "__main__":

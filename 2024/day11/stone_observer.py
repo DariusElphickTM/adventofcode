@@ -138,18 +138,39 @@ class DictionaryStoneObserver():
         for input in input_string.split(" "):
             stones[input] = 1
         return stones
-    
-    def observe_stones(self, blink_count = 1):
-        self.blink(blink_count, self.stones)
-    
+
     def get_stone_count(self, stones):
         total = 0
         for stone_count in stones.values():
             total += stone_count
         return total
     
+    def observe_stones(self, blink_count = 1):
+        return self.blink(blink_count, self.stones)
+    
+    def upsert_into_dict(self, stone_id, stone_count, stone_dict):
+        if stone_id not in stone_dict:
+            stone_dict[stone_id] = stone_count
+        else:
+            stone_dict[stone_id] = stone_dict[stone_id] + stone_count
+    
     def blink(self, blink_count, stones):
         if blink_count == 0:
             return self.get_stone_count(stones)
+        
+        new_stones = {}
+        
+        for stone_id in stones:
+            stone_count = stones[stone_id]
+            if stone_id == '0':
+                self.upsert_into_dict('1', stone_count, new_stones)
+            elif (len(stone_id) % 2) == 0:
+                split = int(len(stone_id) / 2)
+                self.upsert_into_dict(str(int(stone_id[0:split])), stone_count, new_stones)
+                self.upsert_into_dict(str(int(stone_id[split:])), stone_count, new_stones)
+            else:
+                self.upsert_into_dict(str(int(stone_id) * 2024), stone_count, new_stones)
+        
+        return self.blink(blink_count - 1, new_stones)
         
 
