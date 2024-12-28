@@ -35,6 +35,7 @@ class StoneObserver():
         for i in range(blink_count):
             print("Blink", i)
             self.stones_tree.blink()
+            self.stones_tree = TreeNode('Root', self.get_current_stones())
     
     def get_stone_count(self):
         return len(self.get_current_stones())
