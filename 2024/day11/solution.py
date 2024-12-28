@@ -5,6 +5,8 @@ def main():
     my_stone_observer = StoneObserver(read_file("input.txt"))
     my_stone_observer.blink(25)
     print("Part 1 result", my_stone_observer.get_stone_count())
+    my_stone_observer.blink(75)
+    print("Part 2 result", my_stone_observer.get_stone_count())
 
 def read_file(file_name):
     """Reads a text file and returns all of it's contents."""
