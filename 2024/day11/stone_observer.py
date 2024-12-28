@@ -42,14 +42,14 @@ class MultiThreadedStoneObserver():
         for thread in threads:
             thread.join()
         
-        print("All threads finished")
+        #print("All threads finished")
         
         total = 0
         for i, stone_tree_observer in enumerate(self.stones_tree_observers):
-            print("stone tree observer result", i, stone_tree_observer.get_stone_count())
+            #print("stone tree observer result", i, stone_tree_observer.get_stone_count())
             total += stone_tree_observer.get_stone_count()
         
-        print("Result", total)
+        #print("Result", total)
         return total
     
     def parse_input(self, input_string):
@@ -65,7 +65,7 @@ class StoneObserver():
     
     def blink(self, blink_count = 1):
         for i in range(blink_count):
-            print(f'{self.id} Blink', i)
+            #print(f'{self.id} Blink', i)
             self.stones_tree.blink()
             self.stones_tree = TreeNode('Root', self.get_current_stones())
     
@@ -127,4 +127,15 @@ class StoneObserver():
             return 0
         branch_heights = list(map(self.get_height, root.branches))
         return max(branch_heights) + 1
+
+class DictionaryStoneObserver():
+    def __init__(self, input_string, id = ''):
+        self.id = id
+        self.stones = self.parse_input(input_string)
+    
+    def parse_input(self, input_string):
+        stones = {}
+        for input in input_string.split(" "):
+            stones[input] = 1
+        return stones
 

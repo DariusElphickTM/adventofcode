@@ -1,5 +1,5 @@
 import unittest
-from stone_observer import StoneObserver, MultiThreadedStoneObserver  
+from stone_observer import StoneObserver, MultiThreadedStoneObserver, DictionaryStoneObserver  
 
 class TestStoneObserver(unittest.TestCase):
     
@@ -47,6 +47,16 @@ class TestMultiThreadedStoneObserver(unittest.TestCase):
     def test_running_in_parallel_returns_same_result(self):
         test_super_stone_observer = MultiThreadedStoneObserver(self.example_input)
         self.assertEqual(55312, test_super_stone_observer.run_obsevers_in_parallel(25))
+
+class TestDictionaryStoneObserver(unittest.TestCase):
+    example_input = """125 17"""
+    
+    def test_parses_input_to_dictionary(self):
+        test_dict_stone_observer = DictionaryStoneObserver(self.example_input)
+        self.assertDictEqual({
+            "125": 1,
+            "17": 1
+        }, test_dict_stone_observer.stones)
 
 if __name__ == "__main__":
     unittest.main()
