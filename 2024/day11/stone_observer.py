@@ -20,9 +20,10 @@ class TreeNode():
         else:
             if self.value == '0':
                 self.branches.append(TreeNode('1'))
-            elif len(self.value) % 2 == 0:
-                new_values = 2
-                
+            elif (len(self.value) % 2) == 0:
+                split = int(len(self.value) / 2)
+                self.branches.append(TreeNode(str(int(self.value[0:split]))))
+                self.branches.append(TreeNode(str(int(self.value[split:]))))
             else:
                 self.value = str(int(self.value) * 2024)
 
@@ -30,8 +31,9 @@ class StoneObserver():
     def __init__(self, input_string):
         self.stones_tree = self.parse_input(input_string)
     
-    def blink(self, blink_count):
-        print(blink_count)
+    def blink(self, blink_count = 1):
+        for i in range(blink_count):
+            self.stones_tree.blink()
     
     def get_stone_count(self):
         return len(self.get_current_stones())
