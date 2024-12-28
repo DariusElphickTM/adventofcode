@@ -155,6 +155,8 @@ class DictionaryStoneObserver():
             stone_dict[stone_id] = stone_dict[stone_id] + stone_count
     
     def blink(self, blink_count, stones):
+        print("Blink", blink_count)
+        
         if blink_count == 0:
             return self.get_stone_count(stones)
         

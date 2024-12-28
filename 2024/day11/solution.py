@@ -1,4 +1,4 @@
-from stone_observer import StoneObserver, MultiThreadedStoneObserver
+from stone_observer import StoneObserver, MultiThreadedStoneObserver, DictionaryStoneObserver
 
 def main():
     print("Here we go!")
@@ -6,8 +6,10 @@ def main():
     my_stone_observer.blink(25)
     print("Part 1 result", my_stone_observer.get_stone_count())"""
     
-    my_super_stone_observer = MultiThreadedStoneObserver(read_file("input.txt"))
-    print("Part 2 result", my_super_stone_observer.run_obsevers_in_parallel(75))
+    #my_super_stone_observer = MultiThreadedStoneObserver(read_file("input.txt"))
+    
+    my_super_duper_stone_observer = DictionaryStoneObserver(read_file("input.txt"))
+    print("Part 2 result", my_super_duper_stone_observer.observe_stones(75))
 
 def read_file(file_name):
     """Reads a text file and returns all of it's contents."""
