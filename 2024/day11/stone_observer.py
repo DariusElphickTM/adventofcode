@@ -138,4 +138,18 @@ class DictionaryStoneObserver():
         for input in input_string.split(" "):
             stones[input] = 1
         return stones
+    
+    def observe_stones(self, blink_count = 1):
+        self.blink(blink_count, self.stones)
+    
+    def get_stone_count(self, stones):
+        total = 0
+        for stone_count in stones.values():
+            total += stone_count
+        return total
+    
+    def blink(self, blink_count, stones):
+        if blink_count == 0:
+            return self.get_stone_count(stones)
+        
 

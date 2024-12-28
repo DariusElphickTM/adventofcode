@@ -51,12 +51,36 @@ class TestMultiThreadedStoneObserver(unittest.TestCase):
 class TestDictionaryStoneObserver(unittest.TestCase):
     example_input = """125 17"""
     
+    def setUp(self):
+        self.default_dict_stone_observer = DictionaryStoneObserver(self.example_input)
+    
     def test_parses_input_to_dictionary(self):
-        test_dict_stone_observer = DictionaryStoneObserver(self.example_input)
         self.assertDictEqual({
             "125": 1,
             "17": 1
-        }, test_dict_stone_observer.stones)
+        }, self.default_dict_stone_observer.stones)
+    
+    def test_returns_stone_count(self):
+        self.assertEqual(2, self.default_dict_stone_observer.get_stone_count({
+            "125": 1,
+            "17": 1
+        }))
+        self.assertEqual(10, self.default_dict_stone_observer.get_stone_count({
+            "125": 2,
+            "17": 8
+        }))
+        self.assertEqual(30, self.default_dict_stone_observer.get_stone_count({
+            "125": 2,
+            "17": 8,
+            "126": 2,
+            "18": 8,
+            "127": 2,
+            "19": 8
+        }))
+    
+    def test_returns_correct_stone_count_after_25_blinks(self):
+        self.assertEqual(55312, self.default_dict_stone_observer.observe_stones(25))
+        
 
 if __name__ == "__main__":
     unittest.main()
