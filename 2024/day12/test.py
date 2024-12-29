@@ -164,13 +164,13 @@ MMMISSJEEE"""
             }
         ], test_calculator.find_regions())
     
-    """def test_returns_correct_cost_for_larger_example(self):
+    def test_returns_correct_cost_for_larger_example(self):
         test_calculator = FarmFencingCalculator(self.larger_example_input)
         self.assertEqual(test_calculator.get_total_cost(), 772)
     
     def test_returns_correct_cost_for_complex_example(self):
         test_calculator = FarmFencingCalculator(self.complex_example_input)
-        self.assertEqual(test_calculator.get_total_cost(), 1930)"""
+        self.assertEqual(test_calculator.get_total_cost(), 1930)
 
 if __name__ == "__main__":
     unittest.main()

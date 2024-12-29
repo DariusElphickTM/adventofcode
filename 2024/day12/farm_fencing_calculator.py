@@ -9,12 +9,39 @@ class FarmFencingCalculator():
     def calculate_cost_for_region(self, region):
         return region['area'] * region['perimeter']
     
+    def dfs_recurse(self, current_vertex, visited_plots, region):
+        #for each plot found
+        #mark each visited_plot
+        visited_plots[current_vertex]['visited'] = True
+        #area += 1
+        current_area = 1
+        #perimeter = add to perimeter based on adjacency
+            #0 adjacency = 4
+            #1 adjacency = 3
+            #2 adjancency = 2
+            #3 adjacency = 1
+            #4 adjacency = 0
+        current_perimeter = 4
+        for i, adjacent_plot in enumerate(self.plot_adjacency_matrix[current_vertex]):
+            if adjacent_plot == 1:
+                current_perimeter -= 1
+                if not visited_plots[i]['visited']:
+                    next_plot = self.dfs_recurse(i, visited_plots, region)
+                    current_area += next_plot['area']
+                    current_perimeter += next_plot['perimeter']
+        
+        return {
+            'plant': region['plant'],
+            'area': current_area,
+            'perimeter': current_perimeter
+        }    
+    
     def find_regions(self):
         regions = []
-        visited_plots = list(map(lambda plot: {'region-identified': False, 'plot': plot}, self.plots))
+        visited_plots = list(map(lambda plot: {'visited': False, 'plot': plot}, self.plots))
         for i, plot in enumerate(self.plots):
             #Check if plot already included in a region
-            if visited_plots[i]['region-identified']:
+            if visited_plots[i]['visited']:
                 continue
             #else
             #create new region for plot. Assume it's a lone plot
@@ -24,45 +51,10 @@ class FarmFencingCalculator():
                 'perimeter': 4
             }
             #find every other plot with the same vegetable accessible from this spot
-            #for each plot found
-                #mark each visited_plot
-                #area += 1
-                #perimeter = add to perimeter based on adjacency
-                    #0 adjacency = 4
-                    #1 adjacency = 3
-                    #2 adjancency = 2
-                    #3 adjacency = 1
-                    #4 adjacency = 0
             #set the final area and perimeter on the region
-            #add the region to regions
-            #continue to the next unvisited plot
-        return [
-            {
-                'plant': 'A',
-                'area': 4,
-                'perimeter': 10
-            },
-            {
-                'plant': 'B',
-                'area': 4,
-                'perimeter': 8
-            },
-            {
-                'plant': 'C',
-                'area': 4,
-                'perimeter': 10
-            },
-            {
-                'plant': 'D',
-                'area': 1,
-                'perimeter': 4
-            },
-            {
-                'plant': 'E',
-                'area': 3,
-                'perimeter': 8
-            }
-        ]
+            regions.append(self.dfs_recurse(i, visited_plots, region))
+            #Region added. Continue to the next unvisited plot
+        return regions
     
     def get_total_cost(self):
         regions = self.find_regions()
