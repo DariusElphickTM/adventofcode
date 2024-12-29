@@ -28,14 +28,107 @@ MMMISSJEEE"""
     def setUp(self):
         self.default_test_calculator = FarmFencingCalculator(self.complex_example_input)
     
-    def test_parses_simple_example_correctly(self):
+    def test_creates_adjacency_matrix_for_simple_example(self):
         test_calculator = FarmFencingCalculator(self.simple_example_input)
+        self.assertListEqual(["A","A","A","A","B","B","C","D","B","B","C","C","E","E","E","C"], test_calculator.plots)
         self.assertListEqual([
-            ["A","A","A","A"],
-            ["B","B","C","D"],
-            ["B","B","C","C"],
-            ["E","E","E","C"]
-        ], test_calculator.farm_map)
+            [
+                0, 1, 0, 0, 
+                0, 0, 0, 0, 
+                0, 0, 0, 0, 
+                0, 0, 0, 0
+            ],
+            [
+                1, 0, 1, 0, 
+                0, 0, 0, 0, 
+                0, 0, 0, 0, 
+                0, 0, 0, 0
+            ],
+            [
+                0, 1, 0, 1, 
+                0, 0, 0, 0, 
+                0, 0, 0, 0, 
+                0, 0, 0, 0
+            ],
+            [
+                0, 0, 1, 0, 
+                0, 0, 0, 0, 
+                0, 0, 0, 0, 
+                0, 0, 0, 0
+            ],
+            [
+                0, 0, 0, 0, 
+                0, 1, 0, 0, 
+                1, 0, 0, 0, 
+                0, 0, 0, 0
+            ],
+            [
+                0, 0, 0, 0, 
+                1, 0, 0, 0, 
+                0, 1, 0, 0, 
+                0, 0, 0, 0
+            ],
+            [
+                0, 0, 0, 0, 
+                0, 0, 0, 0, 
+                0, 0, 1, 0, 
+                0, 0, 0, 0
+            ],
+            [
+                0, 0, 0, 0, 
+                0, 0, 0, 0, 
+                0, 0, 0, 0, 
+                0, 0, 0, 0
+            ],
+            [
+                0, 0, 0, 0, 
+                1, 0, 0, 0, 
+                0, 1, 0, 0, 
+                0, 0, 0, 0
+            ],
+            [
+                0, 0, 0, 0, 
+                0, 1, 0, 0, 
+                1, 0, 0, 0, 
+                0, 0, 0, 0
+            ],
+            [
+                0, 0, 0, 0, 
+                0, 0, 1, 0, 
+                0, 0, 0, 1, 
+                0, 0, 0, 0
+            ],
+            [
+                0, 0, 0, 0, 
+                0, 0, 0, 0, 
+                0, 0, 1, 0, 
+                0, 0, 0, 1
+            ],
+            [
+                0, 0, 0, 0, 
+                0, 0, 0, 0, 
+                0, 0, 0, 0, 
+                0, 1, 0, 0
+            ],
+            [
+                0, 0, 0, 0, 
+                0, 0, 0, 0, 
+                0, 0, 0, 0, 
+                1, 0, 1, 0
+            ],
+            [
+                0, 0, 0, 0, 
+                0, 0, 0, 0, 
+                0, 0, 0, 0, 
+                0, 1, 0, 0
+            ],
+            [
+                0, 0, 0, 0, 
+                0, 0, 0, 0, 
+                0, 0, 0, 1, 
+                0, 0, 0, 0
+            ]
+        ], test_calculator.plot_adjacency_matrix)
     
     def test_returns_correct_cost_for_simple_example(self):
         test_calculator = FarmFencingCalculator(self.simple_example_input)

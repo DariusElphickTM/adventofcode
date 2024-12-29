@@ -1,6 +1,10 @@
+import re
+
 class FarmFencingCalculator():
     def __init__(self, input_string):
-        self.farm_map = self.parse_input(input_string)
+        self.plots = []
+        self.plot_adjacency_matrix = []
+        self.parse_input(input_string)
     
     def calculate_cost_for_region(self, region):
         return region['area'] * region['perimeter']
@@ -41,6 +45,43 @@ class FarmFencingCalculator():
             total += self.calculate_cost_for_region(region)
         return total
     
+    def initialise_farm_map(self, size = 4):
+        self.plots = []
+        self.plot_adjacency_matrix = [[0] * size for _ in range(size)]
+    
+    def add_edge(self, x, y):
+        self.plot_adjacency_matrix[x][y] = 1
+        self.plot_adjacency_matrix[y][x] = 1
+    
+    def get_edge(self, x, y):
+        return self.plot_adjacency_matrix[x][y]
+    
     def parse_input(self, input_string):
-        rows = input_string.splitlines()
-        return list(map(list, rows))
+        self.initialise_farm_map(len(re.sub('\n', '', input_string)))
+        
+        input_grid = list(map(list, input_string.split('\n')))
+        column_height = len(input_grid)
+        row_length = len(input_grid[0])
+        
+        current_index = 0
+        for i, row in enumerate(input_grid):
+            for j, plot in enumerate(row):
+                self.plots.append(plot)
+                if i > 0 and input_grid[i - 1][j] == plot:
+                    #need to add adjacency above
+                    self.add_edge(current_index, current_index - row_length)
+                
+                if i < column_height - 1 and input_grid[i + 1][j] == plot:
+                    #need to add adjacency below
+                    self.add_edge(current_index, current_index + row_length)
+                
+                if j > 0 and input_grid[i][j - 1] == plot:
+                    #need to add adjacency to the left
+                    self.add_edge(current_index, current_index - 1)
+                
+                if j < row_length - 1 and input_grid[i][j + 1] == plot:
+                    #need to add adjecency to the right
+                    self.add_edge(current_index, current_index + 1)
+
+                current_index += 1
+        #self.print_trail_map(self.trail_map)
