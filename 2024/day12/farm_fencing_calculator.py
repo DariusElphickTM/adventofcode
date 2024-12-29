@@ -9,7 +9,10 @@ class FarmFencingCalculator():
     def calculate_cost_for_region(self, region):
         return region['area'] * region['perimeter']
     
-    def dfs_recurse(self, current_vertex, visited_plots, region):
+    def calculate_discounted_cost_for_region(self, region):
+        return region['area'] * region['sides']
+    
+    def dfs_recurse(self, current_vertex, visited_plots, plant_id):
         #for each plot found
         #mark each visited_plot
         visited_plots[current_vertex]['visited'] = True
@@ -26,14 +29,15 @@ class FarmFencingCalculator():
             if adjacent_plot == 1:
                 current_perimeter -= 1
                 if not visited_plots[i]['visited']:
-                    next_plot = self.dfs_recurse(i, visited_plots, region)
+                    next_plot = self.dfs_recurse(i, visited_plots, plant_id)
                     current_area += next_plot['area']
                     current_perimeter += next_plot['perimeter']
         
         return {
-            'plant': region['plant'],
+            'plant': plant_id,
             'area': current_area,
-            'perimeter': current_perimeter
+            'perimeter': current_perimeter,
+            'sides': current_perimeter
         }    
     
     def find_regions(self):
@@ -44,24 +48,24 @@ class FarmFencingCalculator():
             if visited_plots[i]['visited']:
                 continue
             #else
-            #create new region for plot. Assume it's a lone plot
-            region = {
-                'plant': plot,
-                'area': 1,
-                'perimeter': 4
-            }
             #find every other plot with the same vegetable accessible from this spot
             #set the final area and perimeter on the region
-            regions.append(self.dfs_recurse(i, visited_plots, region))
+            regions.append(self.dfs_recurse(i, visited_plots, plot))
             #Region added. Continue to the next unvisited plot
         return regions
     
-    def get_total_cost(self):
+    def get_total_cost(self, apply_discount = False):
         regions = self.find_regions()
         total = 0
         for region in regions:
-            total += self.calculate_cost_for_region(region)
+            if apply_discount:
+                total += self.calculate_discounted_cost_for_region(region)
+            else:
+                total += self.calculate_cost_for_region(region)
         return total
+    
+    def get_total_discounted_cost(self):
+        return self.get_total_cost(True)
     
     def initialise_farm_map(self, size = 4):
         self.plots = []
