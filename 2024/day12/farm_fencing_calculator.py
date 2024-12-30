@@ -213,4 +213,3 @@ class FarmFencingCalculator():
                         self.add_edge(current_index, current_index + 1, self.plot_adjacency_matrix, 2)
 
                 current_index += 1
-        #self.print_trail_map(self.trail_map)
