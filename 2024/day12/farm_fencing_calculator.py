@@ -14,7 +14,13 @@ class FarmFencingCalculator():
         return region['area'] * region['sides']
     
     def find_sides_via_dfs(self, current_vertex, visited_plots, adjacency_matrix):
-        print("Need an adjacency matrix")
+        #for each plot found
+        #mark each visited_plot
+        visited_plots[current_vertex]['visited'] = True
+        for i, adjacent_plot in enumerate(adjacency_matrix[current_vertex]):
+            if adjacent_plot == 1:
+                if not visited_plots[i]['visited']:
+                    self.find_sides_via_dfs(i, visited_plots, adjacency_matrix)
     
     def get_adjacency_matrix_for_sides(self, region_map):
         size = len(region_map)
@@ -55,13 +61,11 @@ class FarmFencingCalculator():
                             y = current_index + 1
                             adjacency_matrix[x][y] = 1
                             adjacency_matrix[y][x] = 1
-
                 current_index += 1
-        
         return adjacency_matrix
     
     def get_sides_count_from_region_map(self, region_map):
-        sides = []
+        sides = 0
         visited_plots = list(map(lambda plot: {'visited': False, 'plot': plot}, self.plots))
         adjacency_matrix = self.get_adjacency_matrix_for_sides(region_map)
         for i, plot in enumerate(region_map):
@@ -69,10 +73,12 @@ class FarmFencingCalculator():
             if not plot == 'S' or visited_plots[i]['visited']:
                 continue
             #else
-            #find every other side accessible from this spot
-            sides.append(self.find_sides_via_dfs(i, visited_plots, adjacency_matrix))
+            #This is a new side we've encountered. Add to the counter.
+            sides += 1
+            #find every other side accessible from this spot, and mark them as visited
+            self.find_sides_via_dfs(i, visited_plots, adjacency_matrix)
             #Side added. Continue to the next unvisited side
-        return len(sides)
+        return sides
     
     def find_region_via_dfs(self, current_vertex, visited_plots, region_tracker, plant_id):
         #for each plot found
