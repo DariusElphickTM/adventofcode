@@ -4,6 +4,7 @@ class FarmFencingCalculator():
     def __init__(self, input_string):
         self.plots = []
         self.plot_adjacency_matrix = []
+        self.row_length = 4
         self.parse_input(input_string)
     
     def calculate_cost_for_region(self, region):
@@ -12,10 +13,72 @@ class FarmFencingCalculator():
     def calculate_discounted_cost_for_region(self, region):
         return region['area'] * region['sides']
     
-    def dfs_recurse(self, current_vertex, visited_plots, plant_id, sides):
+    def find_sides_via_dfs(self, current_vertex, visited_plots, adjacency_matrix):
+        print("Need an adjacency matrix")
+    
+    def get_adjacency_matrix_for_sides(self, region_map):
+        size = len(region_map)
+        adjacency_matrix = [[0] * size for _ in range(size)]
+        
+        current_index = 0
+        for i, row in enumerate(region_map):
+            for j, plot in enumerate(row):
+                if plot == "S":
+                    if i > 0: 
+                        if region_map[i - 1][j] == plot:
+                            #need to add adjacency above
+                            x = current_index
+                            y = current_index - self.row_length
+                            adjacency_matrix[x][y] = 1
+                            adjacency_matrix[y][x] = 1
+                    
+                    if i < self.row_length - 1:
+                        if region_map[i + 1][j] == plot:
+                            #need to add adjacency below
+                            x = current_index
+                            y = current_index + self.row_length
+                            adjacency_matrix[x][y] = 1
+                            adjacency_matrix[y][x] = 1
+                    
+                    if j > 0:
+                        if region_map[i][j - 1] == plot:
+                            #need to add adjacency to the left
+                            x = current_index
+                            y = current_index - 1
+                            adjacency_matrix[x][y] = 1
+                            adjacency_matrix[y][x] = 1
+                    
+                    if j < self.row_length - 1:
+                        if region_map[i][j + 1] == plot:
+                            #need to add adjecency to the right
+                            x = current_index
+                            y = current_index + 1
+                            adjacency_matrix[x][y] = 1
+                            adjacency_matrix[y][x] = 1
+
+                current_index += 1
+        
+        return adjacency_matrix
+    
+    def get_sides_count_from_region_map(self, region_map):
+        sides = []
+        visited_plots = list(map(lambda plot: {'visited': False, 'plot': plot}, self.plots))
+        adjacency_matrix = self.get_adjacency_matrix_for_sides(region_map)
+        for i, plot in enumerate(region_map):
+            #Check it plot not a side, or already accounted for
+            if not plot == 'S' or visited_plots[i]['visited']:
+                continue
+            #else
+            #find every other side accessible from this spot
+            sides.append(self.find_sides_via_dfs(i, visited_plots, adjacency_matrix))
+            #Side added. Continue to the next unvisited side
+        return len(sides)
+    
+    def find_region_via_dfs(self, current_vertex, visited_plots, region_tracker, plant_id):
         #for each plot found
         #mark each visited_plot
         visited_plots[current_vertex]['visited'] = True
+        region_tracker[current_vertex]['visited'] = True
         #area += 1
         current_area = 1
         #perimeter = add to perimeter based on adjacency
@@ -29,26 +92,23 @@ class FarmFencingCalculator():
             if adjacent_plot == 1:
                 current_perimeter -= 1
                 if not visited_plots[i]['visited']:
-                    next_plot = self.dfs_recurse(i, visited_plots, plant_id, sides)
+                    next_plot = self.find_region_via_dfs(i, visited_plots, region_tracker, plant_id)
                     current_area += next_plot['area']
                     current_perimeter += next_plot['perimeter']
             elif adjacent_plot == 2:
-                #This is potentially a side. 
-                #Is it next to the current cell?
-                #That will be easier if it's on the adjacency matrix
-                #I'll mark a cell next to the current cell 2
-                print("Check the plot next door")
+                #This cell is next to the current plot. 
+                #Let's build a map of the perimeter of the region.
+                region_tracker[i]['adjacent'] = True
         
         return {
             'plant': plant_id,
             'area': current_area,
             'perimeter': current_perimeter,
-            'sides': len(sides)
-        }    
+        }
     
     def find_regions(self):
         regions = []
-        visited_plots = list(map(lambda plot: {'visited': False, 'plot': plot}, self.plots))
+        visited_plots = list(map(lambda plot: {'visited': False}, self.plots))
         for i, plot in enumerate(self.plots):
             #Check if plot already included in a region
             if visited_plots[i]['visited']:
@@ -56,9 +116,31 @@ class FarmFencingCalculator():
             #else
             #find every other plot with the same vegetable accessible from this spot
             #set the final area and perimeter on the region
-            regions.append(self.dfs_recurse(i, visited_plots, plot, []))
+            region_map = list(map(lambda plot: {'visited': False, 'adjacent': False, 'plot': plot}, self.plots))
+            region = self.find_region_via_dfs(i, visited_plots, region_map, plot)
+            self.print_region_map(region_map)
+            region['sides'] = self.get_sides_count_from_region_map(region_map)
+            regions.append(region)
             #Region added. Continue to the next unvisited plot
         return regions
+    
+    def region_map_plot_character_representation(self, plot):
+        if plot['visited']:
+            return plot['plot']
+        elif plot['adjacent']:
+            return 'S'
+        else:
+            return '0'
+    
+    def print_region_map(self, visted_plots):
+        print()
+        current_map = list(map(self.region_map_plot_character_representation, visted_plots))
+        i = self.row_length
+        while i < len(current_map):
+            current_map.insert(i, '\n')
+            i += self.row_length + 1
+        print("".join(current_map))
+        print()
     
     def get_total_cost(self, apply_discount = False):
         regions = self.find_regions()
@@ -90,6 +172,7 @@ class FarmFencingCalculator():
         input_grid = list(map(list, input_string.split('\n')))
         column_height = len(input_grid)
         row_length = len(input_grid[0])
+        self.row_length = row_length
         
         current_index = 0
         for i, row in enumerate(input_grid):
