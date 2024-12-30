@@ -141,9 +141,9 @@ class FarmFencingCalculator():
             result.append(mapped[i:i+self.row_length])
         return result
     
-    def print_region_map(self, visited_plots):
+    def print_region_map(self, region_map):
         print()
-        current_map = list(map(self.region_map_plot_character_representation, visited_plots))
+        current_map = list(map(self.region_map_plot_character_representation, region_map))
         i = self.row_length
         while i < len(current_map):
             current_map.insert(i, '\n')
