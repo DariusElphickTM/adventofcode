@@ -47,99 +47,99 @@ AAAAAA"""
         self.assertListEqual([
             [
                 0, 1, 0, 0, 
-                0, 0, 0, 0, 
+                2, 0, 0, 0, 
                 0, 0, 0, 0, 
                 0, 0, 0, 0
             ],
             [
                 1, 0, 1, 0, 
-                0, 0, 0, 0, 
+                0, 2, 0, 0, 
                 0, 0, 0, 0, 
                 0, 0, 0, 0
             ],
             [
                 0, 1, 0, 1, 
-                0, 0, 0, 0, 
+                0, 0, 2, 0, 
                 0, 0, 0, 0, 
                 0, 0, 0, 0
             ],
             [
                 0, 0, 1, 0, 
-                0, 0, 0, 0, 
+                0, 0, 0, 2, 
                 0, 0, 0, 0, 
                 0, 0, 0, 0
             ],
             [
-                0, 0, 0, 0, 
+                2, 0, 0, 0, 
                 0, 1, 0, 0, 
                 1, 0, 0, 0, 
                 0, 0, 0, 0
             ],
             [
-                0, 0, 0, 0, 
-                1, 0, 0, 0, 
+                0, 2, 0, 0, 
+                1, 0, 2, 0, 
                 0, 1, 0, 0, 
                 0, 0, 0, 0
             ],
             [
-                0, 0, 0, 0, 
-                0, 0, 0, 0, 
+                0, 0, 2, 0, 
+                0, 2, 0, 2, 
                 0, 0, 1, 0, 
                 0, 0, 0, 0
             ],
             [
-                0, 0, 0, 0, 
-                0, 0, 0, 0, 
-                0, 0, 0, 0, 
+                0, 0, 0, 2, 
+                0, 0, 2, 0, 
+                0, 0, 0, 2, 
                 0, 0, 0, 0
             ],
             [
                 0, 0, 0, 0, 
                 1, 0, 0, 0, 
                 0, 1, 0, 0, 
-                0, 0, 0, 0
+                2, 0, 0, 0
             ],
             [
                 0, 0, 0, 0, 
                 0, 1, 0, 0, 
-                1, 0, 0, 0, 
-                0, 0, 0, 0
+                1, 0, 2, 0, 
+                0, 2, 0, 0
             ],
             [
                 0, 0, 0, 0, 
                 0, 0, 1, 0, 
-                0, 0, 0, 1, 
-                0, 0, 0, 0
+                0, 2, 0, 1, 
+                0, 0, 2, 0
             ],
             [
                 0, 0, 0, 0, 
-                0, 0, 0, 0, 
+                0, 0, 0, 2, 
                 0, 0, 1, 0, 
                 0, 0, 0, 1
             ],
             [
                 0, 0, 0, 0, 
                 0, 0, 0, 0, 
-                0, 0, 0, 0, 
+                2, 0, 0, 0, 
                 0, 1, 0, 0
             ],
             [
                 0, 0, 0, 0, 
                 0, 0, 0, 0, 
-                0, 0, 0, 0, 
+                0, 2, 0, 0, 
                 1, 0, 1, 0
             ],
             [
                 0, 0, 0, 0, 
                 0, 0, 0, 0, 
-                0, 0, 0, 0, 
-                0, 1, 0, 0
+                0, 0, 2, 0, 
+                0, 1, 0, 2
             ],
             [
                 0, 0, 0, 0, 
                 0, 0, 0, 0, 
                 0, 0, 0, 1, 
-                0, 0, 0, 0
+                0, 0, 2, 0
             ]
         ], test_calculator.plot_adjacency_matrix)
     
@@ -149,7 +149,7 @@ AAAAAA"""
     
     def test_returns_correct_discounted_cost_for_simple_example(self):
         test_calculator = FarmFencingCalculator(self.simple_example_input)
-        self.assertEqual(test_calculator.get_total_discounted_cost(), 80)
+        self.assertEqual(test_calculator.get_total_discounted_cost(), 80) 
     
     def test_finds_correct_regions_for_simple_example(self):
         test_calculator = FarmFencingCalculator(self.simple_example_input)

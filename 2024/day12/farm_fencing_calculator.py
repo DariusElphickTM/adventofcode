@@ -12,7 +12,7 @@ class FarmFencingCalculator():
     def calculate_discounted_cost_for_region(self, region):
         return region['area'] * region['sides']
     
-    def dfs_recurse(self, current_vertex, visited_plots, plant_id):
+    def dfs_recurse(self, current_vertex, visited_plots, plant_id, sides):
         #for each plot found
         #mark each visited_plot
         visited_plots[current_vertex]['visited'] = True
@@ -29,15 +29,21 @@ class FarmFencingCalculator():
             if adjacent_plot == 1:
                 current_perimeter -= 1
                 if not visited_plots[i]['visited']:
-                    next_plot = self.dfs_recurse(i, visited_plots, plant_id)
+                    next_plot = self.dfs_recurse(i, visited_plots, plant_id, sides)
                     current_area += next_plot['area']
                     current_perimeter += next_plot['perimeter']
+            elif adjacent_plot == 2:
+                #This is potentially a side. 
+                #Is it next to the current cell?
+                #That will be easier if it's on the adjacency matrix
+                #I'll mark a cell next to the current cell 2
+                print("Check the plot next door")
         
         return {
             'plant': plant_id,
             'area': current_area,
             'perimeter': current_perimeter,
-            'sides': current_perimeter
+            'sides': len(sides)
         }    
     
     def find_regions(self):
@@ -50,7 +56,7 @@ class FarmFencingCalculator():
             #else
             #find every other plot with the same vegetable accessible from this spot
             #set the final area and perimeter on the region
-            regions.append(self.dfs_recurse(i, visited_plots, plot))
+            regions.append(self.dfs_recurse(i, visited_plots, plot, []))
             #Region added. Continue to the next unvisited plot
         return regions
     
@@ -71,9 +77,9 @@ class FarmFencingCalculator():
         self.plots = []
         self.plot_adjacency_matrix = [[0] * size for _ in range(size)]
     
-    def add_edge(self, x, y):
-        self.plot_adjacency_matrix[x][y] = 1
-        self.plot_adjacency_matrix[y][x] = 1
+    def add_edge(self, x, y, value = 1):
+        self.plot_adjacency_matrix[x][y] = value
+        self.plot_adjacency_matrix[y][x] = value
     
     def get_edge(self, x, y):
         return self.plot_adjacency_matrix[x][y]
@@ -89,21 +95,33 @@ class FarmFencingCalculator():
         for i, row in enumerate(input_grid):
             for j, plot in enumerate(row):
                 self.plots.append(plot)
-                if i > 0 and input_grid[i - 1][j] == plot:
-                    #need to add adjacency above
-                    self.add_edge(current_index, current_index - row_length)
+                if i > 0: 
+                    if input_grid[i - 1][j] == plot:
+                        #need to add adjacency above
+                        self.add_edge(current_index, current_index - row_length)
+                    else:
+                        self.add_edge(current_index, current_index - row_length, 2)
                 
-                if i < column_height - 1 and input_grid[i + 1][j] == plot:
-                    #need to add adjacency below
-                    self.add_edge(current_index, current_index + row_length)
+                if i < column_height - 1:
+                    if input_grid[i + 1][j] == plot:
+                        #need to add adjacency below
+                        self.add_edge(current_index, current_index + row_length)
+                    else:
+                        self.add_edge(current_index, current_index + row_length, 2)
                 
-                if j > 0 and input_grid[i][j - 1] == plot:
-                    #need to add adjacency to the left
-                    self.add_edge(current_index, current_index - 1)
+                if j > 0:
+                    if input_grid[i][j - 1] == plot:
+                        #need to add adjacency to the left
+                        self.add_edge(current_index, current_index - 1)
+                    else:
+                        self.add_edge(current_index, current_index - 1, 2)
                 
-                if j < row_length - 1 and input_grid[i][j + 1] == plot:
-                    #need to add adjecency to the right
-                    self.add_edge(current_index, current_index + 1)
+                if j < row_length - 1:
+                    if input_grid[i][j + 1] == plot:
+                        #need to add adjecency to the right
+                        self.add_edge(current_index, current_index + 1)
+                    else:
+                        self.add_edge(current_index, current_index + 1, 2)
 
                 current_index += 1
         #self.print_trail_map(self.trail_map)
