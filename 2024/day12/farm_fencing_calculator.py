@@ -22,16 +22,17 @@ class FarmFencingCalculator():
                 if not visited_plots[i]['visited']:
                     self.find_sides_via_dfs(i, visited_plots, adjacency_matrix)
     
-    def get_adjacency_matrix_for_sides(self, region_map):
+    def get_adjacency_matrix_for_sides(self, region_map, region_map_grid):
         size = len(region_map)
+        
         adjacency_matrix = [[0] * size for _ in range(size)]
         
         current_index = 0
-        for i, row in enumerate(region_map):
+        for i, row in enumerate(region_map_grid):
             for j, plot in enumerate(row):
                 if plot == "S":
                     if i > 0: 
-                        if region_map[i - 1][j] == plot:
+                        if region_map_grid[i - 1][j] == plot:
                             #need to add adjacency above
                             x = current_index
                             y = current_index - self.row_length
@@ -39,7 +40,7 @@ class FarmFencingCalculator():
                             adjacency_matrix[y][x] = 1
                     
                     if i < self.row_length - 1:
-                        if region_map[i + 1][j] == plot:
+                        if region_map_grid[i + 1][j] == plot:
                             #need to add adjacency below
                             x = current_index
                             y = current_index + self.row_length
@@ -47,7 +48,7 @@ class FarmFencingCalculator():
                             adjacency_matrix[y][x] = 1
                     
                     if j > 0:
-                        if region_map[i][j - 1] == plot:
+                        if region_map_grid[i][j - 1] == plot:
                             #need to add adjacency to the left
                             x = current_index
                             y = current_index - 1
@@ -55,7 +56,7 @@ class FarmFencingCalculator():
                             adjacency_matrix[y][x] = 1
                     
                     if j < self.row_length - 1:
-                        if region_map[i][j + 1] == plot:
+                        if region_map_grid[i][j + 1] == plot:
                             #need to add adjecency to the right
                             x = current_index
                             y = current_index + 1
@@ -66,9 +67,12 @@ class FarmFencingCalculator():
     
     def get_sides_count_from_region_map(self, region_map):
         sides = 0
+        clarified_region_map = self.clarify_region_map(region_map)
         visited_plots = list(map(lambda plot: {'visited': False, 'plot': plot}, self.plots))
-        adjacency_matrix = self.get_adjacency_matrix_for_sides(region_map)
-        for i, plot in enumerate(region_map):
+        region_map_grid = self.get_region_map_grid(region_map)
+        adjacency_matrix = self.get_adjacency_matrix_for_sides(region_map, region_map_grid)
+        #print(adjacency_matrix)
+        for i, plot in enumerate(clarified_region_map):
             #Check it plot not a side, or already accounted for
             if not plot == 'S' or visited_plots[i]['visited']:
                 continue
@@ -78,6 +82,7 @@ class FarmFencingCalculator():
             #find every other side accessible from this spot, and mark them as visited
             self.find_sides_via_dfs(i, visited_plots, adjacency_matrix)
             #Side added. Continue to the next unvisited side
+        print(sides)
         return sides
     
     def find_region_via_dfs(self, current_vertex, visited_plots, region_tracker, plant_id):
@@ -138,9 +143,19 @@ class FarmFencingCalculator():
         else:
             return '0'
     
-    def print_region_map(self, visted_plots):
+    def clarify_region_map(self, region_map):
+        return list(map(self.region_map_plot_character_representation, region_map))
+    
+    def get_region_map_grid(self, region_map):
+        mapped = self.clarify_region_map(region_map)
+        result = []
+        for i in range(0, len(mapped), self.row_length):
+            result.append(mapped[i:i+self.row_length])
+        return result
+    
+    def print_region_map(self, visited_plots):
         print()
-        current_map = list(map(self.region_map_plot_character_representation, visted_plots))
+        current_map = list(map(self.region_map_plot_character_representation, visited_plots))
         i = self.row_length
         while i < len(current_map):
             current_map.insert(i, '\n')
