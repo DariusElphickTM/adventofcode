@@ -1,5 +1,14 @@
 import re
 
+class TreeNode():
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+        self.branches = []
+    
+    def get_score(self):
+        return self.x * self.y
+
 class ClawMachinePlayer():
     def __init__(self, input_string):
         self.parse_input(input_string)
@@ -22,4 +31,5 @@ class ClawMachinePlayer():
         lines = input_string.split('\n')
         self.a_button_action = self.parse_line(lines[0])
         self.b_button_action = self.parse_line(lines[1])
-        self.prize_location = self.parse_line(lines[2])
+        prize_location = self.parse_line(lines[2])
+        self.prize_location = TreeNode(prize_location['x'], prize_location['y'])

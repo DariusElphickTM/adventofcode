@@ -1,5 +1,5 @@
 import unittest
-from claw_machine_player import ClawMachinePlayer
+from claw_machine_player import ClawMachinePlayer, TreeNode
 
 class TestClawMachinePlayer(unittest.TestCase):
     example_inputs = [
@@ -48,10 +48,8 @@ Prize: X=18641, Y=10279""",
             'x': 22,
             'y': 67
         }, test_player.b_button_action)
-        self.assertDictEqual({
-            'x': 8400, 
-            'y': 5400
-        }, test_player.prize_location)
+        self.assertEqual(8400, test_player.prize_location.x)
+        self.assertEqual(5400, test_player.prize_location.y)
     
     def test_plays_game_for_first_example(self):
         test_input = self.example_inputs[0]
@@ -72,6 +70,21 @@ Prize: X=18641, Y=10279""",
         test_input = self.example_inputs[3]
         test_player = ClawMachinePlayer(test_input['string'])
         self.assertEqual(test_input['result'], test_player.play_game())
+
+class TestTreeNode(unittest.TestCase):
+    def test_returns_score_for_node(self):
+        test_tree_node = TreeNode(0, 0)
+        self.assertEqual(0, test_tree_node.get_score())
+        test_tree_node = TreeNode(1, 1)
+        self.assertEqual(1, test_tree_node.get_score())
+        test_tree_node = TreeNode(2, 2)
+        self.assertEqual(4, test_tree_node.get_score())
+        test_tree_node = TreeNode(2, 1)
+        self.assertEqual(2, test_tree_node.get_score())
+        test_tree_node = TreeNode(1, 2)
+        self.assertEqual(2, test_tree_node.get_score())
+        test_tree_node = TreeNode(5, 3)
+        self.assertEqual(15, test_tree_node.get_score())
 
 if __name__ == "__main__":
     unittest.main()
