@@ -37,8 +37,12 @@ class FarmFencingCalculator():
                     current_perimeter += next_plot['perimeter']
                     current_sides += next_plot['sides']
             elif adjacent_plot == 2:
-                #This cell is a corner. 
+                #This cell is a corner 
                 region_tracker[i]['corner'] = True
+                current_sides += 1
+        
+        #need to account for corners at the edges of the map
+        
         
         return {
             'plant': plant_id,
@@ -51,6 +55,10 @@ class FarmFencingCalculator():
         regions = []
         visited_plots = list(map(lambda plot: {'visited': False}, self.plots))
         for i, plot in enumerate(self.plots):
+            if plot == '0':
+                #This is a boundary put in to help with detecting corners. Ignore
+                continue
+            
             #Check if plot already included in a region
             if visited_plots[i]['visited']:
                 continue
@@ -62,6 +70,7 @@ class FarmFencingCalculator():
             self.print_region_map(region_map)
             regions.append(region)
             #Region added. Continue to the next unvisited plot
+        print(regions)
         return regions
     
     def region_map_plot_character_representation(self, plot):
@@ -104,13 +113,27 @@ class FarmFencingCalculator():
         if bidirectional:
             adjacency_matrix[y][x] = value
     
+    def print_input_grid(self, input_grid):
+        print()
+        for row in input_grid:
+            print(row)
+        print()
+    
+    def pad_row(self, row):
+        row_to_list = list(row)
+        row_to_list.insert(0, '0')
+        row_to_list.append('0')
+        return row_to_list
+    
     def parse_input(self, input_string):
-        self.initialise_farm_map(len(re.sub('\n', '', input_string)))
-        
-        input_grid = list(map(list, input_string.split('\n')))
-        column_height = len(input_grid)
+        input_grid = list(map(self.pad_row, input_string.split('\n')))
         row_length = len(input_grid[0])
         self.row_length = row_length
+        input_grid.insert(0, ['0'] * row_length)
+        input_grid.append(['0'] * row_length)
+        column_height = len(input_grid)
+        size = row_length * column_height
+        self.initialise_farm_map(size)
         
         current_index = 0
         for i, row in enumerate(input_grid):
