@@ -50,6 +50,8 @@ Prize: X=18641, Y=10279""",
         }, test_player.b_button_action)
         self.assertEqual(8400, test_player.prize_location.x)
         self.assertEqual(5400, test_player.prize_location.y)
+        self.assertEqual(0, test_player.current_location.x)
+        self.assertEqual(0, test_player.current_location.y)
     
     def test_plays_game_for_first_example(self):
         test_input = self.example_inputs[0]

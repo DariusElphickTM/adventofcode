@@ -33,3 +33,4 @@ class ClawMachinePlayer():
         self.b_button_action = self.parse_line(lines[1])
         prize_location = self.parse_line(lines[2])
         self.prize_location = TreeNode(prize_location['x'], prize_location['y'])
+        self.current_location = TreeNode(0, 0)
