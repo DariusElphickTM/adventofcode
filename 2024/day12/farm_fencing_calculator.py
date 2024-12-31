@@ -67,10 +67,8 @@ class FarmFencingCalculator():
             #set the final area and perimeter on the region
             region_map = list(map(lambda plot: {'visited': False, 'corner':False, 'plot': plot}, self.plots))
             region = self.find_region_via_dfs(i, visited_plots, region_map, plot)
-            self.print_region_map(region_map)
             regions.append(region)
             #Region added. Continue to the next unvisited plot
-        print(regions)
         return regions
     
     def region_map_plot_character_representation(self, plot):

@@ -41,115 +41,13 @@ AAAAAA"""
     def setUp(self):
         self.default_test_calculator = FarmFencingCalculator(self.complex_example_input)
     
-    def test_creates_adjacency_matrix_for_simple_example(self):
-        test_calculator = FarmFencingCalculator(self.simple_example_input)
-        self.assertListEqual(["A","A","A","A","B","B","C","D","B","B","C","C","E","E","E","C"], test_calculator.plots)
-        self.assertListEqual([
-            [
-                0, 1, 0, 0, 
-                0, 0, 0, 0, 
-                0, 0, 0, 0, 
-                0, 0, 0, 0
-            ],
-            [
-                1, 0, 1, 0, 
-                0, 0, 0, 0, 
-                0, 0, 0, 0, 
-                0, 0, 0, 0
-            ],
-            [
-                0, 1, 0, 1, 
-                0, 0, 0, 0, 
-                0, 0, 0, 0, 
-                0, 0, 0, 0
-            ],
-            [
-                0, 0, 1, 0, 
-                0, 0, 0, 0, 
-                0, 0, 0, 0, 
-                0, 0, 0, 0
-            ],
-            [
-                0, 0, 0, 0, 
-                0, 1, 0, 0, 
-                1, 0, 0, 0, 
-                0, 0, 0, 0
-            ],
-            [
-                0, 0, 2, 0, 
-                1, 0, 0, 0, 
-                0, 1, 0, 0, 
-                0, 0, 0, 0
-            ],
-            [
-                0, 2, 0, 2, 
-                0, 0, 0, 0, 
-                0, 0, 1, 0, 
-                0, 0, 0, 0
-            ],
-            [
-                0, 0, 2, 0, 
-                0, 0, 0, 0, 
-                0, 0, 2, 0, 
-                0, 0, 0, 0
-            ],
-            [
-                0, 0, 0, 0, 
-                1, 0, 0, 0, 
-                0, 1, 0, 0, 
-                0, 0, 0, 0
-            ],
-            [
-                0, 0, 0, 0, 
-                0, 1, 0, 0, 
-                1, 0, 0, 0, 
-                0, 0, 2, 0
-            ],
-            [
-                0, 0, 0, 0, 
-                0, 0, 1, 2, 
-                0, 0, 0, 1, 
-                0, 2, 0, 0
-            ],
-            [
-                0, 0, 0, 0, 
-                0, 0, 0, 0, 
-                0, 0, 1, 0, 
-                0, 0, 2, 1
-            ],
-            [
-                0, 0, 0, 0, 
-                0, 0, 0, 0, 
-                0, 0, 0, 0, 
-                0, 1, 0, 0
-            ],
-            [
-                0, 0, 0, 0, 
-                0, 0, 0, 0, 
-                0, 0, 0, 0, 
-                1, 0, 1, 0
-            ],
-            [
-                0, 0, 0, 0, 
-                0, 0, 0, 0, 
-                0, 0, 0, 2, 
-                0, 1, 0, 0
-            ],
-            [
-                0, 0, 0, 0, 
-                0, 0, 0, 0, 
-                0, 0, 0, 1, 
-                0, 0, 0, 0
-            ]
-        ], test_calculator.plot_adjacency_matrix)
-    
-    """def test_returns_correct_cost_for_simple_example(self):
+    def test_returns_correct_cost_for_simple_example(self):
         test_calculator = FarmFencingCalculator(self.simple_example_input)
         self.assertEqual(test_calculator.get_total_cost(), 140)
     
     def test_returns_correct_discounted_cost_for_simple_example(self):
         test_calculator = FarmFencingCalculator(self.simple_example_input)
-        self.assertEqual(test_calculator.get_total_discounted_cost(), 80)""" 
+        self.assertEqual(test_calculator.get_total_discounted_cost(), 80)
     
     def test_finds_correct_regions_for_simple_example(self):
         test_calculator = FarmFencingCalculator(self.simple_example_input)
@@ -186,7 +84,7 @@ AAAAAA"""
             }
         ], test_calculator.find_regions())
     
-    """def test_returns_correct_cost_for_larger_example(self):
+    def test_returns_correct_cost_for_larger_example(self):
         test_calculator = FarmFencingCalculator(self.larger_example_input)
         self.assertEqual(test_calculator.get_total_cost(), 772)
     
@@ -208,7 +106,7 @@ AAAAAA"""
     
     def test_returns_correct_discounted_cost_for_abba_example(self):
         test_calculator = FarmFencingCalculator(self.abba_example_input)
-        self.assertEqual(test_calculator.get_total_discounted_cost(), 368)"""
+        self.assertEqual(test_calculator.get_total_discounted_cost(), 368)
 
 if __name__ == "__main__":
     unittest.main()
