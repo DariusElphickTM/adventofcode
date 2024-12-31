@@ -37,6 +37,22 @@ Prize: X=18641, Y=10279""",
         }
     ]
     
+    def test_parses_input_successfully(self):
+        test_input = self.example_inputs[0]
+        test_player = ClawMachinePlayer(test_input['string'])
+        self.assertDictEqual({
+            'x': 94,
+            'y': 34
+        }, test_player.a_button_action)
+        self.assertDictEqual({
+            'x': 22,
+            'y': 67
+        }, test_player.b_button_action)
+        self.assertDictEqual({
+            'x': 8400, 
+            'y': 5400
+        }, test_player.prize_location)
+    
     def test_plays_game_for_first_example(self):
         test_input = self.example_inputs[0]
         test_player = ClawMachinePlayer(test_input['string'])
