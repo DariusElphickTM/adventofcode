@@ -13,7 +13,7 @@ class TreeNode():
         self.branches.append(TreeNode(self.x + b_button_action['x'], self.y + b_button_action['y'], self.cost_to_get_here + 1, target.get_score()))
     
     def search_for_prize(self, a_button_action, b_button_action, remaining_depth, target, attempt_count):
-        print(attempt_count, " ", target.x, target.y, " searching at ", self.x, self.y, " with score ", self.get_score())
+        print(target.x, target.y, " searching at ", self.x, self.y, " with score ", self.get_score())
         if remaining_depth < 1 or self.x > target.x or self.y > target.y:
             #We've not found the target and we've gone beyond where it will be
             #Assumption that you can't go backwards while playing the game
@@ -27,7 +27,7 @@ class TreeNode():
         else:
             #Generate the next steps, sort them by the score, and execute them in order
             self.generate_next_steps(a_button_action, b_button_action, target)
-            self.branches.sort(reverse=True)
+            self.branches.sort(reverse=False)
             for branch in self.branches:
                 result = branch.search_for_prize(a_button_action, b_button_action, remaining_depth - 1, target, attempt_count + 1)
                 if result:

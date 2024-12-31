@@ -59,12 +59,12 @@ Prize: X=5, Y=4""",
         self.assertEqual(0, test_player.current_location.x)
         self.assertEqual(0, test_player.current_location.y)
     
-    """def test_plays_game_for_first_example(self):
+    def test_plays_game_for_first_example(self):
         test_input = self.example_inputs[0]
         test_player = ClawMachinePlayer(test_input['string'])
         self.assertEqual(test_input['result'], test_player.play_game())
     
-    def test_plays_game_for_second_example(self):
+    """def test_plays_game_for_second_example(self):
         test_input = self.example_inputs[1]
         test_player = ClawMachinePlayer(test_input['string'])
         self.assertEqual(test_input['result'], test_player.play_game())
