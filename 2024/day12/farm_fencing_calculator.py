@@ -37,9 +37,8 @@ class FarmFencingCalculator():
                     current_perimeter += next_plot['perimeter']
                     current_sides += next_plot['sides']
             elif adjacent_plot == 2:
-                #This cell is next to the current plot. 
-                #Let's build a map of the perimeter of the region.
-                region_tracker[i]['adjacent'] = True
+                #This cell is a corner. 
+                region_tracker[i]['corner'] = True
         
         return {
             'plant': plant_id,
@@ -58,7 +57,7 @@ class FarmFencingCalculator():
             #else
             #find every other plot with the same vegetable accessible from this spot
             #set the final area and perimeter on the region
-            region_map = list(map(lambda plot: {'visited': False, 'adjacent': False, 'plot': plot}, self.plots))
+            region_map = list(map(lambda plot: {'visited': False, 'corner':False, 'plot': plot}, self.plots))
             region = self.find_region_via_dfs(i, visited_plots, region_map, plot)
             self.print_region_map(region_map)
             regions.append(region)
@@ -68,6 +67,8 @@ class FarmFencingCalculator():
     def region_map_plot_character_representation(self, plot):
         if plot['visited']:
             return plot['plot']
+        elif plot['corner']:
+            return '*'
         else:
             return '0'
     
@@ -98,9 +99,10 @@ class FarmFencingCalculator():
         self.plots = []
         self.plot_adjacency_matrix = [[0] * size for _ in range(size)]
     
-    def add_edge(self, x, y, adjacency_matrix, value = 1):
+    def add_edge(self, x, y, adjacency_matrix, value = 1, bidirectional = True):
         adjacency_matrix[x][y] = value
-        adjacency_matrix[y][x] = value
+        if bidirectional:
+            adjacency_matrix[y][x] = value
     
     def parse_input(self, input_string):
         self.initialise_farm_map(len(re.sub('\n', '', input_string)))
@@ -133,5 +135,61 @@ class FarmFencingCalculator():
                     if input_grid[i][j + 1] == plot:
                         #need to add adjecency to the right
                         self.add_edge(current_index, current_index + 1, self.plot_adjacency_matrix)
+                
+                if i > 0 and j > 0:
+                    #check for a corner in the NW position
+                    #concave corner
+                    if not input_grid[i - 1][j - 1] == plot and input_grid[i][j - 1] == plot and input_grid[i - 1][j] == plot:
+                        self.add_edge(current_index, current_index - row_length - 1, self.plot_adjacency_matrix, 2, False)
+                    
+                    #convex corner
+                    if not input_grid[i - 1][j - 1] == plot and not input_grid[i][j - 1] == plot and not input_grid[i - 1][j] == plot:
+                        self.add_edge(current_index, current_index - row_length - 1, self.plot_adjacency_matrix, 2, False)
+                    
+                    #convex 2 convex corner
+                    if input_grid[i - 1][j - 1] == plot and not input_grid[i][j - 1] == plot and not input_grid[i - 1][j] == plot:
+                        self.add_edge(current_index, current_index - row_length - 1, self.plot_adjacency_matrix, 2, False)
+                
+                if i > 0 and j < row_length - 1:
+                    #check for a corner in the NE position
+                    #concave corner
+                    if not input_grid[i - 1][j + 1] == plot and input_grid[i][j + 1] == plot and input_grid[i - 1][j] == plot:
+                        self.add_edge(current_index, current_index - row_length + 1, self.plot_adjacency_matrix, 2, False)
+                    
+                    #convex corner
+                    if not input_grid[i - 1][j + 1] == plot and not input_grid[i][j + 1] == plot and not input_grid[i - 1][j] == plot:
+                        self.add_edge(current_index, current_index - row_length + 1, self.plot_adjacency_matrix, 2, False)
+                    
+                    #convex 2 convex corner
+                    if input_grid[i - 1][j + 1] == plot and not input_grid[i][j + 1] == plot and not input_grid[i - 1][j] == plot:
+                        self.add_edge(current_index, current_index - row_length + 1, self.plot_adjacency_matrix, 2, False)
+                
+                if i < column_height - 1 and j > 0:
+                    #check for a corner in the SW position
+                    #concave corner
+                    if not input_grid[i + 1][j - 1] == plot and input_grid[i][j - 1] == plot and input_grid[i + 1][j] == plot:
+                        self.add_edge(current_index, current_index + row_length - 1, self.plot_adjacency_matrix, 2, False)
+                    
+                    #convex corner
+                    if not input_grid[i + 1][j - 1] == plot and not input_grid[i][j - 1] == plot and not input_grid[i + 1][j] == plot:
+                        self.add_edge(current_index, current_index + row_length - 1, self.plot_adjacency_matrix, 2, False)
+                    
+                    #convex 2 convex corner
+                    if input_grid[i + 1][j - 1] == plot and not input_grid[i][j - 1] == plot and not input_grid[i + 1][j] == plot:
+                        self.add_edge(current_index, current_index + row_length - 1, self.plot_adjacency_matrix, 2, False)
+                
+                if i < column_height - 1 and j < row_length - 1:
+                    #check for a corner in the SE position
+                    #concave corner
+                    if not input_grid[i + 1][j + 1] == plot and input_grid[i][j + 1] == plot and input_grid[i + 1][j] == plot:
+                        self.add_edge(current_index, current_index + row_length + 1, self.plot_adjacency_matrix, 2, False)
+                    
+                    #convex corner
+                    if not input_grid[i + 1][j + 1] == plot and not input_grid[i][j + 1] == plot and not input_grid[i + 1][j] == plot:
+                        self.add_edge(current_index, current_index + row_length + 1, self.plot_adjacency_matrix, 2, False)
+                    
+                    #convex 2 convex corner
+                    if input_grid[i + 1][j + 1] == plot and not input_grid[i][j + 1] == plot and not input_grid[i + 1][j] == plot:
+                        self.add_edge(current_index, current_index + row_length + 1, self.plot_adjacency_matrix, 2, False)
 
                 current_index += 1
