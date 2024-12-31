@@ -5,6 +5,7 @@ def main():
     fencing_calculator = FarmFencingCalculator(read_file("input.txt"))
     
     print("Solution for part 1", fencing_calculator.get_total_cost())
+    print("Solution for part 2", fencing_calculator.get_total_discounted_cost())
 
 def read_file(file_name):
     """Reads a text file and returns all of it's contents."""
