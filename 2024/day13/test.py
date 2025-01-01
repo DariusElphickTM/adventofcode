@@ -39,7 +39,11 @@ Prize: X=18641, Y=10279""",
             'string': """Button A: X+1, Y+2
 Button B: X+2, Y+1
 Prize: X=5, Y=4""",
-            'result': 5
+            'result': {
+                'a_count': 1,
+                'b_count': 2,
+                'cost': 5
+            }
         }
     ]
     
@@ -59,10 +63,10 @@ Prize: X=5, Y=4""",
         self.assertEqual(0, test_player.current_location.x)
         self.assertEqual(0, test_player.current_location.y)
     
-    """def test_plays_game_for_first_example(self):
+    def test_plays_game_for_first_example(self):
         test_input = self.example_inputs[0]
         test_player = ClawMachinePlayer(test_input['string'])
-        self.assertEqual(test_input['result'], test_player.play_game())"""
+        self.assertEqual(test_input['result'], test_player.play_game())
     
     """def test_plays_game_for_second_example(self):
         test_input = self.example_inputs[1]

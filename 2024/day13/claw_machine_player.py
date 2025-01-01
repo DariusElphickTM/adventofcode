@@ -30,7 +30,11 @@ class TreeNode():
         
         if self.x == target.x and self.y == target.y:
             #Found the target, return the current cost
-            result = self.get_cost()
+            result = {
+                'a_count': self.a_count,
+                'b_count': self.b_count,
+                'cost': self.get_cost()
+            }
         else:
             #Generate the next steps, sort them by the score, and execute them in order
             self.generate_next_steps(a_button_action, b_button_action, target)
