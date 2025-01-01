@@ -2,58 +2,38 @@ import re
 from collections import deque
 
 class TreeNode():
-    def __init__(self, x, y, a_count, b_count, target_score):
+    def __init__(self, x, y, a_count = 0, b_count = 0, current_depth = 0):
         self.x = x
         self.y = y
         self.a_count = a_count
         self.b_count = b_count
-        self.target_score = target_score
+        self.current_depth = current_depth
         self.branches = []
     
-    def generate_next_steps(self, a_button_action, b_button_action, target):
-        self.branches.append(TreeNode(self.x + a_button_action['x'], self.y + a_button_action['y'], self.a_count + 1, self.b_count, target.get_score()))
-        self.branches.append(TreeNode(self.x + b_button_action['x'], self.y + b_button_action['y'], self.a_count, self.b_count + 1, target.get_score()))
+    def generate_next_steps(self, a_button_action, b_button_action):
+        self.branches.append(
+            TreeNode(
+                self.x + a_button_action['x'], 
+                self.y + a_button_action['y'], 
+                self.a_count + 1, 
+                self.b_count, 
+                self.current_depth + 1
+            )
+        )
+        self.branches.append(
+            TreeNode(
+                self.x + b_button_action['x'], 
+                self.y + b_button_action['y'], 
+                self.a_count, self.b_count + 1, 
+                self.current_depth + 1
+            )
+        )
     
     def get_path(self):
         return {
             'a_count': self.a_count,
             'b_count': self.b_count
         }
-    
-    def search_for_prize(self, a_button_action, b_button_action, remaining_depth, target, attempt_count, paths_tried):
-        print(target.x, target.y, " searching at ", self.x, self.y, " with score ", self.get_score())
-        if remaining_depth < 1 or self.x > target.x or self.y > target.y:
-            #We've not found the target and we've gone beyond where it will be
-            #Assumption that you can't go backwards while playing the game
-            return False
-        
-        result = None
-        
-        if self.x == target.x and self.y == target.y:
-            #Found the target, return the current cost
-            result = {
-                'a_count': self.a_count,
-                'b_count': self.b_count,
-                'cost': self.get_cost()
-            }
-        else:
-            #Generate the next steps, sort them by the score, and execute them in order
-            self.generate_next_steps(a_button_action, b_button_action, target)
-            self.branches.sort(reverse=False)
-            for branch in self.branches:
-                path_to_branch = branch.get_path()
-                if not any(path['a_count'] == path_to_branch['a_count'] and path['b_count'] == path_to_branch['b_count']for path in paths_tried):
-                    paths_tried.append(path_to_branch)
-                    result = branch.search_for_prize(a_button_action, b_button_action, remaining_depth - 1, target, attempt_count + 1, paths_tried)
-                    if result:
-                        #A branch has returned a cost. Return
-                        break
-                else:
-                    print("Seen this path before")
-        return result
-    
-    def __lt__(self, other):
-        return self.target_score - self.get_score() < self.target_score - other.get_score()
     
     def get_score(self):
         return self.x * self.y
@@ -65,15 +45,16 @@ class ClawMachinePlayer():
     def __init__(self, input_string):
         self.parse_input(input_string)
     
-    def search_for_prize_bfs(self, max_depth):
+    def search_for_prize_bfs(self, max_button_pushes):
         tried_paths = []
         queue = deque([self.current_location])
-        depth = 0
-        while queue and depth < max_depth:
-            depth += 1
+        while queue:
             current_node = queue.popleft()
             current_path = current_node.get_path()
-            print("current_node", current_node.get_path(), current_node.x, current_node.y)
+            print("a", current_path['a_count'], "b", current_path['b_count'], "x", current_node.x, "y", current_node.y)
+            
+            if current_node.a_count > max_button_pushes or current_node.b_count > max_button_pushes:
+                continue
             
             match = None
             for previous_path in tried_paths:
@@ -82,7 +63,6 @@ class ClawMachinePlayer():
                     break
             
             if not match is None:
-                print("Already tried this path")
                 continue
             
             if current_node.x == self.prize_location.x and current_node.y == self.prize_location.y:
@@ -93,13 +73,12 @@ class ClawMachinePlayer():
                 }
             
             tried_paths.append(current_node.get_path())
-            current_node.generate_next_steps(self.a_button_action, self.b_button_action, self.prize_location)
+            current_node.generate_next_steps(self.a_button_action, self.b_button_action)
 
             queue.append(current_node.branches[0])
             queue.append(current_node.branches[1])
     
     def play_game(self):
-        #result = self.current_location.search_for_prize(self.a_button_action, self.b_button_action, 100, self.prize_location, 1, [])
         result = self.search_for_prize_bfs(100)
         print("Result", result)
         return result
@@ -116,5 +95,5 @@ class ClawMachinePlayer():
         self.a_button_action = self.parse_line(lines[0])
         self.b_button_action = self.parse_line(lines[1])
         prize_location = self.parse_line(lines[2])
-        self.prize_location = TreeNode(prize_location['x'], prize_location['y'], 0, 0, 0)
-        self.current_location = TreeNode(0, 0, 0, 0, self.prize_location.get_score())
+        self.prize_location = TreeNode(prize_location['x'], prize_location['y'])
+        self.current_location = TreeNode(0, 0)

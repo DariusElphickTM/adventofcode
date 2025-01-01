@@ -90,17 +90,17 @@ Prize: X=5, Y=4""",
 
 class TestTreeNode(unittest.TestCase):
     def test_returns_score_for_node(self):
-        test_tree_node = TreeNode(0, 0, 0, 0, [])
+        test_tree_node = TreeNode(0, 0)
         self.assertEqual(0, test_tree_node.get_score())
-        test_tree_node = TreeNode(1, 1, 0, 0, [])
+        test_tree_node = TreeNode(1, 1)
         self.assertEqual(1, test_tree_node.get_score())
-        test_tree_node = TreeNode(2, 2, 0, 0, [])
+        test_tree_node = TreeNode(2, 2)
         self.assertEqual(4, test_tree_node.get_score())
-        test_tree_node = TreeNode(2, 1, 0, 0, [])
+        test_tree_node = TreeNode(2, 1)
         self.assertEqual(2, test_tree_node.get_score())
-        test_tree_node = TreeNode(1, 2, 0, 0, [])
+        test_tree_node = TreeNode(1, 2)
         self.assertEqual(2, test_tree_node.get_score())
-        test_tree_node = TreeNode(5, 3, 0, 0, [])
+        test_tree_node = TreeNode(5, 3)
         self.assertEqual(15, test_tree_node.get_score())
 
 if __name__ == "__main__":
