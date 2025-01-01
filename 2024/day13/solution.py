@@ -1,7 +1,7 @@
 from claw_machine_player import ClawMachinePlayer
 
-def play_game_and_return_result(input_string):
-    player = ClawMachinePlayer(input_string)
+def play_game_and_return_result(input_string, id):
+    player = ClawMachinePlayer(input_string, id)
     return player.play_game()
 
 def main():
@@ -9,7 +9,9 @@ def main():
     
     input_string = read_file("input.txt")
     input_strings = input_string.split('\n\n')
-    results = list(map(play_game_and_return_result, input_strings))
+    results = []
+    for i, game in enumerate(input_strings):
+        results.append(play_game_and_return_result(game, f'{i} of {len(input_strings)}'))
     filtered_results = filter(lambda result: result is not None, results)
     total_cost = 0
     for result in filtered_results:

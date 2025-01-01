@@ -42,7 +42,8 @@ class TreeNode():
         return self.a_count * 3 + self.b_count
 
 class ClawMachinePlayer():
-    def __init__(self, input_string):
+    def __init__(self, input_string, id = ''):
+        self.id = id
         self.parse_input(input_string)
     
     def search_for_prize_bfs(self, max_button_pushes):
@@ -51,7 +52,7 @@ class ClawMachinePlayer():
         while queue:
             current_node = queue.popleft()
             current_path = current_node.get_path()
-            print("a", current_path['a_count'], "b", current_path['b_count'], "x", current_node.x, "y", current_node.y)
+            print(self.id, "a", current_path['a_count'], "b", current_path['b_count'], "x", current_node.x, "y", current_node.y)
             
             if current_node.a_count > max_button_pushes or current_node.b_count > max_button_pushes:
                 continue
