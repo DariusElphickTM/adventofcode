@@ -1,7 +1,7 @@
-from claw_machine_player import ClawMachinePlayer
+from claw_machine_player import MathematicalClawMachinePlayer
 
 def play_game_and_return_result(input_string, id):
-    player = ClawMachinePlayer(input_string, id)
+    player = MathematicalClawMachinePlayer(input_string, id)
     return player.play_game()
 
 def main():
