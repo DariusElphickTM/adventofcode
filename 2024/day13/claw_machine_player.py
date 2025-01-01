@@ -98,3 +98,90 @@ class ComputationalClawMachinePlayer():
         prize_location = self.parse_line(lines[2])
         self.prize_location = TreeNode(prize_location['x'], prize_location['y'])
         self.current_location = TreeNode(0, 0)
+        
+class MathematicalClawMachinePlayer():
+    def __init__(self, input_string, id = ''):
+        self.id = id
+        self.parse_input(input_string)
+    
+    def solve_game_mathematically(self):
+        #I'm being explicit about recreating the matrix for my own learning
+        #This function can be simplified
+        #step 1 - Create my matrix for solving a linear equation
+        step_1_matrix = [
+            [
+                self.a_button_action['x'], 
+                self.a_button_action['y']
+            ],
+            [
+                self.b_button_action['x'],
+                self.b_button_action['y']
+            ],
+            [
+                self.prize_location['x'], 
+                self.prize_location['y']
+            ]
+        ]
+        print("Step 1", step_1_matrix)
+        
+        #step 2 - Eliminate B button influence from the linear equation
+        step_2_matrix = [
+            [
+                step_1_matrix[0][0] * step_1_matrix[1][1],
+                step_1_matrix[0][1] * step_1_matrix[1][0]
+            ], 
+            [
+                step_1_matrix[1][0] * step_1_matrix[1][1],
+                step_1_matrix[1][1] * step_1_matrix[1][0]
+            ], 
+            [
+                step_1_matrix[2][0] * step_1_matrix[1][1],
+                step_1_matrix[2][1] * step_1_matrix[1][0]
+            ]
+        ]
+        print("Step 2", step_2_matrix)
+        
+        #step 3 - Subtract x from y
+        step_3_array = [
+            step_2_matrix[0][0] - step_2_matrix[0][1],
+            step_2_matrix[1][0] - step_2_matrix[1][1],
+            step_2_matrix[2][0] - step_2_matrix[2][1]
+        ]
+        print("Step 3", step_3_array)
+        
+        #step 4 - find a_count
+        a_count = step_3_array[2] / step_3_array[0]
+        print("a_count", a_count)
+        
+        #step 5 - find b_count
+        b_count = (step_1_matrix[2][0] - (step_1_matrix[0][0] * a_count)) / step_1_matrix[1][0]
+        print("b_count", b_count)
+        
+        #step 6 - if both a_count and b_count are integers, the game is solvable
+        if not (a_count.is_integer() and b_count.is_integer()):
+            return None
+        
+        return {
+            'a_count': a_count,
+            'b_count': b_count,
+            'cost': a_count * 3 + b_count
+        } 
+        
+    
+    def play_game(self):
+        result = self.solve_game_mathematically()
+        print("Result", result)
+        return result
+    
+    def parse_line(self, button_string):
+        inputs = list(map(int, re.findall(r'\d+', button_string)))
+        return {
+            'x': inputs[0],
+            'y': inputs[1]
+        }
+    
+    def parse_input(self, input_string):
+        lines = input_string.split('\n')
+        self.a_button_action = self.parse_line(lines[0])
+        self.b_button_action = self.parse_line(lines[1])
+        self.prize_location = self.parse_line(lines[2])
