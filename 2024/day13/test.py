@@ -155,11 +155,11 @@ Prize: X=5, Y=4""",
         self.assertDictEqual({
             'x': 94,
             'y': 34
-        }, test_player.a_button_action)
+        }, test_player.a_vector)
         self.assertDictEqual({
             'x': 22,
             'y': 67
-        }, test_player.b_button_action)
+        }, test_player.b_vector)
         self.assertDictEqual({
             'x': 8400,
             'y': 5400

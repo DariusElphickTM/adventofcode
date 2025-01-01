@@ -105,59 +105,40 @@ class MathematicalClawMachinePlayer():
         self.parse_input(input_string, units_corrected)
     
     def solve_game_mathematically(self):
-        #I'm being explicit about recreating the matrix for my own learning
-        #This function can be simplified
-        #step 1 - Create my matrix for solving a linear equation
+        #step 1 - Eliminate B button influence from the linear equation
         step_1_matrix = [
             [
-                self.a_button_action['x'], 
-                self.a_button_action['y']
-            ],
+                self.a_vector['x'] * self.b_vector['y'],
+                self.a_vector['y'] * self.b_vector['x']
+            ], 
             [
-                self.b_button_action['x'],
-                self.b_button_action['y']
-            ],
+                self.b_vector['x'] * self.b_vector['y'],
+                self.b_vector['y'] * self.b_vector['x']
+            ], 
             [
-                self.prize_location['x'], 
-                self.prize_location['y']
+                self.prize_location['x'] * self.b_vector['y'],
+                self.prize_location['y'] * self.b_vector['x']
             ]
         ]
         print("Step 1", step_1_matrix)
         
-        #step 2 - Eliminate B button influence from the linear equation
-        step_2_matrix = [
-            [
-                step_1_matrix[0][0] * step_1_matrix[1][1],
-                step_1_matrix[0][1] * step_1_matrix[1][0]
-            ], 
-            [
-                step_1_matrix[1][0] * step_1_matrix[1][1],
-                step_1_matrix[1][1] * step_1_matrix[1][0]
-            ], 
-            [
-                step_1_matrix[2][0] * step_1_matrix[1][1],
-                step_1_matrix[2][1] * step_1_matrix[1][0]
-            ]
+        #step 2 - Subtract x from y
+        step_2_array = [
+            step_1_matrix[0][0] - step_1_matrix[0][1],
+            step_1_matrix[1][0] - step_1_matrix[1][1],
+            step_1_matrix[2][0] - step_1_matrix[2][1]
         ]
-        print("Step 2", step_2_matrix)
+        print("Step 2", step_2_array)
         
-        #step 3 - Subtract x from y
-        step_3_array = [
-            step_2_matrix[0][0] - step_2_matrix[0][1],
-            step_2_matrix[1][0] - step_2_matrix[1][1],
-            step_2_matrix[2][0] - step_2_matrix[2][1]
-        ]
-        print("Step 3", step_3_array)
-        
-        #step 4 - find a_count
-        a_count = step_3_array[2] / step_3_array[0]
+        #step 3 - find a_count
+        a_count = step_2_array[2] / step_2_array[0]
         print("a_count", a_count)
         
-        #step 5 - find b_count
-        b_count = (step_1_matrix[2][0] - (step_1_matrix[0][0] * a_count)) / step_1_matrix[1][0]
+        #step 4 - find b_count
+        b_count = (self.prize_location['x'] - (self.a_vector['x'] * a_count)) / self.b_vector['x']
         print("b_count", b_count)
         
-        #step 6 - if both a_count and b_count are integers, the game is solvable
+        #step 5 - if both a_count and b_count are integers, the game is solvable
         if not (a_count.is_integer() and b_count.is_integer()):
             return None
         
@@ -182,8 +163,8 @@ class MathematicalClawMachinePlayer():
     
     def parse_input(self, input_string, units_corrected):
         lines = input_string.split('\n')
-        self.a_button_action = self.parse_line(lines[0])
-        self.b_button_action = self.parse_line(lines[1])
+        self.a_vector = self.parse_line(lines[0])
+        self.b_vector = self.parse_line(lines[1])
         prize_location = self.parse_line(lines[2])
         if units_corrected:
             prize_location = {
