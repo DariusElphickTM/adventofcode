@@ -10,7 +10,11 @@ def main():
     input_string = read_file("input.txt")
     input_strings = input_string.split('\n\n')
     results = list(map(play_game_and_return_result, input_strings))
-    print(results)
+    filtered_results = filter(lambda result: result is not None, results)
+    total_cost = 0
+    for result in filtered_results:
+        total_cost += result['cost']
+    print("Part 1 result", total_cost)
 
 def read_file(file_name):
     """Reads a text file and returns all of it's contents."""
