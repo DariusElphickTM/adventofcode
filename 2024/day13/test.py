@@ -68,7 +68,7 @@ Prize: X=5, Y=4""",
         test_player = ClawMachinePlayer(test_input['string'])
         self.assertEqual(test_input['result'], test_player.play_game())
     
-    """def test_plays_game_for_second_example(self):
+    def test_plays_game_for_second_example(self):
         test_input = self.example_inputs[1]
         test_player = ClawMachinePlayer(test_input['string'])
         self.assertEqual(test_input['result'], test_player.play_game())
@@ -81,7 +81,7 @@ Prize: X=5, Y=4""",
     def test_plays_game_for_fourth_example(self):
         test_input = self.example_inputs[3]
         test_player = ClawMachinePlayer(test_input['string'])
-        self.assertEqual(test_input['result'], test_player.play_game())"""
+        self.assertEqual(test_input['result'], test_player.play_game())
     
     def test_plays_game_for_trivial_example(self):
         test_input = self.example_inputs[4]
