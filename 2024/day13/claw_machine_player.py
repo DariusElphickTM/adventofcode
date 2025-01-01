@@ -100,9 +100,9 @@ class ComputationalClawMachinePlayer():
         self.current_location = TreeNode(0, 0)
         
 class MathematicalClawMachinePlayer():
-    def __init__(self, input_string, id = ''):
+    def __init__(self, input_string, id = '', units_corrected = False):
         self.id = id
-        self.parse_input(input_string)
+        self.parse_input(input_string, units_corrected)
     
     def solve_game_mathematically(self):
         #I'm being explicit about recreating the matrix for my own learning
@@ -180,8 +180,14 @@ class MathematicalClawMachinePlayer():
             'y': inputs[1]
         }
     
-    def parse_input(self, input_string):
+    def parse_input(self, input_string, units_corrected):
         lines = input_string.split('\n')
         self.a_button_action = self.parse_line(lines[0])
         self.b_button_action = self.parse_line(lines[1])
-        self.prize_location = self.parse_line(lines[2])
+        prize_location = self.parse_line(lines[2])
+        if units_corrected:
+            prize_location = {
+                'x': prize_location['x'] + 10000000000000,
+                'y': prize_location['y'] + 10000000000000
+            }
+        self.prize_location = prize_location

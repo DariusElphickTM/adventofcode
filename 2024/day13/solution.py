@@ -1,7 +1,7 @@
 from claw_machine_player import MathematicalClawMachinePlayer
 
 def play_game_and_return_result(input_string, id):
-    player = MathematicalClawMachinePlayer(input_string, id)
+    player = MathematicalClawMachinePlayer(input_string, id, True)
     return player.play_game()
 
 def main():
@@ -16,7 +16,7 @@ def main():
     total_cost = 0
     for result in filtered_results:
         total_cost += result['cost']
-    print("Part 1 result", total_cost)
+    print("Part 2 result", total_cost)
 
 def read_file(file_name):
     """Reads a text file and returns all of it's contents."""
