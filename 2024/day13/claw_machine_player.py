@@ -1,4 +1,5 @@
 import re
+from collections import deque
 
 class TreeNode():
     def __init__(self, x, y, a_count, b_count, target_score):
@@ -41,12 +42,14 @@ class TreeNode():
             self.branches.sort(reverse=False)
             for branch in self.branches:
                 path_to_branch = branch.get_path()
-                if not path_to_branch in paths_tried:
+                if not any(path['a_count'] == path_to_branch['a_count'] and path['b_count'] == path_to_branch['b_count']for path in paths_tried):
                     paths_tried.append(path_to_branch)
                     result = branch.search_for_prize(a_button_action, b_button_action, remaining_depth - 1, target, attempt_count + 1, paths_tried)
                     if result:
                         #A branch has returned a cost. Return
                         break
+                else:
+                    print("Seen this path before")
         return result
     
     def __lt__(self, other):
@@ -62,8 +65,42 @@ class ClawMachinePlayer():
     def __init__(self, input_string):
         self.parse_input(input_string)
     
+    def search_for_prize_bfs(self, max_depth):
+        tried_paths = []
+        queue = deque([self.current_location])
+        depth = 0
+        while queue and depth < max_depth:
+            depth += 1
+            current_node = queue.popleft()
+            current_path = current_node.get_path()
+            print("current_node", current_node.get_path(), current_node.x, current_node.y)
+            
+            match = None
+            for previous_path in tried_paths:
+                if (previous_path['a_count'] == current_path['a_count'] and previous_path['b_count'] == current_path['b_count']):
+                    match = previous_path
+                    break
+            
+            if not match is None:
+                print("Already tried this path")
+                continue
+            
+            if current_node.x == self.prize_location.x and current_node.y == self.prize_location.y:
+                return {
+                    'a_count': current_node.a_count,
+                    'b_count': current_node.b_count,
+                    'cost': current_node.get_cost()
+                }
+            
+            tried_paths.append(current_node.get_path())
+            current_node.generate_next_steps(self.a_button_action, self.b_button_action, self.prize_location)
+
+            queue.append(current_node.branches[0])
+            queue.append(current_node.branches[1])
+    
     def play_game(self):
-        result = self.current_location.search_for_prize(self.a_button_action, self.b_button_action, 100, self.prize_location, 1, [])
+        #result = self.current_location.search_for_prize(self.a_button_action, self.b_button_action, 100, self.prize_location, 1, [])
+        result = self.search_for_prize_bfs(100)
         print("Result", result)
         return result
     
