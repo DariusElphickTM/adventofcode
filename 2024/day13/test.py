@@ -1,7 +1,7 @@
 import unittest
-from claw_machine_player import ClawMachinePlayer, TreeNode
+from claw_machine_player import ComputationalClawMachinePlayer, TreeNode
 
-class TestClawMachinePlayer(unittest.TestCase):
+class TestComputationalClawMachinePlayer(unittest.TestCase):
     example_inputs = [
         {
             'string': """Button A: X+94, Y+34
@@ -49,7 +49,7 @@ Prize: X=5, Y=4""",
     
     def test_parses_input_successfully(self):
         test_input = self.example_inputs[0]
-        test_player = ClawMachinePlayer(test_input['string'])
+        test_player = ComputationalClawMachinePlayer(test_input['string'])
         self.assertDictEqual({
             'x': 94,
             'y': 34
@@ -65,27 +65,27 @@ Prize: X=5, Y=4""",
     
     def test_plays_game_for_first_example(self):
         test_input = self.example_inputs[0]
-        test_player = ClawMachinePlayer(test_input['string'])
+        test_player = ComputationalClawMachinePlayer(test_input['string'])
         self.assertEqual(test_input['result'], test_player.play_game())
     
     def test_plays_game_for_second_example(self):
         test_input = self.example_inputs[1]
-        test_player = ClawMachinePlayer(test_input['string'])
+        test_player = ComputationalClawMachinePlayer(test_input['string'])
         self.assertEqual(test_input['result'], test_player.play_game())
     
     def test_plays_game_for_third_example(self):
         test_input = self.example_inputs[2]
-        test_player = ClawMachinePlayer(test_input['string'])
+        test_player = ComputationalClawMachinePlayer(test_input['string'])
         self.assertEqual(test_input['result'], test_player.play_game())
     
     def test_plays_game_for_fourth_example(self):
         test_input = self.example_inputs[3]
-        test_player = ClawMachinePlayer(test_input['string'])
+        test_player = ComputationalClawMachinePlayer(test_input['string'])
         self.assertEqual(test_input['result'], test_player.play_game())
     
     def test_plays_game_for_trivial_example(self):
         test_input = self.example_inputs[4]
-        test_player = ClawMachinePlayer(test_input['string'])
+        test_player = ComputationalClawMachinePlayer(test_input['string'])
         self.assertEqual(test_input['result'], test_player.play_game())
 
 class TestTreeNode(unittest.TestCase):

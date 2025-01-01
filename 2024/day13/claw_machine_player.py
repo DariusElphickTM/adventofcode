@@ -41,7 +41,7 @@ class TreeNode():
     def get_cost(self):
         return self.a_count * 3 + self.b_count
 
-class ClawMachinePlayer():
+class ComputationalClawMachinePlayer():
     def __init__(self, input_string, id = ''):
         self.id = id
         self.parse_input(input_string)
