@@ -35,6 +35,16 @@ class SecurityRobotTracker():
             len(fourth_quadrant)
         ]
     
+    def get_robots_in_top_half(self):
+        current_robot_positions = self.get_current_robot_positons()
+        return list(filter(
+            lambda robot: robot['y'] < (self.room_height / 2) - 1, 
+            current_robot_positions
+        ))
+    
+    def check_for_christmas_tree(self):
+        test_set = self.get_robots_in_top_half()
+    
     def track_robots(self, seconds = 1, print_state = False):
         for i in range(seconds):
             self.tick()
@@ -81,14 +91,20 @@ class SecurityRobotTracker():
     def get_current_robot_positons(self):
         return list(map(lambda robot: robot['p'], self.robots))
     
+    def create_floor_grid(self, robot_positons, width, height):
+        room = [[0] * width for _ in range(height)]
+        for robot_position in robot_positons:
+            room[robot_position['y']][robot_position['x']] = room[robot_position['y']][robot_position['x']] + 1
+        return room
+    
     def print_current_room_state(self):
         current_robot_positions = list(map(lambda robot: robot['p'], self.robots))
-        room = [[0] * self.room_width for _ in range(self.room_height)]
-        for robot_position in current_robot_positions:
-            room[robot_position['y']][robot_position['x']] = room[robot_position['y']][robot_position['x']] + 1
+        room = self.create_floor_grid(current_robot_positions, self.room_width, self.room_height)
         print("Current room state")
         for row in room:
-            print(row)
+            for position in row:
+                print(position, end="")
+            print()
     
     def parse_input(self, input_string):
         return list(map(self.create_robot_from_string, input_string.split('\n')))
