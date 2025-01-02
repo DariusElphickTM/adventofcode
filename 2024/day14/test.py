@@ -22,6 +22,7 @@ p=9,5 v=-3,-3"""
 
     def test_it_should_parse_input_and_create_a_set_of_robots(self):
         test_tracker = SecurityRobotTracker(self.example_input, self.example_room_size['width'], self.example_room_size['height'])
+        test_tracker.print_current_room_state()
         self.assertEqual(self.example_room_size['width'], test_tracker.room_width)
         self.assertEqual(self.example_room_size['height'], test_tracker.room_height)
         self.assertListEqual([
