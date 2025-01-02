@@ -6,6 +6,35 @@ class SecurityRobotTracker():
         self.room_height = height
         self.robots = self.parse_input(input_string)
     
+    def get_safety_factor(self):
+        quadrant_counts = self.get_quadrant_counts()
+        return quadrant_counts[0] * quadrant_counts[1] * quadrant_counts[2] * quadrant_counts[3]
+    
+    def get_quadrant_counts(self):
+        current_robot_positions = self.get_current_robot_positons()
+        first_quadrant = list(filter(
+            lambda robot: robot['x'] < (self.room_width / 2) - 1 and robot['y'] < (self.room_height / 2) - 1, 
+            current_robot_positions
+        ))
+        second_quadrant = list(filter(
+            lambda robot: robot['x'] > self.room_width / 2 and robot['y'] < (self.room_height / 2) - 1, 
+            current_robot_positions
+        ))
+        third_quadrant = list(filter(
+            lambda robot: robot['x'] < (self.room_width / 2) - 1 and robot['y'] > self.room_height / 2, 
+            current_robot_positions
+        ))
+        fourth_quadrant = list(filter(
+            lambda robot: robot['x'] > self.room_width / 2 and robot['y'] > self.room_height / 2, 
+            current_robot_positions
+        ))
+        return [
+            len(first_quadrant), 
+            len(second_quadrant), 
+            len(third_quadrant), 
+            len(fourth_quadrant)
+        ]
+    
     def track_robots(self, seconds = 1, print_state = False):
         for i in range(seconds):
             self.tick()
@@ -48,6 +77,9 @@ class SecurityRobotTracker():
                 'y': int(robot_properties[3])
             } 
         }
+    
+    def get_current_robot_positons(self):
+        return list(map(lambda robot: robot['p'], self.robots))
     
     def print_current_room_state(self):
         current_robot_positions = list(map(lambda robot: robot['p'], self.robots))

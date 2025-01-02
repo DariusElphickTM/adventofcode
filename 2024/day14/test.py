@@ -20,6 +20,30 @@ p=9,5 v=-3,-3"""
         'height': 7
     }
     
+    def test_it_returns_the_correct_safety_factor_for_the_example(self):
+        test_tracker = SecurityRobotTracker(
+            self.example_input,
+            self.example_room_size['width'],
+            self.example_room_size['height']
+        )
+        test_tracker.track_robots(100)
+        self.assertEqual(
+            12, 
+            test_tracker.get_safety_factor()
+        )
+    
+    def test_it_splits_the_room_into_quadrant_counts(self):
+        test_tracker = SecurityRobotTracker(
+            self.example_input,
+            self.example_room_size['width'],
+            self.example_room_size['height']
+        )
+        test_tracker.track_robots(100)
+        self.assertListEqual(
+            [1, 3, 4, 1], 
+            test_tracker.get_quadrant_counts()
+        )
+        
     def test_it_tracks_the_example_robots_for_100_seconds(self):
         test_tracker = SecurityRobotTracker(
             self.example_input,
