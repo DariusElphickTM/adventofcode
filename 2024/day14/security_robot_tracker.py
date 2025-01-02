@@ -6,6 +6,26 @@ class SecurityRobotTracker():
         self.room_height = height
         self.robots = self.parse_input(input_string)
     
+    def get_next_position(self, robot):
+        current_position = robot['p']
+        vector = robot['v']
+        next_position = {
+            'x': current_position['x'] + vector['x'],
+            'y': current_position['y'] + vector['y']
+        }
+        
+        if next_position['x'] < 0:
+            next_position['x'] = next_position['x'] + self.room_width
+        elif next_position['x'] >= self.room_width:
+            next_position['x'] = next_position['x'] - self.room_width
+        
+        if next_position['y'] < 0:
+            next_position['y'] = next_position['y'] + self.room_height
+        elif next_position['y'] >= self.room_height:
+            next_position['y'] = next_position['y'] - self.room_height
+        
+        return next_position
+    
     def create_robot_from_string(self, robot_string):
         robot_properties = re.findall(r'\-*\d+', robot_string)
         return {
