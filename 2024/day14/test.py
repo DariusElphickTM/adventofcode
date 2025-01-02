@@ -20,6 +20,86 @@ p=9,5 v=-3,-3"""
         'height': 7
     }
     
+    def test_it_tracks_the_example_robots_for_100_seconds(self):
+        test_tracker = SecurityRobotTracker(
+            self.example_input,
+            self.example_room_size['width'],
+            self.example_room_size['height']
+        )
+        test_tracker.track_robots(100)
+        self.assertListEqual([
+            {'p': {'x': 3, 'y': 5}, 'v': {'x': 3, 'y': -3}}, {'p': {'x': 5, 'y': 4}, 'v': {'x': -1, 'y': -3}}, {'p': {'x': 9, 'y': 0}, 'v': {'x': -1, 'y': 2}}, {'p': {'x': 4, 'y': 5}, 'v': {'x': 2, 'y': -1}}, {'p': {'x': 1, 'y': 6}, 'v': {'x': 1, 'y': 3}}, {'p': {'x': 1, 'y': 3}, 'v': {'x': -2, 'y': -2}}, {'p': {'x': 6, 'y': 0}, 'v': {'x': -1, 'y': -3}}, {'p': {'x': 2, 'y': 3}, 'v': {'x': -1, 'y': -2}}, {'p': {'x': 0, 'y': 2}, 'v': {'x': 2, 'y': 3}}, {'p': {'x': 6, 'y': 0}, 'v': {'x': -1, 'y': 2}}, {'p': {'x': 4, 'y': 5}, 'v': {'x': 2, 'y': -3}}, {'p': {'x': 6, 'y': 6}, 'v': {'x': -3, 'y': -3}}
+        ], test_tracker.robots)
+    
+    def test_it_can_track_a_robot_for_several_seconds_with_one_method_call(self):
+        test_tracker = SecurityRobotTracker(
+            """p=2,4 v=2,-3""",
+            self.example_room_size['width'],
+            self.example_room_size['height']
+        )
+        test_tracker.track_robots(5)
+        self.assertDictEqual(
+            {
+                'x': 1,
+                'y': 3
+            },
+            test_tracker.robots[0]['p']
+        )
+    
+    def test_it_should_handle_the_movement_of_one_robot_over_several_seconds(self):
+        test_tracker = SecurityRobotTracker(
+            """p=2,4 v=2,-3""",
+            self.example_room_size['width'],
+            self.example_room_size['height']
+        )
+        self.assertDictEqual(
+            {
+                'x': 2,
+                'y': 4
+            },
+            test_tracker.robots[0]['p']
+        )
+        test_tracker.tick()
+        self.assertDictEqual(
+            {
+                'x': 4,
+                'y': 1
+            },
+            test_tracker.robots[0]['p']
+        )
+        test_tracker.tick()
+        self.assertDictEqual(
+            {
+                'x': 6,
+                'y': 5
+            },
+            test_tracker.robots[0]['p']
+        )
+        test_tracker.tick()
+        self.assertDictEqual(
+            {
+                'x': 8,
+                'y': 2
+            },
+            test_tracker.robots[0]['p']
+        )
+        test_tracker.tick()
+        self.assertDictEqual(
+            {
+                'x': 10,
+                'y': 6
+            },
+            test_tracker.robots[0]['p']
+        )
+        test_tracker.tick()
+        self.assertDictEqual(
+            {
+                'x': 1,
+                'y': 3
+            },
+            test_tracker.robots[0]['p']
+        )
+    
     def test_it_returns_the_correct_next_position_for_robots_crossing_the_edge(self):
         test_tracker = SecurityRobotTracker(
             """p=0,0 v=-1,-1
@@ -111,7 +191,6 @@ p=98,98 v=1,1""",
 
     def test_it_should_parse_input_and_create_a_set_of_robots(self):
         test_tracker = SecurityRobotTracker(self.example_input, self.example_room_size['width'], self.example_room_size['height'])
-        test_tracker.print_current_room_state()
         self.assertEqual(self.example_room_size['width'], test_tracker.room_width)
         self.assertEqual(self.example_room_size['height'], test_tracker.room_height)
         self.assertListEqual([

@@ -6,6 +6,16 @@ class SecurityRobotTracker():
         self.room_height = height
         self.robots = self.parse_input(input_string)
     
+    def track_robots(self, seconds = 1, print_state = False):
+        for i in range(seconds):
+            self.tick()
+            if print_state:
+                self.print_current_room_state()
+    
+    def tick(self):
+        for robot in self.robots:
+            robot['p'] = self.get_next_position(robot)
+    
     def get_next_position(self, robot):
         current_position = robot['p']
         vector = robot['v']
