@@ -60,6 +60,26 @@ v^^>>><<^^<>>^v^<v^vv<>v^<<>^<^v^v><^<<<><<^<v><v<>vv>>v><v^<vv<>v^<<^"""
             'y': 2
         }, test_watcher.current_robot_position)
     
+    def test_it_can_push_a_single_block_when_no_blocker(self):
+        test_watcher = WarehouseWatcher(self.small_example_input)
+        test_watcher.play_move('>')
+        test_watcher.play_move('>')
+        self.assertDictEqual({
+            'x': 4,
+            'y': 2
+        }, test_watcher.current_robot_position)
+        self.assertEqual('@', test_watcher.current_warehouse_state[2][4])
+        self.assertEqual('O', test_watcher.current_warehouse_state[2][5])
+        
+        test_watcher.play_move('^')
+        test_watcher.play_move('<')
+        self.assertDictEqual({
+            'x': 3,
+            'y': 1
+        }, test_watcher.current_robot_position)
+        self.assertEqual('@', test_watcher.current_warehouse_state[1][3])
+        self.assertEqual('O', test_watcher.current_warehouse_state[1][2])
+    
     def test_it_should_not_move_if_wall_in_front(self):
         test_watcher = WarehouseWatcher(self.small_example_input)
         test_watcher.play_move('<')

@@ -11,6 +11,9 @@ class WarehouseWatcher():
     def is_wall(self, position):
         return self.current_warehouse_state[position['y']][position['x']] == '#'
     
+    def is_block(self, position):
+        return self.current_warehouse_state[position['y']][position['x']] == 'O'
+    
     def get_next_position(self, move, current_position):
         next_position = {
             'x':current_position['x'],
@@ -30,12 +33,28 @@ class WarehouseWatcher():
         
         return next_position
     
+    def play_move_recursive(self, move, current_position):
+        next_position = self.get_next_position(move, current_position)
+        
+        if self.is_wall(next_position):
+            return False
+        
+        path_clear = True
+        
+        if self.is_block(next_position):
+            path_clear = self.play_move_recursive(move, next_position)
+        
+        if path_clear:
+            character = self.current_warehouse_state[current_position['y']][current_position['x']]
+            self.current_warehouse_state[current_position['y']][current_position['x']] = '.'
+            self.current_warehouse_state[next_position['y']][next_position['x']] = character
+        
+        return path_clear
+    
     def play_move(self, move):
-        next_position = self.get_next_position(move, self.current_robot_position)
-        if not self.is_wall(next_position):
-            self.current_warehouse_state[self.current_robot_position['y']][self.current_robot_position['x']] = '.'
-            self.current_warehouse_state[next_position['y']][next_position['x']] = '@'
-            self.current_robot_position = next_position
+        robot_moved = self.play_move_recursive(move, self.current_robot_position)
+        if robot_moved:
+            self.current_robot_position = self.get_next_position(move, self.current_robot_position)
     
     def play_all_moves(self):
         print("Play all moves")
