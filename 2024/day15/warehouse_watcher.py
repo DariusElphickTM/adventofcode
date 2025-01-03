@@ -62,6 +62,14 @@ class WarehouseWatcher():
     def get_current_gps_sum(self):
         return 2028
     
+    def print_current_warehouse_state(self):
+        print("Current Warehouse state")
+        for row in self.current_warehouse_state:
+            for position in row:
+                print(position, end="")
+            print()
+        print()
+    
     def parse_input(self, input_string):
         input_components = input_string.split('\n\n')
         self.robot_moves = list(input_components[1])
