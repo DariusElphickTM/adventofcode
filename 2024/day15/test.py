@@ -36,6 +36,30 @@ vvv<<^>^v^^><<>>><>^<<><^vv^^<>vvv<>><^^v>^>vv<>v<<<<v<^v>^<^^>>>^<v<v
 ^^>vv<^v^v<vv>^<><v<^v>^^^>>>^^vvv^>vvv<>>>^<^>>>>>^<<^v>^vvv<>^<><<v>
 v^^>>><<^^<>>^v^<v^vv<>v^<<>^<^v^v><^<<<><<^<v><v<>vv>>v><v^<vv<>v^<<^"""
 
+    def test_it_should_parse_input_and_set_up_initial_warehouse_state_and_robot_moves(self):
+        test_watcher = WarehouseWatcher(self.small_example_input)
+        self.assertListEqual(
+            ['<','^','^','>','>','>','v','v','<','v','>','>','v','<','<'],
+            test_watcher.robot_moves
+        )
+        self.assertListEqual(
+            [
+                ['#','#','#','#','#','#','#','#'],
+                ['#','.','.','O','.','O','.','#'],
+                ['#','#','@','.','O','.','.','#'],
+                ['#','.','.','.','O','.','.','#'],
+                ['#','.','#','.','O','.','.','#'],
+                ['#','.','.','.','O','.','.','#'],
+                ['#','.','.','.','.','.','.','#'],
+                ['#','#','#','#','#','#','#','#']
+            ],
+            test_watcher.current_warehouse_state
+        )
+        self.assertDictEqual({
+            'x': 2,
+            'y': 2
+        }, test_watcher.current_robot_position)
+
     def test_it_returns_correct_gps_coordinate_sum_for_small_example(self):
         test_watcher = WarehouseWatcher(self.small_example_input)
         test_watcher.play_all_moves()
