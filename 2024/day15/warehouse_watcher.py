@@ -61,7 +61,13 @@ class WarehouseWatcher():
             self.play_move(move)
     
     def get_current_gps_sum(self):
-        return 2028
+        current_gps_sum = 0
+        for i, row in enumerate(self.current_warehouse_state):
+            for j, position in enumerate(row):
+                if position == 'O':
+                    gps_value = (100 * i) + j
+                    current_gps_sum += gps_value
+        return current_gps_sum
     
     def print_current_warehouse_state(self):
         print("Current Warehouse state")

@@ -235,10 +235,10 @@ v^^>>><<^^<>>^v^<v^vv<>v^<<>^<^v^v><^<<<><<^<v><v<>vv>>v><v^<vv<>v^<<^"""
         test_watcher.play_all_moves()
         self.assertEqual(2028, test_watcher.get_current_gps_sum())
     
-    """def test_it_returns_correct_gps_coordinate_sum_for_example(self):
-        test_watcher = WarehouseWatcher(self.small_example_input)
+    def test_it_returns_correct_gps_coordinate_sum_for_example(self):
+        test_watcher = WarehouseWatcher(self.example_input)
         test_watcher.play_all_moves()
-        self.assertEqual(10092, test_watcher.get_current_gps_sum())"""
+        self.assertEqual(10092, test_watcher.get_current_gps_sum())
 
 if __name__ == "__main__":
     unittest.main()
