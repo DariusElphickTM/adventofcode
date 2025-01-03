@@ -8,20 +8,34 @@ class WarehouseWatcher():
         }
         self.parse_input(input_string)
     
-    def play_move(self, move):
-        self.current_warehouse_state[self.current_robot_position['y']][self.current_robot_position['x']] = '.'
+    def is_wall(self, position):
+        return self.current_warehouse_state[position['y']][position['x']] == '#'
+    
+    def get_next_position(self, move, current_position):
+        next_position = {
+            'x':current_position['x'],
+            'y':current_position['y']
+        }
         if move == '^':
-            self.current_robot_position['y'] -= 1
+            next_position['y'] -= 1
         
         if move == '>':
-            self.current_robot_position['x'] += 1
+            next_position['x'] += 1
         
         if move == 'v':
-            self.current_robot_position['y'] += 1
+            next_position['y'] += 1
         
         if move == '<':
-            self.current_robot_position['x'] -= 1
-        self.current_warehouse_state[self.current_robot_position['y']][self.current_robot_position['x']] = '@'
+            next_position['x'] -= 1
+        
+        return next_position
+    
+    def play_move(self, move):
+        next_position = self.get_next_position(move, self.current_robot_position)
+        if not self.is_wall(next_position):
+            self.current_warehouse_state[self.current_robot_position['y']][self.current_robot_position['x']] = '.'
+            self.current_warehouse_state[next_position['y']][next_position['x']] = '@'
+            self.current_robot_position = next_position
     
     def play_all_moves(self):
         print("Play all moves")
