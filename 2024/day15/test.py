@@ -60,7 +60,40 @@ v^^>>><<^^<>>^v^<v^vv<>v^<<>^<^v^v><^<<<><<^<v><v<>vv>>v><v^<vv<>v^<<^"""
             'x': 2
         }, test_watcher.current_robot_position)
     
-    def test_it_can_push_multiple_blocks_when_no_blocker(self):
+    def test_it_wont_push_a_single_block_when_there_is_a_wall_in_the_way(self):
+        test_watcher = WarehouseWatcher(self.small_example_input)
+        test_watcher.play_move('>')
+        test_watcher.play_move('^')
+        self.assertDictEqual({
+            'y': 2,
+            'x': 3
+        }, test_watcher.current_robot_position)
+        self.assertEqual('@', test_watcher.current_warehouse_state[2][3])
+        self.assertEqual('O', test_watcher.current_warehouse_state[2][4])
+    
+    def test_it_wont_push_multiple_blocks_when_there_is_a_wall_in_the_way(self):
+        test_watcher = WarehouseWatcher(self.small_example_input)
+        test_watcher.play_move('>')
+        test_watcher.play_move('>')
+        self.assertDictEqual({
+            'y': 2,
+            'x': 4
+        }, test_watcher.current_robot_position)
+        self.assertEqual('@', test_watcher.current_warehouse_state[2][4])
+        self.assertEqual('O', test_watcher.current_warehouse_state[2][5])
+        
+        test_watcher.play_move('v')
+        test_watcher.play_move('v')
+        self.assertDictEqual({
+            'y': 3,
+            'x': 4
+        }, test_watcher.current_robot_position)
+        self.assertEqual('@', test_watcher.current_warehouse_state[3][4])
+        self.assertEqual('O', test_watcher.current_warehouse_state[4][4])
+        self.assertEqual('O', test_watcher.current_warehouse_state[5][4])
+        self.assertEqual('O', test_watcher.current_warehouse_state[6][4])
+    
+    def test_it_can_push_multiple_blocks_when_no_wall_in_the_way(self):
         test_watcher = WarehouseWatcher(self.small_example_input)
         test_watcher.play_move('>')
         test_watcher.play_move('>')
@@ -81,7 +114,7 @@ v^^>>><<^^<>>^v^<v^vv<>v^<<>^<^v^v><^<<<><<^<v><v<>vv>>v><v^<vv<>v^<<^"""
         self.assertEqual('O', test_watcher.current_warehouse_state[5][4])
         self.assertEqual('O', test_watcher.current_warehouse_state[6][4])
     
-    def test_it_can_push_a_single_block_when_no_blocker(self):
+    def test_it_can_push_a_single_block_when_no_wall_in_the_way(self):
         test_watcher = WarehouseWatcher(self.small_example_input)
         test_watcher.play_move('>')
         test_watcher.play_move('>')
@@ -101,7 +134,7 @@ v^^>>><<^^<>>^v^<v^vv<>v^<<>^<^v^v><^<<<><<^<v><v<>vv>>v><v^<vv<>v^<<^"""
         self.assertEqual('@', test_watcher.current_warehouse_state[1][3])
         self.assertEqual('O', test_watcher.current_warehouse_state[1][2])
     
-    def test_it_should_not_move_if_wall_in_front(self):
+    def test_it_wont_move_if_wall_in_front_of_robot(self):
         test_watcher = WarehouseWatcher(self.small_example_input)
         test_watcher.play_move('<')
         self.assertDictEqual({
