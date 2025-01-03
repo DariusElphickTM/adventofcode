@@ -57,7 +57,8 @@ class WarehouseWatcher():
             self.current_robot_position = self.get_next_position(move, self.current_robot_position)
     
     def play_all_moves(self):
-        print("Play all moves")
+        for move in self.robot_moves:
+            self.play_move(move)
     
     def get_current_gps_sum(self):
         return 2028

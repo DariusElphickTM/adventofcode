@@ -60,6 +60,42 @@ v^^>>><<^^<>>^v^<v^vv<>v^<<>^<^v^v><^<<<><<^<v><v<>vv>>v><v^<vv<>v^<<^"""
             'x': 2
         }, test_watcher.current_robot_position)
     
+    def test_it_should_play_all_robot_moves_and_return_the_right_state_for_small_example(self):
+        test_watcher = WarehouseWatcher(self.small_example_input)
+        test_watcher.play_all_moves()
+        self.assertListEqual(
+            [
+                ['#','#','#','#','#','#','#','#'],
+                ['#','.','.','.','.','O','O','#'],
+                ['#','#','.','.','.','.','.','#'],
+                ['#','.','.','.','.','.','O','#'],
+                ['#','.','#','O','@','.','.','#'],
+                ['#','.','.','.','O','.','.','#'],
+                ['#','.','.','.','O','.','.','#'],
+                ['#','#','#','#','#','#','#','#']
+            ],
+            test_watcher.current_warehouse_state
+        )
+    
+    def test_it_should_play_all_robot_moves_and_return_the_right_state_for_example(self):
+        test_watcher = WarehouseWatcher(self.example_input)
+        test_watcher.play_all_moves()
+        self.assertListEqual(
+            [
+                ['#','#','#','#','#','#','#','#','#','#'],
+                ['#','.','O','.','O','.','O','O','O','#'],
+                ['#','.','.','.','.','.','.','.','.','#'],
+                ['#','O','O','.','.','.','.','.','.','#'],
+                ['#','O','O','@','.','.','.','.','.','#'],
+                ['#','O','#','.','.','.','.','.','O','#'],
+                ['#','O','.','.','.','.','.','O','O','#'],
+                ['#','O','.','.','.','.','.','O','O','#'],
+                ['#','O','O','.','.','.','.','O','O','#'],
+                ['#','#','#','#','#','#','#','#','#','#']
+            ],
+            test_watcher.current_warehouse_state
+        )
+    
     def test_it_wont_push_a_single_block_when_there_is_a_wall_in_the_way(self):
         test_watcher = WarehouseWatcher(self.small_example_input)
         test_watcher.play_move('>')
