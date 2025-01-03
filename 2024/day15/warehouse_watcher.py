@@ -3,10 +3,25 @@ class WarehouseWatcher():
         self.current_warehouse_state=[]
         self.robot_moves = []
         self.current_robot_position = {
-            'x': None,
-            'y': None
+            'x': 0,
+            'y': 0
         }
         self.parse_input(input_string)
+    
+    def play_move(self, move):
+        self.current_warehouse_state[self.current_robot_position['y']][self.current_robot_position['x']] = '.'
+        if move == '^':
+            self.current_robot_position['y'] -= 1
+        
+        if move == '>':
+            self.current_robot_position['x'] += 1
+        
+        if move == 'v':
+            self.current_robot_position['y'] += 1
+        
+        if move == '<':
+            self.current_robot_position['x'] -= 1
+        self.current_warehouse_state[self.current_robot_position['y']][self.current_robot_position['x']] = '@'
     
     def play_all_moves(self):
         print("Play all moves")
