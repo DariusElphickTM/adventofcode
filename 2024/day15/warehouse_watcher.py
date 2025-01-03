@@ -102,7 +102,25 @@ class BigWarehouseWatcher():
         return self.current_warehouse_state[position['y']][position['x']] == '#'
     
     def is_block(self, position):
-        return self.current_warehouse_state[position['y']][position['x']] == 'O'
+        return self.current_warehouse_state[position['y']][position['x']] == '[' or self.current_warehouse_state[position['y']][position['x']] == ']'
+    
+    def get_all_blocks_affected(self, position):
+        blocks = []
+        if not self.is_block(position):
+            return blocks
+        blocks.append(position)
+        block_side = self.current_warehouse_state[position['y']][position['x']]
+        if block_side == '[':
+            blocks.append({
+                'y': position['y'],
+                'x': position['x'] + 1
+            })
+        elif block_side == ']':
+            blocks.append({
+                'y': position['y'],
+                'x': position['x'] - 1
+            })
+        return blocks
     
     def get_next_position(self, move, current_position):
         next_position = {
@@ -132,7 +150,12 @@ class BigWarehouseWatcher():
         path_clear = True
         
         if self.is_block(next_position):
-            path_clear = self.play_move_recursive(move, next_position)
+            if move == 'v' or move == '^':
+                block_sides = self.get_all_blocks_affected(next_position)
+                block_status = list(map(lambda block_side: self.play_move_recursive(move, block_side), block_sides))
+                path_clear = False not in block_status
+            else:
+                path_clear = self.play_move_recursive(move, next_position)
         
         if path_clear:
             character = self.current_warehouse_state[current_position['y']][current_position['x']]
