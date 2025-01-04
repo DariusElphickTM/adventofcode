@@ -370,7 +370,6 @@ v^^>>><<^^<>>^v^<v^vv<>v^<<>^<^v^v><^<<<><<^<v><v<>vv>>v><v^<vv<>v^<<^"""
         self.assert_robot_at_position(test_watcher, {'y': 1, 'x': 6})
         self.assert_box_at_position(test_watcher, {'y': 1, 'x': 4})
         self.assert_box_at_position(test_watcher, {'y': 1, 'x': 2})
-        test_watcher.print_current_warehouse_state()
     
     def test_it_can_push_a_single_block_when_no_wall_in_the_way(self):
         test_watcher = BigWarehouseWatcher(self.small_example_input)
@@ -422,48 +421,25 @@ v^^>>><<^^<>>^v^<v^vv<>v^<<>^<^v^v><^<<<><<^<v><v<>vv>>v><v^<vv<>v^<<^"""
         
         self.play_move_sequence(test_watcher, ['v','v','v'])
         self.assert_robot_at_position(test_watcher, {'y': 3, 'x': 4})
-
-    """
     
     def test_it_should_play_all_robot_moves_and_return_the_right_state_for_example(self):
-        test_watcher = WarehouseWatcher(self.example_input)
+        test_watcher = BigWarehouseWatcher(self.example_input)
         test_watcher.play_all_moves()
         self.assertListEqual(
             [
-                ['#','#','#','#','#','#','#','#','#','#'],
-                ['#','.','O','.','O','.','O','O','O','#'],
-                ['#','.','.','.','.','.','.','.','.','#'],
-                ['#','O','O','.','.','.','.','.','.','#'],
-                ['#','O','O','@','.','.','.','.','.','#'],
-                ['#','O','#','.','.','.','.','.','O','#'],
-                ['#','O','.','.','.','.','.','O','O','#'],
-                ['#','O','.','.','.','.','.','O','O','#'],
-                ['#','O','O','.','.','.','.','O','O','#'],
-                ['#','#','#','#','#','#','#','#','#','#']
+                ['#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#'],
+                ['#','#','[',']','.','.','.','.','.','.','.','[',']','.','[',']','[',']','#','#'],
+                ['#','#','[',']','.','.','.','.','.','.','.','.','.','.','.','[',']','.','#','#'],
+                ['#','#','[',']','.','.','.','.','.','.','.','.','[',']','[',']','[',']','#','#'],
+                ['#','#','[',']','.','.','.','.','.','.','[',']','.','.','.','.','[',']','#','#'],
+                ['#','#','.','.','#','#','.','.','.','.','.','.','[',']','.','.','.','.','#','#'],
+                ['#','#','.','.','[',']','.','.','.','.','.','.','.','.','.','.','.','.','#','#'],
+                ['#','#','.','.','@','.','.','.','.','.','.','[',']','.','[',']','[',']','#','#'],
+                ['#','#','.','.','.','.','.','.','[',']','[',']','.','.','[',']','.','.','#','#'],
+                ['#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#']
             ],
             test_watcher.current_warehouse_state
         )
-    
-    def test_it_wont_push_a_single_block_when_there_is_a_wall_in_the_way(self):
-        test_watcher = WarehouseWatcher(self.small_example_input)
-        test_watcher.play_move('>')
-        test_watcher.play_move('^')
-        self.assertDictEqual({
-            'y': 2,
-            'x': 3
-        }, test_watcher.current_robot_position)
-        self.assertEqual('@', test_watcher.current_warehouse_state[2][3])
-        self.assertEqual('O', test_watcher.current_warehouse_state[2][4])
-    
-    
-    
-    
-"""
-    
-    """def test_it_returns_correct_gps_coordinate_sum_for_small_example(self):
-        test_watcher = BigWarehouseWatcher(self.small_example_input)
-        test_watcher.play_all_moves()
-        self.assertEqual(2028, test_watcher.get_current_gps_sum())"""
     
     def test_it_returns_correct_gps_coordinate_sum_for_example(self):
         test_watcher = BigWarehouseWatcher(self.example_input)
