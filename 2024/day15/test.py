@@ -414,6 +414,32 @@ v^^>>><<^^<>>^v^<v^vv<>v^<<>^<^v^v><^<<<><<^<v><v<>vv>>v><v^<vv<>v^<<^"""
         }, test_watcher.current_robot_position)
         self.assertEqual('@', test_watcher.current_warehouse_state[2][4])
         self.assertEqual('.', test_watcher.current_warehouse_state[3][4])
+    
+    def test_it_wont_move_if_wall_in_front_of_robot(self):
+        test_watcher = BigWarehouseWatcher(self.small_example_input)
+        test_watcher.play_move('<')
+        self.assertDictEqual({
+            'y': 2,
+            'x': 4
+        }, test_watcher.current_robot_position)
+        self.assertEqual('@', test_watcher.current_warehouse_state[2][4])
+        
+        test_watcher.play_move('^')
+        test_watcher.play_move('^')
+        self.assertDictEqual({
+            'y': 1,
+            'x': 4
+        }, test_watcher.current_robot_position)
+        self.assertEqual('@', test_watcher.current_warehouse_state[1][4])
+        
+        test_watcher.play_move('v')
+        test_watcher.play_move('v')
+        test_watcher.play_move('v')
+        self.assertDictEqual({
+            'y': 3,
+            'x': 4
+        }, test_watcher.current_robot_position)
+        self.assertEqual('@', test_watcher.current_warehouse_state[3][4])
 
     """
     
@@ -527,31 +553,7 @@ v^^>>><<^^<>>^v^<v^vv<>v^<<>^<^v^v><^<<<><<^<v><v<>vv>>v><v^<vv<>v^<<^"""
         self.assertEqual('@', test_watcher.current_warehouse_state[1][3])
         self.assertEqual('O', test_watcher.current_warehouse_state[1][2])
     
-    def test_it_wont_move_if_wall_in_front_of_robot(self):
-        test_watcher = WarehouseWatcher(self.small_example_input)
-        test_watcher.play_move('<')
-        self.assertDictEqual({
-            'y': 2,
-            'x': 2
-        }, test_watcher.current_robot_position)
-        self.assertEqual('@', test_watcher.current_warehouse_state[2][2])
-        
-        test_watcher.play_move('^')
-        test_watcher.play_move('^')
-        self.assertDictEqual({
-            'y': 1,
-            'x': 2
-        }, test_watcher.current_robot_position)
-        self.assertEqual('@', test_watcher.current_warehouse_state[1][2])
-        
-        test_watcher.play_move('v')
-        test_watcher.play_move('v')
-        test_watcher.play_move('v')
-        self.assertDictEqual({
-            'y': 3,
-            'x': 2
-        }, test_watcher.current_robot_position)
-        self.assertEqual('@', test_watcher.current_warehouse_state[3][2])"""
+"""
     
     """def test_it_returns_correct_gps_coordinate_sum_for_small_example(self):
         test_watcher = BigWarehouseWatcher(self.small_example_input)
