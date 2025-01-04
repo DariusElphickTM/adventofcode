@@ -124,8 +124,8 @@ class BigWarehouseWatcher():
     
     def get_next_position(self, move, current_position):
         next_position = {
-            'x':current_position['x'],
-            'y':current_position['y']
+            'y':current_position['y'],
+            'x':current_position['x']
         }
         if move == '^':
             next_position['y'] -= 1
@@ -141,6 +141,24 @@ class BigWarehouseWatcher():
         
         return next_position
     
+    def check_move_recursive(self, move, current_position):
+        next_position = self.get_next_position(move, current_position)
+        
+        if self.is_wall(next_position):
+            return False
+        
+        path_clear = True
+        
+        if self.is_block(next_position):
+            if move == 'v' or move == '^':
+                block_sides = self.get_all_blocks_affected(next_position)
+                block_status = list(map(lambda block_side: self.check_move_recursive(move, block_side), block_sides))
+                return False not in block_status
+            else:
+                path_clear = self.check_move_recursive(move, next_position)
+        
+        return path_clear
+    
     def play_move_recursive(self, move, current_position):
         next_position = self.get_next_position(move, current_position)
         
@@ -152,8 +170,11 @@ class BigWarehouseWatcher():
         if self.is_block(next_position):
             if move == 'v' or move == '^':
                 block_sides = self.get_all_blocks_affected(next_position)
-                block_status = list(map(lambda block_side: self.play_move_recursive(move, block_side), block_sides))
+                block_status = list(map(lambda block_side: self.check_move_recursive(move, block_side), block_sides))
                 path_clear = False not in block_status
+                if path_clear:
+                    block_status = list(map(lambda block_side: self.play_move_recursive(move, block_side), block_sides))
+                    path_clear = False not in block_status
             else:
                 path_clear = self.play_move_recursive(move, next_position)
         

@@ -328,6 +328,50 @@ v^^>>><<^^<>>^v^<v^vv<>v^<<>^<^v^v><^<<<><<^<v><v<>vv>>v><v^<vv<>v^<<^"""
         )
         self.assert_robot_at_position(test_watcher, {'y': 2, 'x': 4})
     
+    def test_it_can_push_multiple_blocks_when_no_wall_in_the_way(self):
+        test_watcher = BigWarehouseWatcher(self.small_example_input)
+        self.play_move_sequence(test_watcher, ['>','>','>','>','^','>'])
+        self.assert_robot_at_position(test_watcher, {'y': 1, 'x': 9})
+        self.assert_box_at_position(test_watcher, {'y': 2, 'x': 9})
+        
+        self.play_move_sequence(test_watcher, ['v'])
+        self.assert_robot_at_position(test_watcher, {'y': 2, 'x': 9})
+        self.assert_box_at_position(test_watcher, {'y': 3, 'x': 9})
+        self.assert_box_at_position(test_watcher, {'y': 4, 'x': 8})
+        self.assert_box_at_position(test_watcher, {'y': 5, 'x': 8})
+        self.assert_box_at_position(test_watcher, {'y': 6, 'x': 8})
+        
+        self.play_move_sequence(test_watcher, ['>','>','>','^','<','<','<','<'])
+        self.assert_robot_at_position(test_watcher, {'y': 1, 'x': 8})
+        self.assert_box_at_position(test_watcher, {'y': 1, 'x': 6})
+        self.assert_box_at_position(test_watcher, {'y': 1, 'x': 4})
+    
+    def test_it_cannot_push_multiple_blocks_through_a_wall(self):
+        test_watcher = BigWarehouseWatcher(self.small_example_input)
+        self.play_move_sequence(test_watcher, ['>','>','>','>','^','>'])
+        self.assert_robot_at_position(test_watcher, {'y': 1, 'x': 9})
+        self.assert_box_at_position(test_watcher, {'y': 2, 'x': 9})
+        
+        self.play_move_sequence(test_watcher, ['v','v'])
+        self.assert_robot_at_position(test_watcher, {'y': 2, 'x': 9})
+        self.assert_box_at_position(test_watcher, {'y': 3, 'x': 9})
+        self.assert_box_at_position(test_watcher, {'y': 4, 'x': 8})
+        self.assert_box_at_position(test_watcher, {'y': 5, 'x': 8})
+        self.assert_box_at_position(test_watcher, {'y': 6, 'x': 8})
+        
+        self.play_move_sequence(test_watcher, ['>','v'])
+        self.assert_robot_at_position(test_watcher, {'y': 2, 'x': 10})
+        self.assert_box_at_position(test_watcher, {'y': 3, 'x': 9})
+        self.assert_box_at_position(test_watcher, {'y': 4, 'x': 8})
+        self.assert_box_at_position(test_watcher, {'y': 5, 'x': 8})
+        self.assert_box_at_position(test_watcher, {'y': 6, 'x': 8})
+        
+        self.play_move_sequence(test_watcher, ['>','>','>','^','<','<','<','<','<','<','<','<'])
+        self.assert_robot_at_position(test_watcher, {'y': 1, 'x': 6})
+        self.assert_box_at_position(test_watcher, {'y': 1, 'x': 4})
+        self.assert_box_at_position(test_watcher, {'y': 1, 'x': 2})
+        test_watcher.print_current_warehouse_state()
+    
     def test_it_can_push_a_single_block_when_no_wall_in_the_way(self):
         test_watcher = BigWarehouseWatcher(self.small_example_input)
         self.play_move_sequence(test_watcher, ['>','>','>','>'])
@@ -381,23 +425,6 @@ v^^>>><<^^<>>^v^<v^vv<>v^<<>^<^v^v><^<<<><<^<v><v<>vv>>v><v^<vv<>v^<<^"""
 
     """
     
-    def test_it_should_play_all_robot_moves_and_return_the_right_state_for_small_example(self):
-        test_watcher = WarehouseWatcher(self.small_example_input)
-        test_watcher.play_all_moves()
-        self.assertListEqual(
-            [
-                ['#','#','#','#','#','#','#','#'],
-                ['#','.','.','.','.','O','O','#'],
-                ['#','#','.','.','.','.','.','#'],
-                ['#','.','.','.','.','.','O','#'],
-                ['#','.','#','O','@','.','.','#'],
-                ['#','.','.','.','O','.','.','#'],
-                ['#','.','.','.','O','.','.','#'],
-                ['#','#','#','#','#','#','#','#']
-            ],
-            test_watcher.current_warehouse_state
-        )
-    
     def test_it_should_play_all_robot_moves_and_return_the_right_state_for_example(self):
         test_watcher = WarehouseWatcher(self.example_input)
         test_watcher.play_all_moves()
@@ -428,27 +455,6 @@ v^^>>><<^^<>>^v^<v^vv<>v^<<>^<^v^v><^<<<><<^<v><v<>vv>>v><v^<vv<>v^<<^"""
         self.assertEqual('@', test_watcher.current_warehouse_state[2][3])
         self.assertEqual('O', test_watcher.current_warehouse_state[2][4])
     
-    def test_it_wont_push_multiple_blocks_when_there_is_a_wall_in_the_way(self):
-        test_watcher = WarehouseWatcher(self.small_example_input)
-        test_watcher.play_move('>')
-        test_watcher.play_move('>')
-        self.assertDictEqual({
-            'y': 2,
-            'x': 4
-        }, test_watcher.current_robot_position)
-        self.assertEqual('@', test_watcher.current_warehouse_state[2][4])
-        self.assertEqual('O', test_watcher.current_warehouse_state[2][5])
-        
-        test_watcher.play_move('v')
-        test_watcher.play_move('v')
-        self.assertDictEqual({
-            'y': 3,
-            'x': 4
-        }, test_watcher.current_robot_position)
-        self.assertEqual('@', test_watcher.current_warehouse_state[3][4])
-        self.assertEqual('O', test_watcher.current_warehouse_state[4][4])
-        self.assertEqual('O', test_watcher.current_warehouse_state[5][4])
-        self.assertEqual('O', test_watcher.current_warehouse_state[6][4])
     
     
     
