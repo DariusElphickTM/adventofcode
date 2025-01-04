@@ -275,6 +275,18 @@ vvv<<^>^v^^><<>>><>^<<><^vv^^<>vvv<>><^^v>^>vv<>v<<<<v<^v>^<^^>>>^<v<v
 ^^>vv<^v^v<vv>^<><v<^v>^^^>>>^^vvv^>vvv<>>>^<^>>>>>^<<^v>^vvv<>^<><<v>
 v^^>>><<^^<>>^v^<v^vv<>v^<<>^<^v^v><^<<<><<^<v><v<>vv>>v><v^<vv<>v^<<^"""
 
+    def play_move_sequence(self, watcher, move_sequence):
+        for move in move_sequence:
+            watcher.play_move(move)
+    
+    def assert_box_at_position(self, watcher, position):
+        self.assertEqual('[', watcher.current_warehouse_state[position['y']][position['x']])
+        self.assertEqual(']', watcher.current_warehouse_state[position['y']][position['x'] + 1])
+    
+    def assert_robot_at_position(self, watcher, postion):
+        self.assertDictEqual(postion, watcher.current_robot_position)
+        self.assertEqual('@', watcher.current_warehouse_state[postion['y']][postion['x']])
+
     def test_it_should_parse_input_and_set_up_initial_warehouse_state_and_robot_moves_for_example(self):
         test_watcher = BigWarehouseWatcher(self.example_input)
         self.assertEqual(709, len(test_watcher.robot_moves))
@@ -314,132 +326,58 @@ v^^>>><<^^<>>^v^<v^vv<>v^<<>^<^v^v><^<<<><<^<v><v<>vv>>v><v^<vv<>v^<<^"""
             ],
             test_watcher.current_warehouse_state
         )
-        self.assertDictEqual({
-            'y': 2,
-            'x': 4
-        }, test_watcher.current_robot_position)
+        self.assert_robot_at_position(test_watcher, {'y': 2, 'x': 4})
     
     def test_it_can_push_a_single_block_when_no_wall_in_the_way(self):
         test_watcher = BigWarehouseWatcher(self.small_example_input)
-        test_watcher.play_move('>')
-        test_watcher.play_move('>')
-        test_watcher.play_move('>')
-        test_watcher.play_move('>')
-        self.assertDictEqual({
-            'y': 2,
-            'x': 8
-        }, test_watcher.current_robot_position)
-        self.assertEqual('@', test_watcher.current_warehouse_state[2][8])
-        self.assertEqual('[', test_watcher.current_warehouse_state[2][9])
-        self.assertEqual(']', test_watcher.current_warehouse_state[2][10])
+        self.play_move_sequence(test_watcher, ['>','>','>','>'])
+        self.assert_robot_at_position(test_watcher, {'y': 2, 'x': 8})
+        self.assert_box_at_position(test_watcher, {'y': 2, 'x': 9})
         
-        test_watcher.play_move('>')
-        test_watcher.play_move('>')
-        self.assertDictEqual({
-            'y': 2,
-            'x': 10
-        }, test_watcher.current_robot_position)
-        self.assertEqual('@', test_watcher.current_warehouse_state[2][10])
-        self.assertEqual('[', test_watcher.current_warehouse_state[2][11])
-        self.assertEqual(']', test_watcher.current_warehouse_state[2][12])
+        self.play_move_sequence(test_watcher, ['>','>'])
+        self.assert_robot_at_position(test_watcher, {'y': 2, 'x': 10})
+        self.assert_box_at_position(test_watcher, {'y': 2, 'x': 11})
         
-        test_watcher.play_move('v')
-        test_watcher.play_move('<')
-        self.assertDictEqual({
-            'y': 3,
-            'x': 9
-        }, test_watcher.current_robot_position)
-        self.assertEqual('@', test_watcher.current_warehouse_state[3][9])
-        self.assertEqual(']', test_watcher.current_warehouse_state[3][8])
-        self.assertEqual('[', test_watcher.current_warehouse_state[3][7])
+        self.play_move_sequence(test_watcher, ['v','<'])
+        self.assert_robot_at_position(test_watcher, {'y': 3, 'x': 9})
+        self.assert_box_at_position(test_watcher, {'y': 3, 'x': 7})
         
-        test_watcher.play_move('<')
-        test_watcher.play_move('^')
-        test_watcher.play_move('<')
-        test_watcher.play_move('v')
-        self.assertDictEqual({
-            'y': 3,
-            'x': 7
-        }, test_watcher.current_robot_position)
-        self.assertEqual('@', test_watcher.current_warehouse_state[3][7])
-        self.assertEqual(']', test_watcher.current_warehouse_state[4][7])
-        self.assertEqual('[', test_watcher.current_warehouse_state[4][6])
+        self.play_move_sequence(test_watcher, ['<','^','<','v'])
+        self.assert_robot_at_position(test_watcher, {'y': 3, 'x': 7})
+        self.assert_box_at_position(test_watcher, {'y': 4, 'x': 6})
         
-        test_watcher.play_move('^')
-        test_watcher.play_move('>')
-        test_watcher.play_move('>')
-        test_watcher.play_move('>')
-        test_watcher.play_move('>')
-        test_watcher.play_move('v')
-        test_watcher.play_move('>')
-        test_watcher.play_move('^')
-        self.assertDictEqual({
-            'y': 2,
-            'x': 12
-        }, test_watcher.current_robot_position)
-        self.assertEqual('@', test_watcher.current_warehouse_state[2][12])
-        self.assertEqual('[', test_watcher.current_warehouse_state[1][12])
-        self.assertEqual(']', test_watcher.current_warehouse_state[1][13])
+        self.play_move_sequence(test_watcher, ['^','>','>','>','>','v','>','^'])
+        self.assert_robot_at_position(test_watcher, {'y': 2, 'x': 12})
+        self.assert_box_at_position(test_watcher, {'y': 1, 'x': 12})
     
     def test_it_should_play_a_move_when_next_position_is_empty(self):
         test_watcher = BigWarehouseWatcher(self.small_example_input)
         test_watcher.play_move('>')
-        self.assertDictEqual({
-            'y': 2,
-            'x': 5
-        }, test_watcher.current_robot_position)
-        self.assertEqual('@', test_watcher.current_warehouse_state[2][5])
+        self.assert_robot_at_position(test_watcher, {'y': 2, 'x': 5})
         self.assertEqual('.', test_watcher.current_warehouse_state[2][4])
         
         test_watcher.play_move('v')
-        self.assertDictEqual({
-            'y': 3,
-            'x': 5
-        }, test_watcher.current_robot_position)
-        self.assertEqual('@', test_watcher.current_warehouse_state[3][5])
+        self.assert_robot_at_position(test_watcher, {'y': 3, 'x': 5})
         self.assertEqual('.', test_watcher.current_warehouse_state[2][5])
         
         test_watcher.play_move('<')
-        self.assertDictEqual({
-            'y': 3,
-            'x': 4
-        }, test_watcher.current_robot_position)
-        self.assertEqual('@', test_watcher.current_warehouse_state[3][4])
+        self.assert_robot_at_position(test_watcher, {'y': 3, 'x': 4})
         self.assertEqual('.', test_watcher.current_warehouse_state[3][5])
         
         test_watcher.play_move('^')
-        self.assertDictEqual({
-            'y': 2,
-            'x': 4
-        }, test_watcher.current_robot_position)
-        self.assertEqual('@', test_watcher.current_warehouse_state[2][4])
+        self.assert_robot_at_position(test_watcher, {'y': 2, 'x': 4})
         self.assertEqual('.', test_watcher.current_warehouse_state[3][4])
     
     def test_it_wont_move_if_wall_in_front_of_robot(self):
         test_watcher = BigWarehouseWatcher(self.small_example_input)
         test_watcher.play_move('<')
-        self.assertDictEqual({
-            'y': 2,
-            'x': 4
-        }, test_watcher.current_robot_position)
-        self.assertEqual('@', test_watcher.current_warehouse_state[2][4])
+        self.assert_robot_at_position(test_watcher, {'y': 2, 'x': 4})
         
-        test_watcher.play_move('^')
-        test_watcher.play_move('^')
-        self.assertDictEqual({
-            'y': 1,
-            'x': 4
-        }, test_watcher.current_robot_position)
-        self.assertEqual('@', test_watcher.current_warehouse_state[1][4])
+        self.play_move_sequence(test_watcher, ['^','^'])
+        self.assert_robot_at_position(test_watcher, {'y': 1, 'x': 4})
         
-        test_watcher.play_move('v')
-        test_watcher.play_move('v')
-        test_watcher.play_move('v')
-        self.assertDictEqual({
-            'y': 3,
-            'x': 4
-        }, test_watcher.current_robot_position)
-        self.assertEqual('@', test_watcher.current_warehouse_state[3][4])
+        self.play_move_sequence(test_watcher, ['v','v','v'])
+        self.assert_robot_at_position(test_watcher, {'y': 3, 'x': 4})
 
     """
     
@@ -512,46 +450,7 @@ v^^>>><<^^<>>^v^<v^vv<>v^<<>^<^v^v><^<<<><<^<v><v<>vv>>v><v^<vv<>v^<<^"""
         self.assertEqual('O', test_watcher.current_warehouse_state[5][4])
         self.assertEqual('O', test_watcher.current_warehouse_state[6][4])
     
-    def test_it_can_push_multiple_blocks_when_no_wall_in_the_way(self):
-        test_watcher = WarehouseWatcher(self.small_example_input)
-        test_watcher.play_move('>')
-        test_watcher.play_move('>')
-        self.assertDictEqual({
-            'y': 2,
-            'x': 4
-        }, test_watcher.current_robot_position)
-        self.assertEqual('@', test_watcher.current_warehouse_state[2][4])
-        self.assertEqual('O', test_watcher.current_warehouse_state[2][5])
-        
-        test_watcher.play_move('v')
-        self.assertDictEqual({
-            'y': 3,
-            'x': 4
-        }, test_watcher.current_robot_position)
-        self.assertEqual('@', test_watcher.current_warehouse_state[3][4])
-        self.assertEqual('O', test_watcher.current_warehouse_state[4][4])
-        self.assertEqual('O', test_watcher.current_warehouse_state[5][4])
-        self.assertEqual('O', test_watcher.current_warehouse_state[6][4])
     
-    def test_it_can_push_a_single_block_when_no_wall_in_the_way(self):
-        test_watcher = WarehouseWatcher(self.small_example_input)
-        test_watcher.play_move('>')
-        test_watcher.play_move('>')
-        self.assertDictEqual({
-            'y': 2,
-            'x': 4
-        }, test_watcher.current_robot_position)
-        self.assertEqual('@', test_watcher.current_warehouse_state[2][4])
-        self.assertEqual('O', test_watcher.current_warehouse_state[2][5])
-        
-        test_watcher.play_move('^')
-        test_watcher.play_move('<')
-        self.assertDictEqual({
-            'y': 1,
-            'x': 3
-        }, test_watcher.current_robot_position)
-        self.assertEqual('@', test_watcher.current_warehouse_state[1][3])
-        self.assertEqual('O', test_watcher.current_warehouse_state[1][2])
     
 """
     
