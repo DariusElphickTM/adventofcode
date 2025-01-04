@@ -1,10 +1,15 @@
-from warehouse_watcher import WarehouseWatcher
+from warehouse_watcher import WarehouseWatcher, BigWarehouseWatcher
 
 def main():
     print("Here we go!")
-    watcher = WarehouseWatcher(read_file("input.txt"))
+    input_string = read_file("input.txt")
+    watcher = WarehouseWatcher(input_string)
     watcher.play_all_moves()
     print("Part 1 result", watcher.get_current_gps_sum())
+    
+    big_watcher = BigWarehouseWatcher(input_string)
+    big_watcher.play_all_moves()
+    print("Part 2 result", big_watcher.get_current_gps_sum())
 
 def read_file(file_name):
     """Reads a text file and returns all of it's contents."""
