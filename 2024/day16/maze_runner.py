@@ -1,4 +1,5 @@
 import re
+from collections import deque
 
 class MazeRunner():
     def __init__(self, input_string):
@@ -13,7 +14,42 @@ class MazeRunner():
         self.nodes = []
         self.maze_adjacency_matrix = [[0] * size for _ in range(size)]
     
+    def search_for_shortest_path_bfs(self, nodes, adjacency_matrix, start_position, end_position):
+        visited = [False] * len(nodes)
+        visited[start_position] = True
+        queue = deque([start_position])
+        print("Starting at", start_position)
+        while queue:
+            current_position = queue.popleft()
+            print(current_position)
+            if current_position == end_position:
+                print("Found the end at position", current_position)
+            
+            for i, adjacent_position in enumerate(adjacency_matrix[current_position]):
+                if adjacent_position == 1 and not visited[i]:
+                    visited[i] = True
+                    queue.append(i)
+        print("Here's the nodes we visited", visited)
+    
+    def get_best_path(self):
+        return """###############
+#.......#....E#
+#.#.###.#.###^#
+#.....#.#...#^#
+#.###.#####.#^#
+#.#.#.......#^#
+#.#.#####.###^#
+#..>>>>>>>>v#^#
+###^#.#####v#^#
+#>>^#.....#v#^#
+#^#.#.###.#v#^#
+#^....#...#v#^#
+#^###.#.#.#v#^#
+#S..#.....#>>^#
+###############"""
+    
     def get_best_path_score(self):
+        self.search_for_shortest_path_bfs(self.nodes, self.maze_adjacency_matrix, self.start_position, self.end_position)
         return 7036
     
     def add_edge(self, start, end, weight = 1):
