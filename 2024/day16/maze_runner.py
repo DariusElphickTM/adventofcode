@@ -2,6 +2,7 @@ import re
 from collections import deque
 
 class MazeRunner():
+    
     def __init__(self, input_string):
         self.start_position = 0
         self.end_position = 0
@@ -49,9 +50,15 @@ class MazeRunner():
         self.search_for_shortest_path_bfs(self.nodes, self.maze_adjacency_matrix, self.start_position, self.end_position)
         return 7036
     
-    def add_edge(self, start, end, weight = 1):
-        self.maze_adjacency_matrix[start][end] = weight
-        self.maze_adjacency_matrix[end][start] = weight
+    def add_edge(self, start, end, direction):
+        self.maze_adjacency_matrix[start][end] = direction
+        oppositeDirectionMap = {
+            '^': 'v',
+            'v': '^',
+            '<': '>',
+            '>': '<'
+        }
+        self.maze_adjacency_matrix[end][start] = oppositeDirectionMap[direction]
     
     def parse_input(self, input_string):
         input_grid = list(map(list, input_string.split('\n')))
@@ -74,18 +81,18 @@ class MazeRunner():
                     
                     if i > 0 and input_grid[i - 1][j] == '.':
                         #need to add adjacency above
-                        self.add_edge(current_index, current_index - row_length)
+                        self.add_edge(current_index, current_index - row_length, '^')
                     
                     if i < column_height - 1 and input_grid[i + 1][j] == '.':
                         #need to add adjacency below
-                        self.add_edge(current_index, current_index + row_length)
+                        self.add_edge(current_index, current_index + row_length, 'v')
                     
                     if j > 0 and input_grid[i][j - 1] == '.':
                         #need to add adjacency to the left
-                        self.add_edge(current_index, current_index - 1)
+                        self.add_edge(current_index, current_index - 1, '<')
                     
                     if j < row_length - 1 and input_grid[i][j + 1] == '.':
                         #need to add adjecency to the right
-                        self.add_edge(current_index, current_index + 1)
+                        self.add_edge(current_index, current_index + 1, '>')
 
                 current_index += 1

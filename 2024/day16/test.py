@@ -77,7 +77,7 @@ class TestMazeRunner(unittest.TestCase):
 #S#>>^..........#
 #################"""
 
-    """def test_it_parses_input_and_generates_adjacency_matrix_for_first_example(self):
+    def test_it_parses_input_and_generates_adjacency_matrix_for_first_example(self):
         test_runner = MazeRunner(self.first_example)
         
         self.assertEqual(
@@ -100,40 +100,36 @@ class TestMazeRunner(unittest.TestCase):
         
         #The end is adjacent to two tiles
         expected_end_adjacencies = [0 for _ in range(self.expected_size)]
-        expected_end_adjacencies[self.end_position - 1] = 1
-        expected_end_adjacencies[self.end_position + self.example_row_length] = 1
+        expected_end_adjacencies[self.end_position - 1] = '<'
+        expected_end_adjacencies[self.end_position + self.example_row_length] = 'v'
         self.assertListEqual(expected_end_adjacencies, test_runner.maze_adjacency_matrix[self.end_position])
         
         #First example tile is adjacent to two 
         expected_first_tile_adjacencies = [0 for _ in range(self.expected_size)]
-        expected_first_tile_adjacencies[self.first_example_tile_position - self.example_row_length] = 1
-        expected_first_tile_adjacencies[self.first_example_tile_position + self.example_row_length] = 1
+        expected_first_tile_adjacencies[self.first_example_tile_position - self.example_row_length] = '^'
+        expected_first_tile_adjacencies[self.first_example_tile_position + self.example_row_length] = 'v'
         self.assertListEqual(expected_first_tile_adjacencies, test_runner.maze_adjacency_matrix[self.first_example_tile_position])
         
         #Second example tile is adjacent to three 
         expected_second_tile_adjacencies = [0 for _ in range(self.expected_size)]
-        expected_second_tile_adjacencies[self.second_example_tile_position - self.example_row_length] = 1
-        expected_second_tile_adjacencies[self.second_example_tile_position + 1] = 1
-        expected_second_tile_adjacencies[self.second_example_tile_position + self.example_row_length] = 1
+        expected_second_tile_adjacencies[self.second_example_tile_position - self.example_row_length] = '^'
+        expected_second_tile_adjacencies[self.second_example_tile_position + 1] = '>'
+        expected_second_tile_adjacencies[self.second_example_tile_position + self.example_row_length] = 'v'
         self.assertListEqual(expected_second_tile_adjacencies, test_runner.maze_adjacency_matrix[self.second_example_tile_position])
         
         #The start is adjacent to two tiles
         expected_start_adjacencies = [0 for _ in range(self.expected_size)]
-        expected_start_adjacencies[self.start_position + 1] = 1
-        expected_start_adjacencies[self.start_position - self.example_row_length] = 1
-        self.assertListEqual(expected_start_adjacencies, test_runner.maze_adjacency_matrix[self.start_position])"""
-    
-    """def test_it_returns_the_best_path_for_first_example(self):
-        test_runner = MazeRunner(self.first_example)
-        self.assertEqual(self.first_example_path, test_runner.get_best_path())"""
+        expected_start_adjacencies[self.start_position + 1] = '>'
+        expected_start_adjacencies[self.start_position - self.example_row_length] = '^'
+        self.assertListEqual(expected_start_adjacencies, test_runner.maze_adjacency_matrix[self.start_position])
 
     def test_it_returns_the_best_path_score_for_first_example(self):
         test_runner = MazeRunner(self.first_example)
         self.assertEqual(7036, test_runner.get_best_path_score())
 
-    """def test_it_returns_the_best_path_score_for_second_example(self):
+    def test_it_returns_the_best_path_score_for_second_example(self):
         test_runner = MazeRunner(self.first_example)
-        self.assertEqual(11048, test_runner.get_best_path_score())"""
+        self.assertEqual(11048, test_runner.get_best_path_score())
 
 if __name__ == "__main__":
     unittest.main()
