@@ -43,6 +43,42 @@ class TestMazeRunner(unittest.TestCase):
 #S#.............#
 #################"""
 
+    reddit_test_case_1 = """###########################
+#######################..E#
+######################..#.#
+#####################..##.#
+####################..###.#
+###################..##...#
+##################..###.###
+#################..####...#
+################..#######.#
+###############..##.......#
+##############..###.#######
+#############..####.......#
+############..###########.#
+###########..##...........#
+##########..###.###########
+#########..####...........#
+########..###############.#
+#######..##...............#
+######..###.###############
+#####..####...............#
+####..###################.#
+###..##...................#
+##..###.###################
+#..####...................#
+#.#######################.#
+#S........................#
+###########################"""
+
+    reddit_test_case_2 = """##########
+#.......E#
+#.##.#####
+#..#.....#
+##.#####.#
+#S.......#
+##########"""
+
     def test_it_parses_input_and_generates_adjacency_matrix_for_first_example(self):
         test_runner = MazeRunner(self.first_example)
         
@@ -96,6 +132,14 @@ class TestMazeRunner(unittest.TestCase):
     def test_it_returns_the_best_path_score_for_second_example(self):
         test_runner = MazeRunner(self.second_example)
         self.assertEqual(11048, test_runner.get_best_path_score())
+    
+    def test_it_returns_the_best_path_score_for_reddit_test_case_1(self):
+        test_runner = MazeRunner(self.reddit_test_case_1)
+        self.assertEqual(21148, test_runner.get_best_path_score())
+    
+    def test_it_returns_the_best_path_score_for_reddit_test_case_2(self):
+        test_runner = MazeRunner(self.reddit_test_case_2)
+        self.assertEqual(4013, test_runner.get_best_path_score())
 
 if __name__ == "__main__":
     unittest.main()
