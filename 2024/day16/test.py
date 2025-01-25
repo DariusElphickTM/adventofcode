@@ -25,22 +25,6 @@ class TestMazeRunner(unittest.TestCase):
     second_example_tile_position = (example_row_length * 3) + 1
     end_position = (example_row_length * 2) - 2
     
-    first_example_path = """###############
-#.......#....E#
-#.#.###.#.###^#
-#.....#.#...#^#
-#.###.#####.#^#
-#.#.#.......#^#
-#.#.#####.###^#
-#..>>>>>>>>v#^#
-###^#.#####v#^#
-#>>^#.....#v#^#
-#^#.#.###.#v#^#
-#^....#...#v#^#
-#^###.#.#.#v#^#
-#S..#.....#>>^#
-###############"""
-
     second_example = """#################
 #...#...#...#..E#
 #.#.#.#.#.#.#.#.#
@@ -57,24 +41,6 @@ class TestMazeRunner(unittest.TestCase):
 #.#.#.........#.#
 #.#.#.#########.#
 #S#.............#
-#################"""
-
-    second_example_path = """#################
-#...#...#...#..E#
-#.#.#.#.#.#.#.#^#
-#.#.#.#...#...#^#
-#.#.#.#.###.#.#^#
-#>>v#.#.#.....#^#
-#^#v#.#.#.#####^#
-#^#v..#.#.#>>>>^#
-#^#v#####.#^###.#
-#^#v#..>>>>^#...#
-#^#v###^#####.###
-#^#v#>>^#.....#.#
-#^#v#^#####.###.#
-#^#v#^........#.#
-#^#v#^#########.#
-#S#>>^..........#
 #################"""
 
     def test_it_parses_input_and_generates_adjacency_matrix_for_first_example(self):
@@ -128,7 +94,7 @@ class TestMazeRunner(unittest.TestCase):
         self.assertEqual(7036, test_runner.get_best_path_score())
 
     def test_it_returns_the_best_path_score_for_second_example(self):
-        test_runner = MazeRunner(self.first_example)
+        test_runner = MazeRunner(self.second_example)
         self.assertEqual(11048, test_runner.get_best_path_score())
 
 if __name__ == "__main__":
