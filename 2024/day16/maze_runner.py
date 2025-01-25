@@ -17,41 +17,36 @@ class MazeRunner():
         self.row_length = row_length
         self.maze_adjacency_matrix = [[0] * size for _ in range(size)]
     
-    def search_for_shortest_path_bfs(self, nodes, adjacency_matrix, start_position, end_position):
-        visited = [False] * len(nodes)
+    def search_for_shortest_path_bfs(self):
+        visited = [False] * len(self.nodes)
         results = []
-        visited[start_position] = True
+        visited[self.start_position] = True
         queue = deque([{
-            'position': start_position,
+            'position': self.start_position,
             'direction': '>',
-            'score': 0,
-            'path': ['>']
+            'score': 0
         }])
         while queue:
             current_step = queue.popleft()
             current_position = current_step['position']
-            if current_position == end_position:
+            if current_position == self.end_position:
                 results.append(current_step['score'])
                 continue
             
-            for i, adjacent_position_direction in enumerate(adjacency_matrix[current_position]):
+            for i, adjacent_position_direction in enumerate(self.maze_adjacency_matrix[current_position]):
                 if adjacent_position_direction != 0 and not visited[i]:
-                    if i != end_position:
+                    if i != self.end_position:
                         visited[i] = True
                     next_step = {
                         'position': i,
                         'direction': adjacent_position_direction,
-                        'score': current_step['score'] + 1,
-                        'path': current_step['path'].copy()
+                        'score': current_step['score'] + 1
                     }
-                    next_step['path'].append(adjacent_position_direction)
                     if adjacent_position_direction is not current_step['direction']:
                         next_step['score'] = next_step['score'] + 1000
                     queue.append(next_step)
         results.sort()
         return results[0]
-        
-        
     
     def get_map_with_visited(self, nodes, visited, row_length):
         output = []
@@ -65,7 +60,7 @@ class MazeRunner():
         return "".join(output)
     
     def get_best_path_score(self):
-        return self.search_for_shortest_path_bfs(self.nodes, self.maze_adjacency_matrix, self.start_position, self.end_position)
+        return self.search_for_shortest_path_bfs()
     
     def add_edge(self, start, end, direction):
         self.maze_adjacency_matrix[start][end] = direction
