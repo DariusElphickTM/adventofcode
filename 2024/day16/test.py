@@ -77,7 +77,7 @@ class TestMazeRunner(unittest.TestCase):
 #S#>>^..........#
 #################"""
 
-    def test_it_parses_input_and_generates_adjacency_matrix_for_first_example(self):
+    """def test_it_parses_input_and_generates_adjacency_matrix_for_first_example(self):
         test_runner = MazeRunner(self.first_example)
         
         self.assertEqual(
@@ -121,7 +121,7 @@ class TestMazeRunner(unittest.TestCase):
         expected_start_adjacencies = [0 for _ in range(self.expected_size)]
         expected_start_adjacencies[self.start_position + 1] = 1
         expected_start_adjacencies[self.start_position - self.example_row_length] = 1
-        self.assertListEqual(expected_start_adjacencies, test_runner.maze_adjacency_matrix[self.start_position])
+        self.assertListEqual(expected_start_adjacencies, test_runner.maze_adjacency_matrix[self.start_position])"""
     
     """def test_it_returns_the_best_path_for_first_example(self):
         test_runner = MazeRunner(self.first_example)

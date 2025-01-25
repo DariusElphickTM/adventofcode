@@ -6,47 +6,44 @@ class MazeRunner():
         self.start_position = 0
         self.end_position = 0
         self.nodes = []
+        self.row_length = 0
         self.maze_adjacency_matrix = [[]]
         
         self.parse_input(input_string)
     
-    def initialise_graph(self, size):
+    def initialise_graph(self, size, row_length):
         self.nodes = []
+        self.row_length = row_length
         self.maze_adjacency_matrix = [[0] * size for _ in range(size)]
     
     def search_for_shortest_path_bfs(self, nodes, adjacency_matrix, start_position, end_position):
         visited = [False] * len(nodes)
         visited[start_position] = True
         queue = deque([start_position])
+        steps_taken = 0
         print("Starting at", start_position)
         while queue:
             current_position = queue.popleft()
             print(current_position)
             if current_position == end_position:
-                print("Found the end at position", current_position)
+                return
+            steps_taken += 1
             
             for i, adjacent_position in enumerate(adjacency_matrix[current_position]):
                 if adjacent_position == 1 and not visited[i]:
-                    visited[i] = True
+                    visited[i] = steps_taken
                     queue.append(i)
-        print("Here's the nodes we visited", visited)
     
-    def get_best_path(self):
-        return """###############
-#.......#....E#
-#.#.###.#.###^#
-#.....#.#...#^#
-#.###.#####.#^#
-#.#.#.......#^#
-#.#.#####.###^#
-#..>>>>>>>>v#^#
-###^#.#####v#^#
-#>>^#.....#v#^#
-#^#.#.###.#v#^#
-#^....#...#v#^#
-#^###.#.#.#v#^#
-#S..#.....#>>^#
-###############"""
+    def get_map_with_visited(self, nodes, visited, row_length):
+        output = []
+        for i, node in enumerate(nodes):
+            if i % row_length == 0:
+                output.append('\n')
+            if visited[i] is not False:
+                output.append('*')
+            else:
+                output.append(node)
+        return "".join(output)
     
     def get_best_path_score(self):
         self.search_for_shortest_path_bfs(self.nodes, self.maze_adjacency_matrix, self.start_position, self.end_position)
@@ -61,7 +58,7 @@ class MazeRunner():
         column_height = len(input_grid)
         row_length = len(input_grid[0])
         
-        self.initialise_graph(len(re.sub('\n', '', input_string)))
+        self.initialise_graph(len(re.sub('\n', '', input_string)), row_length)
         
         current_index = 0
         for i, row in enumerate(input_grid):
