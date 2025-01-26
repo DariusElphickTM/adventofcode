@@ -1,5 +1,6 @@
 import re
 from collections import deque
+import heapq
 
 class MazeRunner():
     
@@ -125,36 +126,38 @@ class DijkstraMazeRunner():
         self.row_length = row_length
         self.maze_adjacency_matrix = [[0] * size for _ in range(size)]
     
-    def search_for_shortest_path_bfs(self):
+    def search_for_shortest_path_dijkstra(self):
+        distances = [1,000,000,000] * len(self.nodes)
+        distances[self.start_position] = 0
+        
         visited = [False] * len(self.nodes)
-        results = []
-        visited[self.start_position] = True
-        queue = deque([{
+        
+        queue = heapq.heapify([{
             'position': self.start_position,
             'direction': '>',
-            'score': 0
         }])
+        
         while queue:
-            current_step = queue.popleft()
+            current_step = queue.heappop()
             current_position = current_step['position']
-            if current_position == self.end_position:
-                results.append(current_step['score'])
+            if visited[current_position]:
                 continue
             
+            visited[current_position] = True
+            
             for i, adjacent_position_direction in enumerate(self.maze_adjacency_matrix[current_position]):
-                if adjacent_position_direction != 0 and not visited[i]:
-                    if i != self.end_position:
-                        visited[i] = True
-                    next_step = {
-                        'position': i,
-                        'direction': adjacent_position_direction,
-                        'score': current_step['score'] + 1
-                    }
+                if adjacent_position_direction != 0:
+                    tentative_distance = distances[current_position] + 1
                     if adjacent_position_direction is not current_step['direction']:
-                        next_step['score'] = next_step['score'] + 1000
-                    queue.append(next_step)
-        results.sort()
-        return results[0]
+                        tentative_distance += 1000
+                    
+                    if tentative_distance < distances[i]:
+                        distances[i] = tentative_distance
+                        queue.heappush({
+                            'position': i,
+                            'direction': adjacent_position_direction
+                        })
+        return distances[self.end_position]
     
     def get_map_with_visited(self, nodes, visited, row_length):
         output = []
@@ -168,7 +171,7 @@ class DijkstraMazeRunner():
         return "".join(output)
     
     def get_best_path_score(self):
-        return self.search_for_shortest_path_bfs()
+        return self.search_for_shortest_path_dijkstra()
     
     def add_edge(self, start, end, direction):
         self.maze_adjacency_matrix[start][end] = direction
