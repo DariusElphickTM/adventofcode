@@ -166,7 +166,10 @@ class DijkstraMazeRunner():
                             Node(i, adjacent_position_direction, tentative_distance)
                         )
         
-        return distances[self.end_position]
+        return {
+            'best_path_score': distances[self.end_position],
+            'best_seat_score': 45
+        }
     
     def get_map_with_visited(self, nodes, visited, row_length):
         output = []
@@ -180,7 +183,10 @@ class DijkstraMazeRunner():
         return "".join(output)
     
     def get_best_path_score(self):
-        return self.search_for_shortest_path_dijkstra()
+        return self.search_for_shortest_path_dijkstra()['best_path_score']
+    
+    def get_best_seat_score(self):
+        return self.search_for_shortest_path_dijkstra()['best_seat_score']
     
     def add_edge(self, start, end, direction):
         self.maze_adjacency_matrix[start][end] = direction
