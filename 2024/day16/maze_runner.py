@@ -110,6 +110,15 @@ class MazeRunner():
 
                 current_index += 1
 
+class Node:
+    def __init__(self, position, direction, distance):
+        self.position = position
+        self.direction = direction
+        self.distance = distance
+    
+    def __lt__(self, other):
+        return self.distance < other.distance
+
 class DijkstraMazeRunner():
     
     def __init__(self, input_string):
@@ -127,36 +136,36 @@ class DijkstraMazeRunner():
         self.maze_adjacency_matrix = [[0] * size for _ in range(size)]
     
     def search_for_shortest_path_dijkstra(self):
-        distances = [1,000,000,000] * len(self.nodes)
+        distances = [1000000000] * len(self.nodes)
         distances[self.start_position] = 0
         
         visited = [False] * len(self.nodes)
         
-        queue = heapq.heapify([{
-            'position': self.start_position,
-            'direction': '>',
-        }])
+        queue = []
+        heapq.heappush(
+            queue, 
+            Node(self.start_position, '>', 0)
+        )
         
         while queue:
-            current_step = queue.heappop()
-            current_position = current_step['position']
-            if visited[current_position]:
+            current_step = heapq.heappop(queue)
+            if visited[current_step.position]:
                 continue
             
-            visited[current_position] = True
+            visited[current_step.position] = True
             
-            for i, adjacent_position_direction in enumerate(self.maze_adjacency_matrix[current_position]):
+            for i, adjacent_position_direction in enumerate(self.maze_adjacency_matrix[current_step.position]):
                 if adjacent_position_direction != 0:
-                    tentative_distance = distances[current_position] + 1
-                    if adjacent_position_direction is not current_step['direction']:
+                    tentative_distance = distances[current_step.position] + 1
+                    if adjacent_position_direction is not current_step.direction:
                         tentative_distance += 1000
-                    
                     if tentative_distance < distances[i]:
                         distances[i] = tentative_distance
-                        queue.heappush({
-                            'position': i,
-                            'direction': adjacent_position_direction
-                        })
+                        heapq.heappush(
+                            queue,
+                            Node(i, adjacent_position_direction, tentative_distance)
+                        )
+        
         return distances[self.end_position]
     
     def get_map_with_visited(self, nodes, visited, row_length):

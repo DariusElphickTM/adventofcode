@@ -1,9 +1,11 @@
-from maze_runner import MazeRunner
+from maze_runner import MazeRunner, DijkstraMazeRunner
 
 def main():
     print("Here we go!")
     part_1_runner = MazeRunner(read_file("input.txt"))
     print("Part 1 result", part_1_runner.get_best_path_score())
+    part_1_dijkstra_runner = DijkstraMazeRunner(read_file("input.txt"))
+    print("Part 1 dijkstra result", part_1_dijkstra_runner.get_best_path_score())
 
 def read_file(file_name):
     """Reads a text file and returns all of it's contents."""
