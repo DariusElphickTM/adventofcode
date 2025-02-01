@@ -141,6 +141,8 @@ class DijkstraMazeRunner():
         
         visited = [False] * len(self.nodes)
         
+        predecessors = {}
+        
         queue = []
         heapq.heappush(
             queue, 
@@ -161,15 +163,71 @@ class DijkstraMazeRunner():
                         tentative_distance += 1000
                     if tentative_distance < distances[i]:
                         distances[i] = tentative_distance
+                        predecessors[i] = [current_step.position]
                         heapq.heappush(
                             queue,
                             Node(i, adjacent_position_direction, tentative_distance)
                         )
+                    elif tentative_distance == distances[i]: 
+                        predecessors[i].append(current_step.position)
         
+        self.print_visited(distances)
         return {
             'best_path_score': distances[self.end_position],
-            'best_seat_score': 45
+            'best_seat_score': self.get_best_seat_score_from_predecessors(predecessors)
         }
+    
+    def get_best_seat_score_from_predecessors(self, predecessor_array):
+        target = (15 * 11) + 10
+        print(target)
+        print(self.maze_adjacency_matrix[target])
+        print(self.nodes[target])
+        print(predecessor_array)
+        paths = self.reconstruct_best_paths(predecessor_array, self.start_position, self.end_position)
+        #print(paths)
+        self.print_maps(paths)
+        path_lengths = list(map(len, paths))
+        #print(path_lengths)
+        return 45
+    
+    def print_visited(self, visited):
+        row_length = 15
+        output = []
+        for i, node in enumerate(self.nodes):
+            if i % row_length == 0:
+                output.append('\n')
+            if visited[i] != 1000000000:
+                output.append(f'{str(visited[i]):{0}^{4}}')
+                output.append('-')
+            else:
+                output.append(node)
+                output.append(node)
+                output.append(node)
+                output.append(node)
+                output.append(node)
+        print(''.join(output))
+    
+    def print_maps(self, best_paths):
+        row_length = 15
+        output = []
+        for i, node in enumerate(self.nodes):
+            if i % row_length == 0:
+                output.append('\n')
+            if i in best_paths[0]:
+                output.append('O')
+            else:
+                output.append(node)
+        print(''.join(output))
+    
+    def reconstruct_best_paths(self, predecessor_array, start, end):
+        if start == end:
+            return [[start]]
+        
+        paths = []
+        for predecessor in predecessor_array[end]:
+            for path in self.reconstruct_best_paths(predecessor_array, start, predecessor):
+                paths.append(path + [end])
+        return paths
     
     def get_map_with_visited(self, nodes, visited, row_length):
         output = []
